@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0; padding:0;}
+body,div,ul,li,img,a{margin:0; padding:0;}
+img,a{border:0;}
+ul,li,ol{list-style-type:none;}
+em,i{font-style:normal}
+body{background:#ed6247;font-family: tahoma,arial,"Hiragino Sans GB",微软雅黑,宋体;}
+
+.container{
+    border:1px solid #ed6247;
+    position:relative;
+    width:100%;
+    height: 100%;
+}
+.back-btn{
+    width:1.2rem;
+    height: 1.2rem;
+    position: absolute;
+    left:1.5rem;
+    top:1.5rem;
+}
+.back-btn img{
+    width:1.2rem;
+    height: 1.2rem;
+}
+.bg1{
+    position:absolute;
+    width:8.7rem;
+    height: 5rem;
+    left:0rem;
+    top:6.4rem;
+}
+.bg2{
+    width:8.3rem;
+    height: 5.2rem;
+    position: absolute;
+    right:0rem;
+    top:0rem;
+}
+.bg3{
+    width:9.8rem;
+    height: 4.5rem;
+    position: absolute;
+    left:0rem;
+    bottom: 1.1rem;
+}
+.bg4{
+    width:8.6rem;
+    height:4.3rem;
+    position: absolute;
+    right: 0px;
+    bottom:8.1rem;
+    z-index: -1;
+}
+/*@media all  and (max-height: 550px) {*/
+    /*.bg4{*/
+        /*bottom:4.4rem;*/
+    /*}*/
+/*}*/
+.bg5{
+    width:16rem;
+    height:14.9rem;
+    display:block;
+    margin:0 auto;
+    margin-top:11.9rem;
+}
+.text{
+    text-align: center;
+    color:white;
+}
+.text .h1{
+    font-size:1.5rem;
+}
+.text .h2{
+    font-size:1.2rem;
+}
+.text p{
+    margin: 0.8rem;
+}
