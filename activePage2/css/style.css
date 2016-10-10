@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0; padding:0;}
+body,div,ul,li,img,a{margin:0; padding:0;}
+img,a{border:0;}
+ul,li,ol{list-style-type:none;}
+em,i{font-style:normal}
+body{background:#e5e5e5;font-family: tahoma,arial,"Hiragino Sans GB",微软雅黑,宋体;}
+
+.container{
+    background-color: #e5e5e5;
+}
+
+@media all and (min-width: 750px) {
+    .text{
+        font-size:35px;
+        text-align:center;
+        line-height:1.3em;
+    }
+    .pc,.phone{
+        display: none;
+    }
+    .box{
+        width:84%;
+        padding:100px 0px  20px;
+        margin:0 auto;
+        position:relative;
+    }
+    .pcAndPhone{
+        width:100%;
+    }
+    .t1{
+        position:absolute;
+        top:0px;
+        left:-70px;
+    }
+    .t2{
+        position:absolute;
+        top:300px;
+        right:-94px;
+    }
+}
+
+@media all and (max-width: 750px) {
+    .text{
+        font-size:4rem;
+        text-align:center;
+        line-height:2em;
+    }
+    .pcAndPhone{
+        display: none;
+    }
+    .box{
+        width:87%;
+        margin:0 auto;
+        padding:20rem 0rem 13rem 0rem;
+    }
+    .pc,.phone{
+        display: block;
+        margin:0 auto;
+        width:100%;
+    }
+    .pcContainer{
+        width:100%;
+        position: relative;
+    }
+    .t1{
+        position: absolute;
+        top:-10rem;
+        left:1rem;
+    }
+    .phoneContaienr{
+        width:100%;
+        position:relative;
+        margin-top:16rem;
+    }
+    .t2{
+        position:absolute;
+        top:-100px;
+        right:-1.5rem;
+    }
+}
