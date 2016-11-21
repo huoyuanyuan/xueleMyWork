@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalble=no">
+    <title>学乐广告管理系统</title>
+    <!--引入外部库-->
+    <script src="/lib/jquery-2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/lib/bootstrap-3.3.0-dist/dist/css/bootstrap.min.css">
+    <script src="/lib/bootstrap-3.3.0-dist/dist/js/bootstrap.min.js"></script>
+    <!--引入自己的js、css-->
+    <link rel='stylesheet' href='/css/style.css' />
+    <!--<script src="/js/main.js"></script>-->
+    <script src="/js/mainNew.js"></script>
+</head>
+<body>
+<header class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <nav>
+            <ul class="nav navbar-nav">
+                <li><a>广告管理系统</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" role="presentation">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span id="adminName"><%= adminName %></span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a class="btn" data-toggle="modal" data-target="#myModalChangPass">
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <div class="modal fade" id="myModalChangPass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    修改密码<span id="changePassMsg"></span>
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                <label>新密码：</label>
+                                <input type="password" class="form-control" placeholder="请输入新密码" id="newPass">
+                                <label>再次输入：</label>
+                                <input type="password" class="form-control" placeholder="请再次输入新密码" id="repeatNewPass">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" class="btn btn-primary" id="changPassBtn">
+                                    提交更改
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+
+                <li>
+                    <a href="/" id="logoutBtn">
+                        <span class="glyphicon glyphicon-off"></span>
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section>
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">
+                    <span class="glyphicon glyphicon-home"></span>
+                    管理后台
+                </a>
+            </li>
+            <li class="active"><%=linkNavTitle%></li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-push-2">
+                <%if(showSection == "allASplace"){ %>
+                    <div class="dynamicContainer" id="allASplace">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin/makeASplace">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            创建
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="pull-right">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" placeholder="关键词" id="place_searchInput">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="place_searchBtn">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form class="form-inline">
+                            <div class="panel panel-default">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-nowrap td_mn">
+                                                    <label for="chk_all_allASplace" class="checkbox-inline">
+                                                        <input type="checkbox" name="chk_all_allASplace" id="chk_all_allASplace" data-parent="first">全部
+                                                    </label>
+                                                </th>
+                                                <th class="text-nowrap td_mn">ID</th>
+                                                <th>广告位</th>
+                                                <th class="text-nowrap td_bg">广告数</th>
+                                                <th class="text-nowrap td_md">状态/备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%data.forEach(function (dataitem) {%>
+                                                <tr>
+                                                    <td class="text-nowrap">
+                                                        <input type="checkbox" data-parent="chk_all_allASplace" value="<%=dataitem.place_id%>">
+                                                    </td>
+                                                    <td class="text-nowrap"><%=dataitem.place_id%></td>
+                                                    <td>
+                                                        <ul class="list-unstyled">
+                                                            <li><%=dataitem.place_name%></li>
+                                                            <li>
+                                                                <ul class="list_menu">
+                                                                    <li>
+                                                                        <a href="/admin/editASplace?id=<%=dataitem.place_id%>">编辑</a>
+                                                                    </li>
+                                                                    <li><a href="#">统计</a></li>
+                                                                    <li><a href="/admin/adminAS?id=<%=dataitem.place_id%>">管理广告</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-nowrap asNumber"><%=dataitem.AS_number%></td>
+                                                    <td class="td_md">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <%if(dataitem.place_state){%>
+                                                                    <span class="label label-success">启用</span>
+                                                                <%}else{%>
+                                                                    <span class="label label-danger">禁用</span>
+                                                                <%}%>
+                                                            </li>
+                                                            <li><%=dataitem.place_remarks%></li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            <%})%>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <span id="msg_posi_id"></span>
+                                                </td>
+                                                <td colspan="3">
+                                                    <div class="form-group">
+                                                        <div>
+                                                            <select name="act_post" id="allPlace_act_post" class="form-control input-sm">
+                                                                <option value="">批量操作</option>
+                                                                <option value="enable">启用</option>
+                                                                <option value="disable">禁用</option>
+                                                                <option value="del">永久删除</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-primary btn-sm" id="allPlace_submitBtn">提交</button>
+                                                        <span id="allPlace_msg"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-right">
+                            <ul class="pagination pagination-sm">
+                                <li class="disabled">
+                                    <span title="上一页"><<</span>
+                                </li>
+                                <li class="active">
+                                    <span>1</span>
+                                </li>
+                                <li class="disabled">
+                                    <span title="上一页">>></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <%}%>
+                <%if(showSection == "makeASplace"){%>
+                    <div class="dynamicContainer" id="makeASplace">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin">
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            返回
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div id="group_posi_name">
+                                                    <label class="control-label">
+                                                        广告位名称
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="place_name_input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    广告脚本
+                                                    <span>*</span>
+                                                </label>
+                                                <select name="posi_script" id="plugIn_input" class="form-control">
+                                                    <option value="">请选择</option>
+                                                    <%if(data.plugIn){
+                                                        data.plugIn.forEach(function (plugInItem){%>
+                                                            <option data-index=<%=plugInItem.plugIn_id%> value=<%=plugInItem.plugIn_id%>><%=plugInItem.plugIn_name%></option>
+                                                        <%})
+                                                    }%>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        默认选择器
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" value=<%=data.selector%> disabled id="place_selector">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        备注
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="placeRemarks_input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-primary" id="place_saveBtn">保存</button>
+                                                <a href="/admin" class="btn btn-default">关闭</a>
+                                                <span id="place_msg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    状态
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="place_radio_bigo">
+                                                    <label for="place_status_enable">
+                                                        <input type="radio" name="place_status" id="place_status_enable" value="1" checked>启用
+                                                    </label>
+                                                </div>
+                                                <div class="place_radio_bigo">
+                                                    <label for="place_status_disable">
+                                                        <input type="radio" name="place_status" id="place_status_disable" value="0">禁用
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <%}%>
+                <%if(showSection == "editASplace"){%>
+                    <div class="dynamicContainer" id="editASplace">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin">
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            返回
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <input type="text" style="display: none" id="edit_place_id" value="<%=data.place_id%>">
+                                                <label class="control-label">
+                                                    广告位名称
+                                                    <span>*</span>
+                                                </label>
+                                                <input type="text" class="form-control" id="edit_place_name_input" value="<%=data.place_name%>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    广告脚本
+                                                    <span>*</span>
+                                                </label>
+                                                <select name="posi_script" id="edit_plugIn_input" class="form-control">
+                                                    <option value="">请选择</option>
+                                                    <%if(data.plugIn){
+                                                    data.plugIn.forEach(function (plugInItem){%>
+                                                    <option data-index="<%=plugInItem.plugIn_id%>" value="<%=plugInItem.plugIn_id%>" <%if(plugInItem.selected){%>selected<%}%>><%=plugInItem.plugIn_name%></option>
+                                                    <%})
+                                                    }%>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        默认选择器
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" value=<%=data.selector%> disabled id="edit_place_selector">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        备注
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="edit_placeRemarks_input" value="<%=data.place_remarks%>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-primary" id="edit_place_saveBtn">保存</button>
+                                                <a href="/admin" class="btn btn-default">关闭</a>
+                                                <span id="edit_place_msg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    状态
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="eidt_place_radio_bigo">
+                                                    <label for="place_status_enable">
+                                                        <input type="radio" name="place_status" id="place_status_enable" value="1" <%if(data.place_state){%>checked<%}%>>启用
+                                                    </label>
+                                                </div>
+                                                <div class="edit_place_radio_bigo">
+                                                    <label for="place_status_disable">
+                                                        <input type="radio" name="place_status" id="place_status_disable" value="0" <%if(!data.place_state){%>checked<%}%>>禁用
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <%}%>
+                <%if(showSection == "allAS"){%>
+                    <div class="dynamicContainer" id="allAS">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin/makeAS">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            创建
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="pull-right">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <select name="posi_id" class="form-control input-sm" id="AS_ASplaceContainer">
+                                            <option value="">所有广告位</option>
+                                            <%allASPlace.forEach(function (item) {%>
+                                                <option value="<%=item.place_id%>"><%=item.place_name%></option>
+                                            <%})%>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="status" class="form-control input-sm" id="AS_stateContainer">
+                                            <option value="">所有状态</option>
+                                            <option value="1">启用</option>
+                                            <option value="0">禁用</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" placeholder="关键词" id="AS_keywords">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="AS_searchBtn">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form class="form-inline">
+                            <div class="panel panel-default">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-nowrap td_mn">
+                                                    <label for="chk_all_allAS" class="checkbox-inline">
+                                                        <input type="checkbox" name="chk_all" id="chk_all_allAS" data-parent="first">全部
+                                                    </label>
+                                                </th>
+                                                <th class="text-nowrap td_mn">ID</th>
+                                                <th>广告名称</th>
+                                                <th class="text-nowrap td_bg">广告位</th>
+                                                <th class="text-nowrap">投放对象</th>
+                                                <th class="text-nowrap">生效时间</th>
+                                                <th class="text-nowrap td_md">状态/备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%data.forEach(function (dataitem){%>
+                                                <tr>
+                                                    <td class="text-nowrap">
+                                                        <input type="checkbox" data-parent="chk_all_allAS"  name="chk_all_allAS" value="<%=dataitem.AS_id%>">
+                                                    </td>
+                                                    <td class="text-nowrap"><%=dataitem.AS_id%></td>
+                                                    <td>
+                                                        <ul class="list-unstyled">
+                                                            <li><%=dataitem.AS_name%></li>
+                                                            <li>
+                                                                <ul class="list_menu">
+                                                                    <li><a href="/admin/editAS?id=<%=dataitem.AS_id%>">编辑</a></li>
+                                                                    <li><a href="#">统计</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-nowrap">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <a href="/admin/adminAS?id=<%=dataitem.AS_place.place_id%>"><%=dataitem.AS_place.place_name%></a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-nowrap">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <span><%=dataitem.AS_target.target_area_name%></span>
+                                                            </li>
+                                                            <li>
+                                                                <%dataitem.AS_target.target_role.forEach(function(roleitem){%>
+                                                                    <span><%=roleitem.target_role_name%></span>&nbsp;&nbsp;
+                                                                <%})%>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-nowrap">
+                                                        <ul class="list-unstyled">
+                                                            <li title=""><%=dataitem.AS_usetime%></li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="text-nowrap">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <%if(dataitem.AS_state){%>
+                                                                    <span class="label label-success">启用</span>
+                                                                <%}else {%>
+                                                                    <span class="label label-danger">禁用</span>
+                                                                <%}%>
+                                                            </li>
+                                                            <li><%=dataitem.AS_remarks%></li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            <%})%>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                            <td colspan="2">
+                                                <span id="msg_posi_id2"></span>
+                                            </td>
+                                            <td colspan="5">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <select name="act_post" id="AS_act_post" class="form-control input-sm" >
+                                                            <option value="">批量操作</option>
+                                                            <option value="enable">启用</option>
+                                                            <option value="disable">禁用</option>
+                                                            <option value="del">永久删除</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="AS_submitBtn">提交</button>
+                                                    <span id="AS_msg"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <span id="msg_act_post2"></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-right">
+                            <ul class="pagination pagination-sm">
+                                <li class="disabled">
+                                    <span title="上一页"><<</span>
+                                </li>
+                                <li class="active">
+                                    <span>1</span>
+                                </li>
+                                <li class="disabled">
+                                    <span title="上一页">>></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <%}%>
+                <%if(showSection == "makeAS"){%>
+                    <div class="dynamicContainer" id="makeAS">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin/allAS">
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            返回
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        广告名称
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="AS_name_input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        链接地址
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="AS_link_url_input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    广告位
+                                                    <span>*</span>
+                                                </label>
+                                                <select name="posi_script"  class="form-control" id="AS_place_input">
+                                                    <option value="">请选择</option>
+                                                    <%data.forEach(function (dataitem) {%>
+                                                    <option value="<%=dataitem.place_id%>"><%=dataitem.place_name%></option>
+                                                    <%})%>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    图片
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <div class="img-thumbnail imgContainer">
+                                                                <img src="/imgs/image.png" class="img-responsive" id="uploadPic">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <a href="javascript:void(0)" class="btn btn-success file_input">
+                                                                选取图片
+                                                                <input type="file" name="file" accept=".jpg,.png,.jpeg,.bmp" id="AS_selectPicBtn">
+                                                            </a>
+                                                            <button class="btn btn-success" id="picSubBtn">上传</button>
+                                                            <span id="picSubMsg"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    背景颜色
+                                                    <span>*</span>
+                                                </label>
+                                                <input type="color" class="form-control" id="AS_bgColor_input">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    投放对象
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                地区
+                                                                <span>*</span>
+                                                            </label>
+                                                            <div id="areaSelectorContainer">
+                                                                <select class="control-label" id="province_selector">
+                                                                    <option value="province">省份</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                                <select class="control-label" id="region_selector">
+                                                                    <option value="region">地区</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                                <select class="control-label" id="district_selector">
+                                                                    <option value="district">区县</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                角色
+                                                                <span>*</span>
+                                                            </label>
+                                                            <div class="role" id="roleContainer">
+                                                                <input type="checkbox" id="allRole"><label for="allRole">全部</label>
+                                                                <input type="checkbox" id="teacher" data-parent="allRole" value="1"><label for="teacher">教师</label>
+                                                                <input type="checkbox" id="student" data-parent="allRole" value="2"><label for="student">学生</label>
+                                                                <input type="checkbox" id="parent" data-parent="allRole" value="3"><label for="parent">家长</label>
+                                                                <input type="checkbox" id="school_manager" data-parent="allRole" value="4"><label for="school_manager">学校管理员</label>
+                                                                <input type="checkbox" id="education_manager" data-parent="allRole" value="5"><label for="education_manager">教育机构管理员</label>
+                                                                <input type="checkbox" id="educaton_staff" data-parent="allRole" value="6"><label for="educaton_staff">教育机构人员</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    生效时间
+                                                    <span>*</span>
+                                                </label>
+                                                <input type="datetime-local" class="control-label" id="AS_usetime_input">
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        备注
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="AS_remarks_input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-primary" id="AS_makeAS_saveBtn">保存</button>
+                                                <a href="/admin/allAS" class="btn btn-default">关闭</a>
+                                                <span id="ASMag"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    状态
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="radio_bigo">
+                                                    <label for="AS_posi_status_enable">
+                                                        <input type="radio" name="posi_status" value="1" id="AS_posi_status_enable" class="AS_state" checked>启用
+                                                    </label>
+                                                </div>
+                                                <div class="radio_bigo">
+                                                    <label for="AS_posi_status_disable">
+                                                        <input type="radio" name="posi_status" value="0" class="AS_state" id="AS_posi_status_disable">禁用
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    打开位置
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="radio_bigo">
+                                                    <label for="old">
+                                                        <input type="radio" name="open_place" class="AS_openPlace" id="old" value="1" checked>当前页面
+                                                    </label>
+                                                </div>
+                                                <div class="radio_bigo">
+                                                    <label for="new">
+                                                        <input type="radio" name="open_place" class="AS_openPlace" id="new" value="0" >新页面
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <%}%>
+                <%if(showSection == "editAS"){%>
+                    <div class="dynamicContainer" id="editAS">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin/allAS">
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            返回
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        广告名称
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" style="display: none;" id="AS_edit_id" value="<%=data.AS_id%>">
+                                                    <input type="text" class="form-control" id="AS_edit_name_input" value="<%=data.AS_name%>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        链接地址
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="AS_eidt_link_url_input" value="<%=data.AS_link_url%>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    广告位
+                                                    <span>*</span>
+                                                </label>
+                                                <select name="posi_script"  class="form-control" id="AS_edit_place_input">
+                                                    <option value="">请选择</option>
+                                                    <%data.AS_place.forEach(function (dataitem) {%>
+                                                    <option value="<%=dataitem.place_id%>" <%if(dataitem.selected){%>selected<%}%>><%=dataitem.place_name%></option>
+                                                    <%})%>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    图片
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <div class="img-thumbnail imgContainer">
+                                                                <img src="<%=data.AS_picture_src%>" class="img-responsive" id="uploadPic">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <a href="javascript:void(0)" class="btn btn-success file_input">
+                                                                选取图片
+                                                                <input type="file" name="file" accept=".jpg,.png,.jpeg,.bmp" id="AS_selectPicBtn">
+                                                            </a>
+                                                            <button class="btn btn-success" id="picSubBtn">上传</button>
+                                                            <span id="picSubMsg"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    背景颜色
+                                                    <span>*</span>
+                                                </label>
+                                                <input type="color" class="form-control" id="AS_edit_bgColor_input" value="<%=data.AS_backgroundcolor%>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    投放对象
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="form-group originAdressContainer">
+                                                            <label class="control-label">
+                                                                原地区：<span data-value="<%=data.AS_target_area_code%>" id="originArea"><%=data.AS_target_area_name%></span>
+                                                            </label>
+                                                            <label>
+                                                                <button class="btn btn-xs" id="getDetailBtn">详细地址</button>
+                                                            </label>
+                                                            <label id="detailAdressContainer"></label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                地区
+                                                                <span>*</span>
+                                                            </label>
+                                                            <div id="edit_areaSelectorContainer">
+                                                                <select class="control-label" id="province_selector">
+                                                                    <option value="province">省份</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                                <select class="control-label" id="region_selector">
+                                                                    <option value="region">地区</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                                <select class="control-label" id="district_selector">
+                                                                    <option value="district">区县</option>
+                                                                    <option value="all">全部</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">
+                                                                角色
+                                                                <span>*</span>
+                                                            </label>
+                                                            <div class="role" id="edit_roleContainer">
+                                                                <input type="checkbox" id="allRole"><label for="allRole">全部</label>
+                                                                <input type="checkbox" id="teacher" data-parent="allRole" value="1" <%if(data.AS_target_role.indexOf("1") != -1){%>checked<%}%>><label for="teacher">教师</label>
+                                                                <input type="checkbox" id="student" data-parent="allRole" value="2" <%if(data.AS_target_role.indexOf("2") != -1){%>checked<%}%>><label for="student">学生</label>
+                                                                <input type="checkbox" id="parent" data-parent="allRole" value="3" <%if(data.AS_target_role.indexOf("3") != -1){%>checked<%}%>><label for="parent">家长</label>
+                                                                <input type="checkbox" id="school_manager" data-parent="allRole" value="4" <%if(data.AS_target_role.indexOf("4") != -1){%>checked<%}%>><label for="school_manager">学校管理员</label>
+                                                                <input type="checkbox" id="education_manager" data-parent="allRole" value="5" <%if(data.AS_target_role.indexOf("5") != -1){%>checked<%}%>><label for="education_manager">教育机构管理员</label>
+                                                                <input type="checkbox" id="educaton_staff" data-parent="allRole" value="6" <%if(data.AS_target_role.indexOf("6") != -1){%>checked<%}%>><label for="educaton_staff">教育机构人员</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    生效时间
+                                                    <span>*</span>
+                                                </label>
+                                                <input type="datetime-local" class="control-label" id="AS_edit_usetime_input" value="<%=data.AS_usetime%>">
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <label class="control-label">
+                                                        备注
+                                                        <span>*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="AS_edit_remarks_input" value="<%=data.AS_remarks%>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-primary" id="AS_editAS_saveBtn">保存</button>
+                                                <a href="/admin/allAS" class="btn btn-default">关闭</a>
+                                                <span id="AS_edit_Msg"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    状态
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="radio_bigo">
+                                                    <label for="AS_edit_posi_status_enable">
+                                                        <input type="radio" name="posi_status" id="AS_edit_posi_status_enable" value="1" class="AS_edit_state" <%if(data.AS_state == 1){%>checked<%}%>>启用
+                                                    </label>
+                                                </div>
+                                                <div class="radio_bigo">
+                                                    <label for="AS_edit_posi_status_disable">
+                                                        <input type="radio" name="posi_status" id="AS_edit_posi_status_disable" value="0" class="AS_edit_state" <%if(data.AS_state == 0){%>checked<%}%>>禁用
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">
+                                                    打开位置
+                                                    <span>*</span>
+                                                </label>
+                                                <div class="radio_bigo">
+                                                    <label for="old">
+                                                        <input type="radio" name="open_place" class="AS_edit_openPlace" id="old" value="1" <%if(data.AS_open_place == 1){%>checked<%}%>>当前页面
+                                                    </label>
+                                                </div>
+                                                <div class="radio_bigo">
+                                                    <label for="new">
+                                                        <input type="radio" name="open_place" class="AS_edit_openPlace" id="new" value="0" <%if(data.AS_open_place == 0){%>checked<%}%>>新页面
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <%}%>
+
+                <%if(showSection == "adminAS"){%>
+                    <div class="dynamicContainer" id="adminAS">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="/admin">
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            返回
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--<div class="pull-right">-->
+                                <!--<form class="form-inline">-->
+                                    <!--<div class="form-group">-->
+                                        <!--<div class="input-group input-group-sm">-->
+                                            <!--<input type="text" class="form-control" placeholder="关键词">-->
+                                    <!--<span class="input-group-btn">-->
+                                        <!--<button class="btn btn-default">-->
+                                            <!--<span class="glyphicon glyphicon-search"></span>-->
+                                        <!--</button>-->
+                                    <!--</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</form>-->
+                            <!--</div>-->
+                            <div class="clearfix"></div>
+                        </div>
+                        <form class="form-inline">
+                            <div class="panel panel-default">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-nowrap td_mn">
+                                                    <label for="chk_all_adminAS" class="checkbox-inline">
+                                                        <input type="checkbox" name="chk_all_adminAS" id="chk_all_adminAS">全部
+                                                    </label>
+                                                </th>
+                                                <th class="text-nowrap">ID</th>
+                                                <th>广告名称</th>
+                                                <th class="text-nowrap">广告位</th>
+                                                <th class="text-nowrap">投放对象</th>
+                                                <th class="text-nowrap">生效时间</th>
+                                                <th class="text-nowrap tdCenter">
+                                                    <button class="btn btn-xs" id="AS_order_changeBtn">修改</button>
+                                                    播放次序
+                                                    <button class="btn btn-xs" id="AS_order_sureBtn">确定</button>
+                                                </th>
+                                                <th class="text-nowrap td_md">状态/备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <%data.forEach(function(dataitem){%>
+                                            <tr>
+                                                <td class="text-nowrap">
+                                                    <input type="checkbox" data-parent="chk_all_adminAS" value="<%=dataitem.AS_id%>">
+                                                </td>
+                                                <td style="display: none">
+                                                    <input type="text" value="<%=dataitem.place_id%>" class="adminAS_placeId">
+                                                </td>
+                                                <td class="text-nowrap"><%=dataitem.AS_id%></td>
+                                                <td>
+                                                    <ul class="list-unstyled">
+                                                        <li><%=dataitem.AS_name%></li>
+                                                        <li>
+                                                            <ul class="list_menu">
+                                                                <li><a href="/admin/editAS?id=<%=dataitem.AS_id%>">编辑</a></li>
+                                                                <li><a href="#">统计</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    <ul class="list-unstyled">
+                                                        <li>
+                                                            <span><%=dataitem.place_name%></span>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    <ul class="list-unstyled">
+                                                        <li>
+                                                            <span><%=dataitem.AS_target.target_area_name%></span>
+                                                        </li>
+                                                        <li>
+                                                            <%dataitem.AS_target.target_role.forEach(function (roleitem) {%>
+                                                                <span><%=roleitem.target_role_name%></span>
+                                                            <%})%>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    <ul class="list-unstyled">
+                                                        <li><%=dataitem.AS_usetime%></li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-nowrap tdCenter">
+                                                    <ul class="list-unstyled">
+                                                        <li class="showOrderContainer"><%=dataitem.AS_order%></li>
+                                                        <li class="hiddenOrderContainer"><input type="number" data-ASId="<%=dataitem.AS_id%>"></li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    <ul class="list-unstyled">
+                                                        <li>
+                                                            <%if(dataitem.AS_state){%>
+                                                                <span class="label label-success">启用</span>
+                                                            <%}else{%>
+                                                                <span class="label label-danger">禁用</span>
+                                                            <%}%>
+                                                        </li>
+                                                        <li><%=dataitem.AS_remarks%></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        <%})%>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span ></span>
+                                            </td>
+                                            <td colspan="6">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <select name="act_post" id="adminAS_act_post" class="form-control input-sm">
+                                                            <option value="">批量操作</option>
+                                                            <option value="enable">启用</option>
+                                                            <option value="disable">禁用</option>
+                                                            <option value="del">永久删除</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="adminAS_submintBtn">提交</button>
+                                                </div>
+                                                <span id="adminAS_msg"></span>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-right">
+                            <ul class="pagination pagination-sm">
+                                <li class="disabled">
+                                    <span title="上一页"><<</span>
+                                </li>
+                                <li class="active">
+                                    <span>1</span>
+                                </li>
+                                <li class="disabled">
+                                    <span title="上一页">>></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+            <div class="col-md-2 col-md-pull-10">
+                <div class="panel-group table-responsive" role="tablist" id="accordion">
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="" data-target="#collapseListGroup1" role="tab" data-parent="#accordion" >
+                            <h4 class="panel-title">
+                                广告位管理
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+                            <ul class="list-group">
+                                <li class="leftNav">
+                                    <a href="/admin" class="list-group-item">所有广告位</a>
+                                </li>
+                                <li class="leftNav">
+                                    <a href="/admin/makeASplace" class="list-group-item">创建广告位</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="" data-target="#collapseListGroup2" role="tab" data-parent="#accordion" >
+                            <h4 class="panel-title">
+                                广告管理
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading2" >
+                            <ul class="list-group">
+                                <li class="leftNav">
+                                    <a href="/admin/allAS" class="list-group-item">所有广告</a>
+                                </li>
+                                <li class="leftNav">
+                                    <a href="/admin/makeAS" class="list-group-item">投放广告</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="container-fluid">
+    <div class="pull-left">
+        <a href="https://cas.xueleyun.com/">学乐云教学平台</a>
+    </div>
+    <div class="pull-right">
+        Powered by
+        <a href="#">学乐</a>
+        1.1
+    </div>
+    <div class="clearfix"></div>
+</footer>
+</body>
+</html>

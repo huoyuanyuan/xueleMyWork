@@ -1,0 +1,25 @@
+.xuele_ASContainer{
+    position:relative;
+}
+.xuele_ASContainer .rslides_tabs{
+    list-style: none;
+    position:absolute;
+    bottom:0;
+    right:50px;
+    z-index: 999;
+}
+.xuele_ASContainer .rslides_tabs li{
+    display:inline-block;
+    margin:0 5px;
+}
+.xuele_ASContainer .rslides_tabs li a{
+    display: block;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background-color:rgba(128,128,128,0.7);
+}
+.rslides_here{
+    border-radius: 50%;
+    background-color:rgba(0,0,0,1);
+}

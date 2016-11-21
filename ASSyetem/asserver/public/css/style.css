@@ -1,0 +1,88 @@
+
+
+/*后台管理页样式*/
+body{
+    position:relative;
+    padding-bottom:40px;
+}
+.list_menu {
+    padding-left: 0;
+    margin: 3px 0 0 -3px;
+    list-style: none;
+}
+.list_menu > li {
+    display: inline-block;
+    padding: 0 3px;
+}
+.list_menu > li + li:before {
+    padding-right: 4px;
+    color: #999;
+    content: "|";
+}
+.role>input{
+    margin:0 10px;
+}
+.leftNav>a{
+    color:#428bca;
+}
+.leftNav:hover>a{
+    background-color: rgba(66,139,202,0.8);
+    color:white;
+}
+.activeLeftNav>a{
+    background-color:rgba(66,139,202,0.8);
+    color:white;
+    text-decoration: none;
+}
+#changePassMsg{
+    color:red;
+    margin-left:100px;
+}
+#place_msg,#allPlace_msg,#edit_place_msg,#picSubMsg,#ASMag,#AS_msg,#AS_edit_Msg,#adminAS_msg{
+    color:red;
+}
+.file_input{
+    overflow: hidden;
+    position:relative;
+}
+.file_input input{
+    width:100%;
+    height:100%;
+    opacity:0;
+    cursor: pointer;
+    filter:alpha(opacity=0);
+    position:absolute;
+    top:0;
+    left:0
+}
+.areaSelectorContainer select{
+    width:100px;
+}
+.hiddenOrderContainer{
+    display: none;
+}
+.hiddenOrderContainer input{
+    width:50px;
+}
+footer{
+    width:100%;
+    background-color: #e1e1e1;
+    padding:10px 30px;
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+.imgContainer{
+    width:210px;
+    height:100px;
+}
+.imgContainer img{
+    width:100%;
+    height:100%;
+}
+.tdCenter{
+    text-align: center;
+}
+.originAdressContainer label{
+    margin-right:20px;
+}

@@ -1,0 +1,12 @@
+/*登陆页样式*/
+body{
+    background-color:#eee;
+}
+.global {
+    max-width: 500px!important;
+    margin: 40px auto;
+}
+#admin_name_msg,#admin_pass_msg{
+    color:red;
+    font-size:12px;
+}
