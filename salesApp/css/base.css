@@ -12,6 +12,25 @@
 .fontRight{
     text-align: right!important;
 }
+
+/*自定义模拟 select*/
+.selectItems{
+    position:absolute;
+    background:white;
+    display: none;
+    z-index: 1000;
+    padding-left:0.25rem;
+}
+
+/*筛选按钮*/
+.screeningItems{
+    position:absolute;
+    background:white;
+    z-index:1000;
+    display: none;
+    text-align: center;
+}
+
 /*自定义列表样式*/
 .itemContent{
     padding-left:0.75rem;
@@ -41,21 +60,6 @@
 .itemContent .itemRight img{
     width:30%;
 }
-
-.item-select {
-    -webkit-appearance: none;
-    border: 0;
-    outline: 0;
-    background-color: transparent;
-    width: 100%;
-    font-size: inherit;
-    height: 44px;
-    line-height: 44px;
-    position: relative;
-    z-index: 1;
-    padding-left: 15px;
-}
-
 
 /*footer子选项*/
 .item_catefory{
