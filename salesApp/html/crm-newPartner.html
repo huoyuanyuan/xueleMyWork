@@ -19,9 +19,8 @@
     <header class="bar bar-nav">
         <a class="button button-link button-nav pull-left back" href="crm.html">
             <span class="icon icon-left"></span>
-            返回
         </a>
-        <h1 class="title">新增合伙人</h1>
+        <h1 class="title titleHead">新增合伙人</h1>
     </header>
     <div class="content">
         <div class="content-block">
@@ -70,13 +69,12 @@
                             <div class="item-inner">
                                 <div class="item-title label">状态</div>
                                 <div class="item-input">
-                                    <input type="text" value="请选择状态" class="btn-select" readonly>
-                                    <div class="selectItems">
-                                        <div class="selectItem" data-value="1">未沟通</div>
-                                        <div class="selectItem" data-value="2">待参会</div>
-                                        <div class="selectItem" data-value="3">待签约</div>
-                                        <div class="selectItem" data-value="4">待回款</div>
-                                    </div>
+                                    <select name="partnerState" id="partnerState">
+                                        <option value="1">未沟通</option>
+                                        <option value="2">待参会</option>
+                                        <option value="3">待签约</option>
+                                        <option value="4">待回款</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -112,13 +110,13 @@
                     </li>
                 </ul>
             </div>
-            <div class="list-block inset">
-                <a href="javascript:;" class="item-link list-button bg-white addNewContacts">继续添加联系人</a>
-            </div>
-            <div class="list-block inset">
-                <a href="javascript:;" class="item-link list-button bg-white">保存客户信息</a>
+            <div class="rightButton">
+                <button class="weui-btn weui-btn_mini weui-btn_primary addNewContacts">添加联系人</button>
             </div>
         </div>
+    </div>
+    <div class="bar bar-standard bar-footer">
+        <button class="weui-btn weui-btn_primary">保存客户信息</button>
     </div>
 </div>
 

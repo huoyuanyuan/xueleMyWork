@@ -7,7 +7,7 @@ $(function () {
             this.addFooterClickEvent();
             this.addNewContacts();
             this.select();
-            this.screening();
+            //this.screening();
         },
         //筛选按钮
         /**

@@ -6,11 +6,54 @@
 .bg-white{
     background:white;
 }
+.bgOne{
+    backgrond:rgb(53,73,94);
+    color:white;
+}
+.bgTwo{
+    background:rgb(95,143,158);
+    color:white;
+}
+.bgThree{
+    background:rgb(252,177,23);
+    color: white;
+}
+
 .marginTop10{
     margin-top:10px;
 }
+.marginLeft{
+    margin-left:0.3rem;
+}
+.marginCard{
+    margin:1rem 0.5rem;
+}
+.marginBottomNo{
+    margin-top:1rem;
+    margin-bottom:0;
+}
+
 .fontRight{
     text-align: right!important;
+}
+.btn-style{
+    background:rgb(4,140,2);
+    padding:0.2rem 0.4rem;
+    border-radius:0.1rem;
+    color:white !important;
+    line-height: normal;
+}
+.rightButton{
+    padding:1rem;
+    margin-top:-2rem;
+}
+.rightButton:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+.rightButton button{
+    float:right;
 }
 
 /*自定义模拟 select*/
@@ -22,14 +65,7 @@
     padding-left:0.25rem;
 }
 
-/*筛选按钮*/
-.screeningItems{
-    position:absolute;
-    background:white;
-    z-index:1000;
-    display: none;
-    text-align: center;
-}
+
 
 /*自定义列表样式*/
 .itemContent{
@@ -78,9 +114,20 @@
     height:1.5rem;
     margin-bottom:10px;
 }
+.subnavContainer:after{
+    content: "";
+    display: block;
+    clear:both;
+}
 .subnavContainer .left{
     float:left;
     margin:10px 0 0 10px;
+}
+.subnavContainer .left .leftStyle{
+    padding:0 0.5rem;
+    background:rgba(53,73,94,1);
+    color:white;
+    border-radius: 5px;
 }
 .subnavContainer .left .name{
     color:#797979;
@@ -92,15 +139,51 @@
 .subnavContainer .right{
     float:right;
     margin:10px 10px 0 0;
+    position:relative;
+}
+/*筛选按钮*/
+.btn-screening{
+    background:rgba(53,73,94,1);
+    color:white;
+    padding:0 0.5rem;
+    width:5rem;
+    border:1px solid black;
+    border-radius:5px;
+}
+.btn-screening .icon{
+    float:right;
+}
+.screeningItems{
+    width:100% !important;
+    position:absolute;
+    top:1.3rem;left:0;
+    z-index: 1000;
+    background:rgba(53,73,94,1);
+    color:white;
+    text-align: center;
+    display: none;
+    border:1px solid black;
+    border-radius:0 0 5px 5px;
 }
 
 /*详情页*/
 .nomargin{
     margin:0;
 }
+.headerCard{
+    width:96%;
+    margin:0 auto 0.5rem;
+    border:1px solid #999;
+    box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+    -moz-box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+    -webkit-box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+}
 .stateTitle{
     text-align: center;
     background:white;
+    border:1px solid #999;
+    margin-bottom:1rem;
+    border-radius:0.5rem;
 }
 .historyContainer{
     width:90%;
@@ -110,6 +193,11 @@
     width:100%;
     background:white;
     margin-bottom:1rem;
+}
+.historyItem .itemCardborder{
+    box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
+    -moz-box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
+    -webkit-box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
 }
 .historyItem .list-block{
     padding-bottom:0.5rem;
@@ -123,8 +211,6 @@
     width:60%;
     padding:0.5rem 1rem;
     margin:0.5rem auto 0;
-    text-align: center;
-    border:1px solid rgba(108,109,114,0.7);
 
 }
 .historyItem .bgwait{
@@ -155,6 +241,7 @@
     color: rgba(255, 118, 84, 0.89);
     margin-left:0.5rem;
 }
+
 
 /*签到页*/
 .signInItem{
@@ -325,4 +412,14 @@
 .detailItems .detailItem .center .center-item .center-LR .center-R{
     float:left;
     margin-left:1rem;
+}
+
+
+/*改变样式*/
+.titleHead{
+    background:#35495e;
+    color:white;
+}
+.icon-left{
+    color:#ccc;
 }

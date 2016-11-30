@@ -396,13 +396,13 @@ p {
     margin: 1em 0;
 }
 a {
-    color: #0894ec;
+    color: #3d3d3d;
     text-decoration: none;
 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 a:active {
-    color: #0a8ddf;
+    color: #3d3d3d;
 }
 .page {
     position: absolute;
@@ -1213,7 +1213,7 @@ body .color-success:active,
 }
 .bar-tab .tab-item.active,
 .bar-tab .tab-item:active {
-    color: #0894ec;
+    color: #3d3d3d;
 }
 .bar-tab .tab-item .badge {
     position: absolute;
@@ -2510,8 +2510,8 @@ input[type="button"].button {
 }
 .buttons-tab .button.active {
     z-index: 100;
-    color: #0894ec;
-    border-color: #0894ec;
+    color: rgb(4,190,2);
+    border-color: rgb(4,190,2);
 }
 /* === Tabs === */
 .tabs .tab {
