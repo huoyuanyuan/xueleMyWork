@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>crm-newSchool</title>
+    <!--库文件-->
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="lib/dist/css/icon.css">
+    <!--自己文件-->
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/base.js"></script>
+</head>
+<body>
+<div class="page" id="page-city-picker">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" href="crm.html">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title titleHead">新增学校</h1>
+    </header>
+    <div class="content">
+        <div class="content-block">
+            <div class="list-block">
+                <div class="content-block">基本信息</div>
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">地区</div>
+                                <div class="item-input">
+                                    <input type="text" value="" placeholder="请选择" id='city-picker' class="schoolArea"/>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">名称</div>
+                                <div class="item-input">
+                                    <input type="text" placeholder="请输入学校名称" class="schoolName">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">学段</div>
+                                <div class="item-input schoolPeriod">
+                                    <label for="primarySchool">
+                                        <input type="checkbox" id="primarySchool" value="1">
+                                        小学
+                                    </label>
+                                    <label for="middleSchool">
+                                        <input type="checkbox" id="middleSchool" value="2">
+                                        初中
+                                    </label>
+                                    <label for="highSchool">
+                                        <input type="checkbox" id="highSchool" value="3">
+                                        高中
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">人数</div>
+                                <div class="item-input">
+                                    <input type="text" placeholder="请输入学生人数" class="schoolNumber">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">状态</div>
+                                <div class="item-input">
+                                    <select name="schoolState" class="schoolState">
+                                        <option value="">请选择</option>
+                                        <option value="New">新分配</option>
+                                        <option value="Frist">初次沟通</option>
+                                        <option value="Continue">跟进拜访</option>
+                                        <option value="Deep">深入沟通</option>
+                                        <option value="Evaluation">客户评估</option>
+                                        <option value="Cooperation">合作</option>
+                                        <option value="GiveUp">放弃</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list-block addNewContactsContainer schoolContacts">
+                <div class="content-block">联系人</div>
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <input type="text" placeholder="请输入姓名" class="ccName">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-title label">职务</div>
+                            <div class="item-input">
+                                <input type="text" placeholder="请输入职务" class="ccPosition">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-title label">电话</div>
+                            <div class="item-input">
+                                <input type="tel" placeholder="请输入电话" class="ccPhone">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="rightButton">
+                <button class="weui-btn weui-btn_mini weui-btn_primary addNewContacts">添加联系人</button>
+            </div>
+        </div>
+    </div>
+    <div class="bar bar-standard bar-footer">
+        <button class="weui-btn weui-btn_primary btn-saveSchool">保存客户信息</button>
+    </div>
+</div>
+<script src="lib/dist/js/base.js"></script>
+<script src="js/demos.js"></script>
+<script src="lib/dist/js/city-picker.js"></script>
+</body>
+</html>

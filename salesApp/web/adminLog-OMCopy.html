@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>adminLog-OMCopy</title>
+    <!--库文件-->
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="lib/dist/css/icon.css">
+    <link rel="stylesheet" href="lib/weui.css">
+    <!--自己文件-->
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/base.js"></script>
+</head>
+<body>
+<div class="page" id="page-adminLog-OMCopy"></div>
+
+<div class="popup popup-addDeptCopy">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-right close-popup" style="color:white;">
+            关闭
+        </a>
+        <h1 class="title titleHead">新增部门</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        部门名称
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="请输入部门名称" required="required" class="deptNameCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <a href="javascript:;" class="button button-big button-fill button-success btn-saveNewDeptCopy">保存</a>
+                <span class="addDeptMsg promptMsg"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popup popup-addMemberCopy">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-right close-popup" style="color:white;">
+            关闭
+        </a>
+        <h1 class="title titleHead">新增成员</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        用户ID
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="请输入用户ID" required="required" class="memberIdCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        姓名
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="请输入姓名" required="required" class="memberNameCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        电话
+                    </div>
+                    <div class="item-input">
+                        <input type="tel" placeholder="请输入电话" required="required" class="memberTelCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        职位
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="选填" class="memberPnameCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        电子邮箱
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="选填" class="memberEmailCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        微信号
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="选填" class="memberWeixinidCopy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <a href="javascript:;" class="button button-big button-fill button-success btn-saveNewMemberCopy">保存</a>
+                <span class="addMemberMsg promptMsg"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="lib/dist/js/base.js"></script>
+</body>
+</html>

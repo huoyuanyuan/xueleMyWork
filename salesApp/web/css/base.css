@@ -1,0 +1,481 @@
+.clearfloat:after{
+    content:"";
+    display: block;
+    clear:both;
+}
+
+/*消息提示*/
+.promptMsg{
+    display:inline-block;
+    color:red;
+    margin-top:1rem;
+}
+
+.flLeft{
+    float:left;
+}
+.flRight{
+    float:right;
+}
+.mainMask{
+    position:fixed;
+    top:0;left:0;
+    z-index: 999;
+    background:rgba(255,255,255,0);
+    display: block;
+}
+.bg-white{
+    background:white;
+}
+.bgOne{
+    backgrond:rgb(53,73,94);
+    color:white;
+}
+.bgTwo{
+    background:rgb(95,143,158);
+    color:white;
+}
+.bgThree{
+    background:rgb(252,177,23);
+    color: white;
+}
+
+.marginLeft{
+    margin-left:0.3rem;
+}
+.marginCard{
+    margin:1rem 0.5rem;
+}
+.marginBottomNo{
+    margin-top:1rem;
+    margin-bottom:0;
+}
+.btn-style{
+    /*background:rgb(4,140,2);*/
+    background:rgb(95,143,158);
+    padding:0.2rem 0.4rem;
+    border-radius:0.1rem;
+    color:white !important;
+    line-height: normal;
+}
+.rightButton{
+    padding:1rem;
+    margin-top:-2rem;
+}
+.rightButton:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+.rightButton button{
+    float:right;
+}
+
+/*上传图片预览容器*/
+.uploadPicContainer{
+    width:100%;
+    overflow: hidden;
+}
+.uploadPicContainer:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+.uploadPicContainer img{
+    float:left;
+    width:50px;
+    height:50px;
+    margin:0.1rem;
+}
+.file_input{
+    float: left;
+    position:relative;
+    overflow:hidden;
+    display: inline-block;
+}
+.file_input img{
+    width:50px;
+    height:50px;
+}
+.file_input input{
+    position:absolute;
+    top:0;
+    right:0;
+    margin:0;
+    border:solid transparent;
+    opacity:0;
+    filter:alpha(opacity=0);
+    cursor: pointer;
+}
+
+
+/*自定义列表样式*/
+.itemContent{
+    padding-left:0.75rem;
+}
+.itemContent:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+.itemContent .itemLeft{
+    float:left;
+    width:25%;
+    padding:0.45rem 0 0.5rem 0;
+    margin-bottom:0.1rem;
+}
+.itemContent .itemRight{
+    float:left;
+    width:70%;
+    padding:0.45rem 0 0.5rem 0;
+    margin-left:0.5rem;
+    margin-bottom:0.1rem;
+    border-bottom:1px solid rgba(108,109,114,0.5);
+}
+.itemContent:last-child .itemRight{
+    border-bottom:none;
+}
+.itemContent .itemRight img{
+    width:30%;
+}
+
+/*footer子选项*/
+.item_catefory{
+    display: none;
+    width:100%;
+    position:absolute;
+    top:0;left:0;
+}
+.font_center{
+    margin: 0 auto;
+}
+
+/*筛选处副导航*/
+.subnavContainer{
+    width:100%;
+    height:1.5rem;
+    margin-bottom:10px;
+}
+.subnavContainer:after{
+    content: "";
+    display: block;
+    clear:both;
+}
+.subnavContainer .left{
+    float:left;
+    margin:10px 0 0 10px;
+}
+.subnavContainer .left .leftStyle{
+    padding:0 0.5rem;
+    background:rgba(53,73,94,1);
+    color:white;
+    border-radius: 5px;
+}
+.subnavContainer .left .name{
+    color:#797979;
+}
+.subnavContainer .left .state{
+    color:#797979;
+    margin-left:1rem;
+}
+.subnavContainer .right{
+    float:right;
+    margin:10px 10px 0 0;
+    position:relative;
+}
+/*筛选按钮*/
+.btn-screening{
+    background:rgba(53,73,94,1);
+    color:white;
+    padding:0 0.5rem;
+    width:5rem;
+    border:1px solid black;
+    border-radius:5px;
+}
+.btn-screening .icon{
+    float:right;
+}
+.screeningItems{
+    width:100% !important;
+    position:absolute;
+    top:1.3rem;left:0;
+    z-index: 1000;
+    background:rgba(53,73,94,1);
+    color:white;
+    text-align: center;
+    display: none;
+    border:1px solid black;
+    border-radius:0 0 5px 5px;
+}
+
+/*详情页*/
+.nomargin{
+    margin:0;
+}
+.headerCard{
+    width:96%;
+    margin:0 auto 0.5rem;
+    border:1px solid #999;
+    box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+    -moz-box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+    -webkit-box-shadow:3px 3px 3px #999,-3px 3px 3px #999;
+}
+.stateTitle{
+    text-align: center;
+    background:white;
+    border:1px solid #999;
+    margin-bottom:1rem;
+    border-radius:0.5rem;
+}
+.historyContainer{
+    width:90%;
+    margin: 1rem auto 0;
+}
+.historyItem{
+    width:100%;
+    background:white;
+    margin-bottom:1rem;
+}
+.historyItem .itemCardborder{
+    box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
+    -moz-box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
+    -webkit-box-shadow:3px 3px 3px #999,-3px -3px 3px #999;
+}
+.historyItem .list-block{
+    padding-bottom:0.5rem;
+}
+.historyItem .state{
+    margin-left:10px;
+    padding:0.3rem 1rem;
+    display:inline-block;
+}
+.historyItem .btn-check{
+    width:60%;
+    padding:0.5rem 1rem;
+    margin:0.5rem auto 0;
+
+}
+.historyItem .bgwait{
+    color:white;
+    background:rgb(95,143,158);
+}
+.historyItem .bgresult{
+    color:white;
+    background:red;
+}
+.historyItemContent{
+    border:1px solid rgba(108,109,114,0.7);
+    font-size:14px;
+    margin:0 10px;
+}
+.historyItemContent .itemHead{
+    border-bottom:1px solid rgba(108,109,114,0.7);
+}
+.historyItemContent .itemHead .left{
+    float:left;
+    padding:0.5rem 0 0.45rem 0.75rem ;
+}
+.historyItemContent .itemHead .middle{
+    padding:0.5rem 0 0.45rem 0.75rem ;
+}
+.historyItemContent .itemHead .middle .redFont{
+    display: inline-block;
+    width:70%;
+    text-align: center;
+    margin:0;
+}
+.historyItemContent .itemHead .right{
+    float:right;
+    padding:0.5rem 0.75rem 0.45rem 0 ;
+}
+.historyItemContent .itemHead .redFont{
+    color: rgba(255, 118, 84, 0.89);
+    margin-left:0.5rem;
+}
+
+
+/*签到页*/
+.signInItem{
+    width:100%;
+    color:#868686;
+    padding:1rem 0 0 0;
+}
+.signInItem .time{
+    text-align: center;
+    margin-bottom:0.5rem;
+}
+.signInItem .msgConatiner{
+    width:90%;
+    margin:0 auto;
+}
+.signInItem .msgConatiner .icon{
+    float:left;
+    display: block;
+    font-size: 35px;
+}
+.signInItem .msgConatiner .hintMsg{
+    border:1px solid rgba(108,109,114,0.7);
+    width:auto;
+    background:white;
+    padding:10px;
+    margin: 0 0 0 50px;;
+}
+
+/*管理日志  我的信息*/
+.headImgContainer{
+    width:100%;
+    text-align: center;
+    padding:0.5rem 0;
+}
+
+/*管理日志  我的日志  日志头部*/
+.logStatisticsHD{
+    width:100%;
+    background:white;
+    border:1px solid white;
+    border-bottom-color:rgba(95,100,110,0.3);
+}
+.logStatisticsHD .container{
+    width:85%;
+    margin:0 auto;
+    text-align: center;
+}
+.logStatisticsHD .container .numberUp{
+    font-size: 35px;
+    font-weight:bolder;
+}
+.logStatisticsHD .container .wordsDown{
+    font-size:15px;
+}
+.logStatisticsHD .container .fontBig{
+    font-size:25px;
+}
+.logStatisticsHD .container .row{
+    margin:0.5rem 0;
+}
+
+/*我的考勤*/
+.attendanceItems{
+    width:100%;
+    color:#797979;
+}
+.attendanceItems .attendanceItem{
+    width:90%;
+    margin:0 auto;
+    border-bottom:1px solid rgba(95,100,110,0.3);
+}
+.attendanceItems .attendanceItem div{
+    margin:0.5rem 0;
+}
+.attendanceItems .attendanceItem .signInTime{
+    margin-left:10px;
+}
+
+/*考勤*/
+.deptContainer{
+    width:100%;
+    color:#797979;
+}
+.deptContainer ul,.deptContainer li{
+    list-style: none;
+    margin:0;padding:0;
+}
+.deptContainer .header{
+    padding:0.9rem 1rem;
+    border:1px solid rgba(95,100,110,0.3);
+}
+.deptContainer .header .icon{
+    float:right;
+}
+.deptContainer .detail{
+    display: none;
+}
+.deptContainer .detail .detailHeader{
+    padding:0.3rem 1rem;
+    width:100%;
+    border:1px solid rgba(95,100,110,0.3);
+}
+.deptContainer .detail .detailHeader:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.deptContainer .detail .detailHeader .left{
+    float:left;
+}
+.deptContainer .detail .detailHeader .leftNum{
+    margin-left:0.5rem;
+    color:red;
+}
+.deptContainer .detail .detailHeader .right{
+    float:left;
+    margin-left:2rem;
+}
+.deptContainer .detail .detailHeader .rightNum{
+    margin-left:0.5rem;
+    color:red;
+}
+.deptContainer .detail .detailContent{
+    width:100%;
+    background:white;
+}
+.deptContainer .detail .detailContent a{
+    display: block;
+    padding:0.3rem 1rem;
+    border:1px solid rgba(95,100,110,0.3);
+    color:#797979;
+}
+.deptContainer .detail .detailContent .state{
+    margin-left:3rem;
+}
+
+/*考勤详情*/
+.detailItems{
+    width:100%;
+    color:#797979;
+    font-size:15px;
+    margin-top:1rem;
+}
+.detailItems .detailItem{
+    width:100%;
+    border-top:1px solid rgba(95,100,110,0.3);
+}
+.detailItems:last-child{
+    border-bottom:1px solid rgba(95,100,110,0.3);
+}
+.detailItems .detailItem .center{
+    width:90%;
+    margin:0 auto;
+}
+.detailItems .detailItem .center .time .state{
+    margin-left:3rem;
+}
+.detailItems .detailItem .center .center-item{
+    margin:0.5rem 0;
+}
+.detailItems .detailItem .center .center-item .center-LR:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.detailItems .detailItem .center .center-item .center-LR .center-L{
+    float:left;
+}
+.detailItems .detailItem .center .center-item .center-LR .center-R{
+    float:left;
+    margin-left:1rem;
+}
+
+
+/*改变样式*/
+.titleHead{
+    background:#35495e;
+    color:white;
+}
+.icon-left{
+    color:#ccc;
+}
+.footerChooseBtn{
+    float:right;
+    margin-top:0.4rem;
+}

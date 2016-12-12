@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>myLog-visit</title>
+    <!--库文件-->
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="lib/dist/css/icon.css">
+    <link rel="stylesheet" href="lib/weui.css">
+    <!--自己文件-->
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/base.js"></script>
+</head>
+<body>
+<div class="page" id="page-datetime-picker">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" href="myLog.html">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title titleHead">日志</h1>
+    </header>
+    <div class="content">
+        <div class="content-block">
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">方式</div>
+                                <div class="item-input">
+                                    <select name="workWay" id="workType">
+                                        <option value="">请选择</option>
+                                        <option value="1">拜访</option>
+                                        <option value="2">商务会议</option>
+                                        <option value="3">电话</option>
+                                        <option value="4">即时通讯</option>
+                                        <option value="0">其它</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">客户类型</div>
+                                <div class="item-input">
+                                    <select name="workClient" id="workClientType">
+                                        <option value="">请选择</option>
+                                        <option value="3">机构</option>
+                                        <option value="1">学校</option>
+                                        <option value="2">合伙人</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">客户</div>
+                                <div class="item-input">
+                                    <select name="workClient" id="workClient" disabled>
+                                        <option value="">请先选择客户类型</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">联系人</div>
+                                <div class="item-input">
+                                    <select name="workContancts" id="workContancts" disabled>
+                                        <option value="">请先选择客户</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">目标</div>
+                                <div class="item-input">
+                                    <select name="workTarget" id="workTarget">
+                                        <option value="">请选择</option>
+                                        <option value="1">初次沟通</option>
+                                        <option value="2">邀请参会</option>
+                                        <option value="3">签约</option>
+                                        <option value="4">回款</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">结果</div>
+                                <div class="item-input">
+                                    <select name="workResult" id="workResult">
+                                        <option value="">请选择</option>
+                                        <option value="1">继续沟通</option>
+                                        <option value="2">待参会</option>
+                                        <option value="3">待签约</option>
+                                        <option value="4">待回款</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">客户状态</div>
+                                <div class="item-input">
+                                    <select name="clientState" id="clientState">
+                                        <option value="">请选择</option>
+                                        <option value="New">新分配</option>
+                                        <option value="Frist">初次沟通</option>
+                                        <option value="Continue">跟进拜访</option>
+                                        <option value="Deep">深入沟通</option>
+                                        <option value="Evaluation">客户评估</option>
+                                        <option value="Cooperation">合作</option>
+                                        <option value="GiveUp">放弃</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">起始时间</div>
+                                <div class="item-input">
+                                    <input type="text" placeholder="" class="datetime-picker" id="workStartTime">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">终止时间</div>
+                                <div class="item-input">
+                                    <input type="text" placeholder="" class="datetime-picker" id="workEndTime">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">同行人员</div>
+                                <div class="item-input">
+                                    <select name="workPartners" id="workPartners">
+                                        <option value="">请选择</option>
+                                        <option value="1">同事1</option>
+                                        <option value="2">同事2</option>
+                                        <option value="3">同事3</option>
+                                        <option value="4">同事4</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content align-top">
+                            <div class="item-inner">
+                                <div class="item-title label">备注</div>
+                                <div class="item-input">
+                                    <textarea name="remark" id="workRemark" placeholder="请输入内容"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner align-top">
+                                <div class="item-title label">附件</div>
+                                <div  class="item-input">
+                                    <div class="uploadPicContainer">
+                                        <div class="file_input">
+                                            <img src="imgs/addPic.png" alt="">
+                                            <input type="file" name="file" accept=".jpg,.png,.jpeg,.bmp" class="uploadPic" multiple>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="list-block inset">
+                <a href="javascript:;" class="weui-btn weui-btn_primary btn-submitLog">提交日志</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="lib/dist/js/base.js"></script>
+</body>
+</html>
