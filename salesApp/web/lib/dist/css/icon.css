@@ -1071,7 +1071,7 @@ body .bg-success,
 .actions-modal .bg-success,
 .panel .bg-success {
     color: white;
-    background-color: #4cd964;
+    background-color: #1AAD19;
 }
 body .bg-success:active,
 .content .bg-success:active,
@@ -2965,6 +2965,8 @@ input[type="button"].button {
 }
 .modal-title + .modal-text {
     margin-top: .25rem;
+    color:#f6383a;
+    font-size:1rem;
 }
 .modal-buttons {
     display: -webkit-box;
@@ -2994,7 +2996,8 @@ input[type="button"].button {
     overflow: hidden;
     font-size: .85rem;
     line-height: 2.2rem;
-    color: #0894ec;
+    /*color: #0894ec;*/
+    color:#3d4145;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;

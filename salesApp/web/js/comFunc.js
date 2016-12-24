@@ -201,6 +201,7 @@ $(function () {
         //获取此时一天的时间段 obj{
         //  currentTime:当前时间
         //  currentDay:当天开始时间
+        //  threeDayAgo:三天前时间
         //  weekAgo:一周前时间
         //  monthAgo:一月前时间
         //  quarterAgo:一个季度前时间
@@ -209,16 +210,25 @@ $(function () {
             var obj = {};
             var self = this;
             var nowDate = new Date();
-            var nowDateMS = nowDate.getTime();
-            obj.currentTime = self.dateFormat(nowDate,"yyyy-MM-dd hh:mm");
-            var currentDay = obj.currentTime.slice(0,11)+"00:00";
+            var currentTime = self.dateFormat(nowDate,"yyyy-MM-dd hh:mm");
+            var currentDay = currentTime.slice(0,11)+"00:00";
+            var currentDayDate = new Date(currentDay);
+            var currentDayMS = currentDayDate.getTime();
+
+            var currentTimeMS = currentDayMS + 86400000;
+            var currentTimeDate = new Date(currentTimeMS);
+            obj.currentTime = self.dateFormat(currentTimeDate,"yyyy-MM-dd hh:mm");
+
             obj.currentDay = currentDay;
-            var weekAgoMs = nowDateMS-604800000;
+            var threeDayAgoMS = currentDayMS - 259200000;
+            var threeDayDate = new Date(threeDayAgoMS);
+            var weekAgoMs = currentDayMS-604800000;
             var weekDate = new Date(weekAgoMs);
-            var monthAgoMs = nowDateMS- 2419200000;
+            var monthAgoMs = currentDayMS- 2419200000;
             var monthDate = new Date(monthAgoMs);
-            var quarterAgoMs = nowDateMS - 7257600000;
+            var quarterAgoMs = currentDayMS - 7257600000;
             var quarterAgo = new Date(quarterAgoMs);
+            obj.threeDayAgo = self.dateFormat(threeDayDate,"yyyy-MM-dd hh:mm");
             obj.weekAgo = self.dateFormat(weekDate,"yyyy-MM-dd hh:mm");
             obj.monthAgo = self.dateFormat(monthDate,"yyyy-MM-dd hh:mm");
             obj.quarterAgo = self.dateFormat(quarterAgo,"yyyy-MM-dd hh:mm");
@@ -231,6 +241,47 @@ $(function () {
             currentLocation = "浙江省杭州市滨江区智慧e谷";
 
             return currentLocation;
+        },
+        //获得移动设备信息
+        getPhoneMsg: function () {
+            var currentPhoneMsg = "";
+
+            var ua = navigator.userAgent.toLowerCase();
+            var isIphone = false;
+            var isAndroid = false;
+            if (ua.match(/MicroMessenger/i)=="micromessenger" && ua.indexOf('iphone') > 0) {
+                isIphone = true
+            }else if (ua.match(/MicroMessenger/i)=="micromessenger" && ua.indexOf('android') > 0) {
+                isAndroid = true;
+            }
+            else if( ua.indexOf('iphone') > 0) { //需对所有 iOS 系统 UA 信息进行判断
+                isIphone = true
+            }else if (ua.indexOf('android') > 0) { //需对所有 Android 系统 UA 信息进行判断
+                isAndroid = true;
+            }else if(/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/i.test(ua)){
+                isAndroid = true;
+            }else {
+                console.log(ua);
+                currentPhoneMsg = "未知系统";
+            }
+            if(isIphone){
+                // 6,6s,7   w=375    6plus,6splus,7plus  w=414   5s w=320     5 w=320
+                var wigth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                if(wigth>400){
+                    currentPhoneMsg = "iphone6 plus";
+                }else if(wigth>370){
+                    currentPhoneMsg = "iphone6";
+                }else if(wigth>315){
+                    currentPhoneMsg = "iphone5 or iphone5s";
+                }else{
+                    currentPhoneMsg = "iphone 4s";
+                }
+            }else if(isAndroid){
+                console.log(ua)
+                currentPhoneMsg = "Android"
+            }
+            console.log(currentPhoneMsg);
+            return currentPhoneMsg;
         }
     }
     window.comFunc = comFunc;

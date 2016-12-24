@@ -2539,8 +2539,8 @@
     }
 
     var defaults = $.modal.prototype.defaults = {
-        modalButtonOk: 'OK',
-        modalButtonCancel: 'Cancel',
+        modalButtonOk: '确定',
+        modalButtonCancel: '取消',
         modalPreloaderTitle: 'Loading...',
         modalContainer : document.body,
         modalCloseByOutside: true,

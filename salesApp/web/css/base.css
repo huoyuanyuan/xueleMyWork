@@ -10,7 +10,6 @@
     color:red;
     margin-top:1rem;
 }
-
 .flLeft{
     float:left;
 }
@@ -163,7 +162,7 @@
 }
 .subnavContainer .left{
     float:left;
-    margin:10px 0 0 10px;
+    margin:0.5rem 0 0 0.5rem;
 }
 .subnavContainer .left .leftStyle{
     padding:0 0.5rem;
@@ -180,7 +179,7 @@
 }
 .subnavContainer .right{
     float:right;
-    margin:10px 10px 0 0;
+    margin:0.5rem 0.5rem 0 0;
     position:relative;
 }
 /*筛选按钮*/
@@ -249,7 +248,7 @@
     padding:0.3rem 1rem;
     display:inline-block;
 }
-.historyItem .btn-check{
+.historyItem .btn-checkContainer{
     width:60%;
     padding:0.5rem 1rem;
     margin:0.5rem auto 0;
@@ -293,6 +292,11 @@
     margin-left:0.5rem;
 }
 
+.logDept{
+    /*color: rgb(172, 142, 99);*/
+    color:#B45B3E;
+    font-size:22px;
+}
 
 /*签到页*/
 .signInItem{
@@ -351,8 +355,51 @@
     font-size:25px;
 }
 .logStatisticsHD .container .row{
-    margin:0.5rem 0;
+    margin:0;
 }
+/*日志对比展示部分*/
+.sectionsContainer{
+    width:100%;
+}
+.sectionsContainer .section{
+    width:100%;
+    margin:0.5rem auto;
+}
+.sectionsContainer .section .sectionRow{
+    width:100%;
+}
+.sectionsContainer .section .sectionRow div{
+    display: inline-block;
+}
+.sectionsContainer .section .sectionRow .sectionLeft{
+    width:20%;
+    text-align: end;
+}
+.sectionsContainer .section .sectionRow .sectionCenter{
+    width:5%;
+    text-align: center;
+    margin-right:0.5rem;
+}
+.sectionsContainer .section .sectionRow .sectionRight{
+    width:65%;
+}
+.shapeShow{
+    /*border:1px solid black;*/
+    /*background-color:white;*/
+    height:1rem;
+    color:white;
+    line-height: 1rem;
+    text-align: center;
+}
+.shapeShowBgOne{
+    background: -moz-linear-gradient(right,  rgba(87,144,197,1), rgba(87,144,197,0.5));
+    background: -webkit-linear-gradient(left,  rgba(87,144,197,1),rgba(87,144,197,0.5));
+    background: -o-linear-gradient(right,  rgba(87,144,197,1),rgba(87,144,197,0.5));
+    background: -ms-linear-gradient(left,  rgba(87,144,197,1),rgba(87,144,197,0.5));
+    background: linear-gradient(to right,  rgba(87,144,197,1),rgba(87,144,197,0.5));
+}
+
+
 
 /*我的考勤*/
 .attendanceItems{
@@ -368,7 +415,7 @@
     margin:0.5rem 0;
 }
 .attendanceItems .attendanceItem .signInTime{
-    margin-left:10px;
+    margin-left:20px;
 }
 
 /*考勤*/
@@ -478,4 +525,98 @@
 .footerChooseBtn{
     float:right;
     margin-top:0.4rem;
+}
+
+.paddingBottom{
+    padding-bottom:2rem;
+}
+
+.aFontColor{
+    color:#f6383a;
+}
+
+/*自定义二级导航样式*/
+.subHeader{
+    position:absolute;
+    top:2.2rem;
+    background-color:rgba(255,255,255,1);
+    width:100%;
+}
+.marginTopSubHeader{
+    margin-top:2rem;
+}
+.subFooter{
+    position: fixed;
+    bottom:0;
+    left:0;
+    right: 0;
+    /*background-color:#efeff4;*/
+    background-color:white;
+}
+.paddingBottomSubFooter{
+    padding-bottom:3rem;
+}
+
+
+
+/*翻页导航*/
+.sloatPage{
+    /*margin-top:0.3rem;*/
+    text-align: end;
+}
+.sloatPage .buttonContainer{
+    margin-right:1rem;
+}
+.sloatPage a{
+    display: inline-block;
+    width:1.5rem;
+    height:1.5rem;
+    border-radius: 0.2rem;
+    background-color:#fff;
+    color:grey;
+    text-align: center;
+    line-height: 1.5rem;
+}
+.sloatPage .active{
+    background-color:rgb(53,73,94);
+    color:white;
+}
+
+
+/*测试*/
+.marginTopLog{
+    margin-top:9.5rem;
+}
+/*详情页样式二*/
+.fixedHead{
+    width:100%;
+    position: absolute;
+    top:2.2rem;
+}
+.marginTop{
+    margin-top:6rem;
+}
+.tabScrollContent .content-block{
+    margin-top:3rem;
+}
+/*tab scroll样式设置*/
+.tabScrollContent{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    height: 100%;
+    overflow: auto;
+}
+
+/*我的审核*/
+.tabScrollContent .marginTopMycheck{
+    margin-top:4rem;
+}
+.mycheckScreening{
+    position: fixed;
+    top:4rem;
+    left:0;
+    z-index: 1000;
 }

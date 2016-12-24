@@ -15,7 +15,27 @@
     <script src="js/base.js"></script>
 </head>
 <body>
-<div class="page" id="page-adminLog-myCheck"></div>
+<div class="page" id="page-adminLog-myCheck">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" href="adminLog.html">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title titleHead">我的审核</h1>
+    </header>
+
+    <div class="content">
+        <div class="buttons-tab">
+            <a href="#myCheckTab1" class="tab-link button active">待审核</a>
+            <a href="#myCheckTab2" class="tab-link button">已审核</a>
+        </div>
+        <div class="tabs">
+            <div id="myCheckTab1" class="tab active tabScrollContent"></div>
+
+            <div id="myCheckTab2" class="tab tabScrollContent"></div>
+        </div>
+    </div>
+
+</div>
 
 
 <script src="lib/dist/js/base.js"></script>

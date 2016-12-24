@@ -36,7 +36,8 @@ $(function () {
                 container.append(innerHtml);
             });
         }
-    }
+    };
+
     var crm = {
         init: function () {
             this.radioChange();
@@ -62,6 +63,7 @@ $(function () {
             var self = this;
             $(".btn-saveDept").unbind("touchstart").on("touchstart", function () {
                 var deptArea = $(".deptArea").val();
+                var deptAreaCode = $(".deptArea").data("code");
                 var deptName = $(".deptName").val();
                 var deptLevel = $(".deptLevel").val();
                 var deptState = $(".deptState").val();
@@ -70,7 +72,6 @@ $(function () {
                 var ccPositionDom = $(".deptContacts").find(".ccPosition");
                 var ccPhoneDom = $(".deptContacts").find(".ccPhone");
                 var contacts = [];
-
                 if(deptArea === ""){
                     $.alert("请选择机构所在地");
                 }else if(deptName === ""){
@@ -80,6 +81,7 @@ $(function () {
                 }else {
                     var flgName = true;
                     var flgPhone = true;
+                    var flgPosition = true;
                     for(var i=0;i<ccNameDom.length;i++){
                         var ccName = ccNameDom.eq(i).val();
                         var ccPosition = ccPositionDom.eq(i).val();
@@ -90,6 +92,9 @@ $(function () {
                         }else if(ccPhone === ""){
                             $.alert("联系人电话不能为空");
                             flgPhone = false;
+                        }else if(ccPosition === ""){
+                            $.alert("联系人职务不能为空");
+                            flgPosition = false;
                         }else {
                             var obj = {};
                             obj.crm_cc_name = ccName;
@@ -100,12 +105,12 @@ $(function () {
                     };
                     if(contacts.length === 0){
                         $.alert("必须添加一位联系人")
-                    }else if(flgName && flgPhone){
+                    }else if(flgName && flgPhone & flgPosition){
                         var data = {
                             c_name:deptName,
                             c_type:3,
                             c_category:deptLevel,
-                            c_area:"110106",
+                            c_area:deptAreaCode,
                             c_stage:deptState,
                             c_remark:deptRemark
                         };
@@ -173,6 +178,7 @@ $(function () {
             var self = this;
             $(".btn-saveSchool").unbind("touchstart").on("touchstart", function () {
                 var schoolArea = $(".schoolArea").val();
+                var schoolAreaCode = $(".schoolArea").data("code");
                 var schoolName = $(".schoolName").val();
                 var schoolPeriodDom = $(".schoolPeriod").find("input:checked");
                 var schoolPeriod = ""
@@ -196,6 +202,7 @@ $(function () {
                 }else {
                     var flgName = true;
                     var flgPhone = true;
+                    var flgPosition = true;
                     for(var i=0;i<ccNameDom.length;i++){
                         var ccName = ccNameDom.eq(i).val();
                         var ccPosition = ccPositionDom.eq(i).val();
@@ -206,6 +213,9 @@ $(function () {
                         }else if(ccPhone === ""){
                             $.alert("联系人电话不能为空");
                             flgPhone = false;
+                        }else if(ccPosition === ""){
+                            $.alert("联系人职务不能为空");
+                            flgPosition = false;
                         }else {
                             var obj = {};
                             obj.crm_cc_name = ccName;
@@ -216,12 +226,12 @@ $(function () {
                     };
                     if(contacts.length === 0){
                         $.alert("必须添加一位联系人")
-                    }else if(flgName && flgPhone){
+                    }else if(flgName && flgPhone && flgPosition){
                         var data = {
                             c_name:schoolName,
                             c_type:1,
                             c_category:schoolPeriod,
-                            c_area:"110108",
+                            c_area:schoolAreaCode,
                             c_stage:schoolState,
                             c_remark:schoolNumber
                         };
@@ -291,6 +301,7 @@ $(function () {
             var self = this;
             $(".btn-savePartner").unbind("touchstart").on("touchstart", function () {
                 var partnerArea = $(".partnerArea").val();
+                var partnerAreaCode = $(".partnerArea").data("code");
                 var partnerType = $(".partnerType").find("input:checked").val();
                 var partnerName = "";
                 if(partnerType == "2"){
@@ -311,6 +322,7 @@ $(function () {
                 } else {
                     var flgName = true;
                     var flgPhone = true;
+                    var flgPosition = true;
                     for(var i=0;i<ccNameDom.length;i++){
                         var ccName = ccNameDom.eq(i).val();
                         var ccPosition = ccPositionDom.eq(i).val();
@@ -321,6 +333,9 @@ $(function () {
                         }else if(ccPhone === ""){
                             $.alert("联系人电话不能为空");
                             flgPhone = false;
+                        }else if(ccPosition === ""){
+                            $.alert("联系人职位不能为空");
+                            flgPosition = false;
                         }else {
                             var obj = {};
                             obj.crm_cc_name = ccName;
@@ -331,7 +346,7 @@ $(function () {
                     };
                     if(contacts.length === 0){
                         $.alert("必须添加一位联系人")
-                    }else if(flgName && flgPhone){
+                    }else if(flgName && flgPhone && flgPosition){
                         if(partnerName === ""){
                             partnerName = contacts[0].crm_cc_name;
                         }
@@ -339,7 +354,7 @@ $(function () {
                             c_name:partnerName,
                             c_type:2,
                             c_category:partnerType,
-                            c_area:"110108",
+                            c_area:partnerAreaCode,
                             c_stage:partnerState,
                             c_remark:partnerRemark
                         };
@@ -406,10 +421,54 @@ $(function () {
             $(".partnerContacts").find(".ccPhone").val("");
         },
     };
+
     var myLog = {
         init: function () {
             this.changeContanctsByClient();
             this.addNewLog();
+            this.addColleague();
+        },
+        //动态添加同事
+        addColleague: function () {
+            var container = $("#workPartners");
+            var domStr = "";
+            var currentUserId = "";
+            var flgNext = false;
+            //获取当前用户信息
+            $.ajax({
+                url:"/webjson/employee/getMyInfo.aspx",
+                type:"GET",
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    currentUserId = data.crm_user_id;
+                    flgNext = true;
+                }
+            });
+            //获取登录用户上下级部门和人员信息列表
+            var end = setInterval(function () {
+                if(flgNext){
+                    $.ajax({
+                        url:"/webjson/dept/getMyDeptList.aspx",
+                        type:"GET",
+                        success: function (data) {
+                            var data = JSON.parse(data);
+                            if(data.status == 1){
+                                var userList = data.r.user_list;
+                                var userList = userList.filter(function (item) {
+                                    return item.crm_user_id != currentUserId
+                                })
+                                userList.forEach(function (item) {
+                                    var optionStr = "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
+                                    domStr += optionStr;
+                                })
+                                container.append(domStr);
+                            }
+                        }
+                    });
+                    flgNext = false;
+                    clearInterval(end);
+                }
+            },100)
         },
         //动态改变选择客户和联系人
         changeContanctsByClient: function () {
@@ -418,7 +477,6 @@ $(function () {
             $("#workClientType").on("change", function () {
                 var type = $(this).val();
                 //根据value请求数据
-                //现模拟数据
                 if(type === ""){
                     var optionStr = "<option value=''>请先选择客户类型</option>";
                     workClient.html(optionStr);
@@ -510,15 +568,15 @@ $(function () {
                 var wl_stage = $("#clientState").val();
                 var wl_start_time = $("#workStartTime").val();
                 var wl_end_time = $("#workEndTime").val();
-                var wl_other = $("#workPartners").find("option:checked").val();
+                var wl_other = $("#workPartners").find("option:checked").html();
                 var wl_remark = $("#workRemark").val();
-                if(type === ""){
-                    $.alert("请选择方式")
-                }else if(c_id === ""){
+                if(c_id === ""){
                     $.alert("请选择客户")
                 }else if(cc_id === ""){
                     $.alert("请选择联系人")
-                }else if(wl_target ===  ""){
+                }else if(type === ""){
+                    $.alert("请选择方式")
+                } else if(wl_target ===  ""){
                     $.alert("请选择目标")
                 }else if(wl_result === ""){
                     $.alert("请选择结果")
@@ -587,61 +645,56 @@ $(function () {
             $("#workPartners").val("");
             $("#workRemark").val("");
         },
-        //签到
+        //签到功能
         signIn: function () {
+            var self = this;
             var container = $("#page-myLog-signIn").find(".content");
+
             var urlData = comFunc.url(window.location.href);
             var type = urlData.type;
-            var map = comFunc.getLocation();
             var timeSlot = comFunc.getNowTimeSlot();
             var currentTime = timeSlot.currentTime;
-            var hintMsg = "";
-            if(type == "1"){
-                hintMsg = "提示：上班签到成功";
-            }else if(type == "2"){
-                hintMsg = "提示：下班签到成功";
-            }
-            var domStr =    "<div class='signInItem'>"
-                            +       "<div class='time'>"+currentTime+"</div>"
-                            +       "<div class='msgConatiner'>"
-                            +           "<span class='icon icon-emoji'></span>"
-                            +           "<p class='hintMsg'>"+hintMsg+"</p>"
-                            +       "</div>"
-                            +"</div>"
+            var hintDom = self.makeHintDom(type,currentTime);
+            var map = comFunc.getLocation();
+            var phoneMsg = comFunc.getPhoneMsg();
 
-            $.showPreloader("Loading...");
             //读取签到信息
             var timeSlot = comFunc.getNowTimeSlot();
-            var data={
-                edate:timeSlot.currentDay,
-                sdate:timeSlot.currentTime
-            };
+            var data = {
+                sdate:timeSlot.threeDayAgo,
+                edate:timeSlot.currentTime
+            }
             console.log(data);
+            //获取当前用户考勤信息
             $.ajax({
                 url:"/webjson/signin/getSignInByUserID.aspx",
                 type:"GET",
                 data:data,
                 success: function (data) {
                     var data = JSON.parse(data);
-                    console.log(data);
                     if(data.status == 1){
-                        console.log(data);
+                        var dataArr = data.r.reverse();
+                        dataArr.forEach(function (item) {
+                            var type = item.crm_tag.slice(-1);
+                            var time = item.crm_addtime;
+                            container.append(self.makeHintDom(type,time));
+                        })
                     }else {
-                        $.alert("读取记录失败")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("读取记录失败")
                 }
-            })
-
+            });
             //签到
             var postData = {
                 type:parseInt(type),
-                map:map
+                map:map,
+                phone:phoneMsg
             };
             console.log(postData);
+            $.showPreloader("Loading...");
             $.ajax({
                 url:"/webjson/signin/addSignIn.aspx",
                 type:"POST",
@@ -650,7 +703,7 @@ $(function () {
                     var data = JSON.parse(data);
                     console.log(data);
                     if(data.errcode == 1){
-                        container.append(domStr);
+                        container.append(hintDom);
                         $.hidePreloader();
                     }else if(data.errcode == -301){
                         $.alert("已经打卡")
@@ -659,24 +712,54 @@ $(function () {
                     }
                 }
             })
+        },
+        //输入type 和 time 生成签到提示信息DOM
+        makeHintDom: function (type,time) {
+            var hintMsg = "";
+            if(type == "1"){
+                hintMsg = "提示：上班签到成功";
+            }else if(type == "2"){
+                hintMsg = "提示：下班签到成功";
+            }
+            var domStr =    "<div class='signInItem'>"
+                +       "<div class='time'>"+time+"</div>"
+                +       "<div class='msgConatiner'>"
+                +           "<span class='icon icon-emoji'></span>"
+                +           "<p class='hintMsg'>"+hintMsg+"</p>"
+                +       "</div>"
+                +"</div>";
+            return domStr;
+        }
+    };
 
+    var adminLog = {
+        init: function () {
 
-
-
-
-            //打卡签到
-            //$.ajax({
-            //    url:"/webjson/signin/addSignIn.aspx",
-            //    type:"POST",
-            //    data:postData,
-            //    success: function (data) {
-            //        var data = JSON.parse(data);
-            //        console.log(data);
-            //        if(data.errcode == "1"){
-            //
-            //        }
-            //    }
-            //})
+        },
+        myInfo: function () {
+            var container = $("#page-adminLog-myInfo");
+            var userName = container.find(".userName");
+            var userDept = container.find(".userDept");
+            var userPosition = container.find(".userPosition");
+            var userPhone = container.find(".userPhone");
+            //获取当前登录用户信息
+            $.showPreloader("Loading...");
+            $.ajax({
+                url:"/webjson/employee/getMyInfo.aspx",
+                type:"GET",
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    userName.html(data.crm_name);
+                    userDept.html(data.department_info.crm_department_name);
+                    userPosition.html(data.crm_position);
+                    userPhone.html(data.crm_mobile);
+                    $.hidePreloader();
+                },
+                error: function (err) {
+                    console.log(err);
+                    $.alert("加载出错")
+                }
+            });
         }
     };
 
@@ -742,6 +825,7 @@ $(function () {
             render.readAsDataURL(file);
         }
     };
+
     function init(){
         initFunc.init();
     }
@@ -757,5 +841,8 @@ $(function () {
     });
     $(document).on("pageInit","#page-city-picker", function () {
         crm.init();
+    });
+    $(document).on("pageInit","#page-adminLog-myInfo", function () {
+        adminLog.myInfo();
     });
 })
