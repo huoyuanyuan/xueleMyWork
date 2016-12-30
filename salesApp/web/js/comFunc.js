@@ -20,6 +20,19 @@ $(function () {
             return obj;
         },
 
+        //功能：修改window.setInterval，使之可以传递参数和对象像参数
+        //方法：setInterval(回调函数，时间，参数1，参数n)参数可以为对象：如数组等
+        setInterval_EDIT: function () {
+            var __sto = setInterval;
+            window.setInterval = function (callback,timeout,param) {
+                var args = Array.prototype.slice.call(arguments,2);
+                var _cb = function () {
+                    callback.apply(null,args);
+                }
+                __sto(_cb,timeout);
+            }
+        },
+
         //使用全屏Mask
         addMask: function (element) {
             var self = this;
@@ -83,7 +96,7 @@ $(function () {
 
         //我的部门 点击展开
         clickToShow: function () {
-            $(".deptContainer").find("li").unbind("touchstart").on("touchstart", function (e) {
+            $(".deptContainer").find("li").unbind("touchend").on("touchend", function (e) {
                 if(e.target === $(this).find(".header")[0]){
                     var detail = $(this).find(".detail");
                     var icon = $(this).find(".icon");
@@ -199,18 +212,21 @@ $(function () {
             return format;
         },
         //获取此时一天的时间段 obj{
-        //  currentTime:当前时间
+        //  currentTimeH:当前时间
+        //  currentTime:当天结束数据
         //  currentDay:当天开始时间
         //  threeDayAgo:三天前时间
         //  weekAgo:一周前时间
         //  monthAgo:一月前时间
         //  quarterAgo:一个季度前时间
+        //  beginTime:最初始化时间 用来筛选全部
         // }
         getNowTimeSlot: function () {
             var obj = {};
             var self = this;
             var nowDate = new Date();
             var currentTime = self.dateFormat(nowDate,"yyyy-MM-dd hh:mm");
+            obj.currentTimeH = currentTime;
             var currentDay = currentTime.slice(0,11)+"00:00";
             var currentDayDate = new Date(currentDay);
             var currentDayMS = currentDayDate.getTime();
@@ -232,6 +248,9 @@ $(function () {
             obj.weekAgo = self.dateFormat(weekDate,"yyyy-MM-dd hh:mm");
             obj.monthAgo = self.dateFormat(monthDate,"yyyy-MM-dd hh:mm");
             obj.quarterAgo = self.dateFormat(quarterAgo,"yyyy-MM-dd hh:mm");
+
+            obj.beginTime = "1900-01-01 00:00";
+
             return obj;
         },
 
@@ -266,16 +285,18 @@ $(function () {
             }
             if(isIphone){
                 // 6,6s,7   w=375    6plus,6splus,7plus  w=414   5s w=320     5 w=320
-                var wigth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-                if(wigth>400){
-                    currentPhoneMsg = "iphone6 plus";
-                }else if(wigth>370){
-                    currentPhoneMsg = "iphone6";
-                }else if(wigth>315){
-                    currentPhoneMsg = "iphone5 or iphone5s";
-                }else{
-                    currentPhoneMsg = "iphone 4s";
-                }
+                //var wigth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                //if(wigth>400){
+                //    currentPhoneMsg = "iphone6 plus";
+                //}else if(wigth>370){
+                //    currentPhoneMsg = "iphone6";
+                //}else if(wigth>315){
+                //    currentPhoneMsg = "iphone5 or iphone5s";
+                //}else{
+                //    currentPhoneMsg = "iphone 4s";
+                //}
+                console.log(ua);
+                currentPhoneMsg = "iPhone"
             }else if(isAndroid){
                 console.log(ua)
                 currentPhoneMsg = "Android"

@@ -364,12 +364,40 @@
 .sectionsContainer .section{
     width:100%;
     margin:0.5rem auto;
+    display: block;
+    background-color:#35495e;
+    color:#ccc;
+    border-radius:5px;
+}
+.sectionsContainer a.section{
+    padding-right: 1.5rem;
+    background-image: url("../lib/dist/img/i-list-chevron-right.png");
+    background-repeat: no-repeat;
+    background-position: 97% center;
+    background-position: -webkit-calc(100% - .5rem) center;
+    background-position:         calc(100% - .5rem) center;
+    background-size: .7rem;
+}
+.sectionsContainer .section .height{
+    height:2rem;
+    line-height: 2rem;
 }
 .sectionsContainer .section .sectionRow{
     width:100%;
 }
 .sectionsContainer .section .sectionRow div{
     display: inline-block;
+}
+.sectionsContainer .section .sectionRow .sectionL{
+    width: 40%;
+    height:2rem;
+    line-height: 2rem;
+    text-align: center;
+}
+.sectionsContainer .section .sectionRow .sectionR{
+    width: 50%;
+    height:2rem;
+    line-height: 2rem;
 }
 .sectionsContainer .section .sectionRow .sectionLeft{
     width:20%;
@@ -397,6 +425,13 @@
     background: -o-linear-gradient(right,  rgba(87,144,197,1),rgba(87,144,197,0.5));
     background: -ms-linear-gradient(left,  rgba(87,144,197,1),rgba(87,144,197,0.5));
     background: linear-gradient(to right,  rgba(87,144,197,1),rgba(87,144,197,0.5));
+}
+.shapeShowBgTwo{
+    background: -moz-linear-gradient(rgba(0,0,139,1), rgba(0, 191, 255,1));
+    background: -webkit-linear-gradient(rgba(0,0,139,1),rgba(0, 191, 255,1));
+    background: -o-linear-gradient(rgba(0,0,139,1),rgba(0, 191, 255,1));
+    background: -ms-linear-gradient(rgba(0,0,139,1),rgba(0, 191, 255,1));
+    background: linear-gradient( rgba(0,0,139,1),rgba(0, 191, 255,1));
 }
 
 
@@ -472,8 +507,13 @@
     border:1px solid rgba(95,100,110,0.3);
     color:#797979;
 }
+.deptContainer .detail .detailContent .name{
+    display:inline-block;
+    width:4rem;
+}
 .deptContainer .detail .detailContent .state{
-    margin-left:3rem;
+    display:inline-block;
+    margin-left:2rem;
 }
 
 /*考勤详情*/
@@ -539,7 +579,7 @@
 .subHeader{
     position:absolute;
     top:2.2rem;
-    background-color:rgba(255,255,255,1);
+    background-color:rgba(255,255,255,0);
     width:100%;
 }
 .marginTopSubHeader{

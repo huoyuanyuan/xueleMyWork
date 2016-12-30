@@ -198,196 +198,6 @@
     {{/if}}
 </script>
 
-<!--详情页样式一-->
-<!--<script type="text/html" id="crmTargetDetail">-->
-    <!--<header class="bar bar-nav">-->
-        <!--<a class="button button-link button-nav pull-left back" href="crm.html">-->
-            <!--<span class="icon icon-left"></span>-->
-        <!--</a>-->
-        <!--<h1 class="title titleHead">{{targetName}}详情页</h1>-->
-    <!--</header>-->
-    <!--<div class="content">-->
-        <!--<div class="list-block media-list nomargin headerCard">-->
-            <!--<div class="item-content">-->
-                <!--{{if r}}-->
-                <!--<div class="item-inner">-->
-                    <!--<div class="item-title-row">-->
-                        <!--<div class="item-title">{{r.crm_c_name}}</div>-->
-                        <!--<div class="item-after">{{r.result_name}}</div>-->
-                    <!--</div>-->
-                    <!--<div class="item-subtitle">-->
-                        <!--{{province}}>{{city}}>{{district}}-->
-                    <!--</div>-->
-                    <!--<div class="item-title-row">-->
-                        <!--<div class="item-title">-->
-                            <!--<span>{{r.cLevel}}</span>-->
-                        <!--</div>-->
-                        <!--<div class="item-after">-->
-                            <!--<a href="crm-targetEdit.html?crm_c_type={{r.crm_c_type}}&crm_c_id={{r.crm_c_id}}" class="weui-btn weui-btn_mini weui-btn_primary">修改</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--{{/if}}-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="buttons-tab">-->
-            <!--<a href="#crmTab1" class="tab-link button active">客户历史(<span>{{wlcount}}</span>)</a>-->
-            <!--<a href="#crmTab2" class="tab-link button">联系人(<span>{{contactcount}}</span>)</a>-->
-            <!--<a href="#crmTab3" class="tab-link button">管理</a>-->
-        <!--</div>-->
-
-        <!--<div class="tabs">-->
-            <!--<div id="crmTab1" class="tab active">-->
-                <!--<div class="content-block">-->
-                    <!--{{if r}}-->
-                    <!--<h2 class="stateTitle">{{r.result_name}}</h2>-->
-                    <!--{{/if}}-->
-                    <!--<div class="historyContainer">-->
-                        <!--{{if logItems}}-->
-                        <!--{{each logItems as logItem}}-->
-                        <!--<div class="historyItem">-->
-                            <!--<div class="list-block media-list nomargin itemCardborder">-->
-                                <!--<div class="item-content">-->
-                                    <!--&lt;!&ndash;<div class="item-media">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<img src={{logItem.userImg}} alt="" width="50">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                                    <!--<div class="item-inner">-->
-                                        <!--<div class="item-title-row">-->
-                                            <!--<div class="item-title logDept">{{logItem.crm_c_name}}</div>-->
-                                            <!--<div class="item-after btn-style">{{logItem.type_name}}</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="item-subtitle">-->
-                                            <!--{{logItem.crm_user_name}}-->
-                                            <!--{{logItem.timeDiff}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="historyItemContent">-->
-                                    <!--<div class="itemHead clearfloat">-->
-                                        <!--<div class="left">-->
-                                            <!--目标-->
-                                            <!--<span class="redFont">{{logItem.target_name}}</span>-->
-                                        <!--</div>-->
-                                        <!--<div class="right">-->
-                                            <!--结果-->
-                                            <!--<span class="redFont">{{logItem.result_name}}</span>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemHead clearfloat">-->
-                                        <!--<div class="middle">-->
-                                            <!--客户状态-->
-                                            <!--<span class="redFont">{{logItem.stage_name}}</span>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemContent">-->
-                                        <!--<div class="itemLeft">-->
-                                            <!--同行人员-->
-                                        <!--</div>-->
-                                        <!--<div class="itemRight">-->
-                                            <!--{{if logItem.crm_wl_other}}-->
-                                            <!--{{logItem.crm_wl_other}}-->
-                                            <!--{{else}}-->
-                                            <!--无-->
-                                            <!--{{/if}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemContent">-->
-                                        <!--<div class="itemLeft">-->
-                                            <!--联系人-->
-                                        <!--</div>-->
-                                        <!--<div class="itemRight">-->
-                                            <!--{{logItem.crm_cc_name}}-->
-
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemContent">-->
-                                        <!--<div class="itemLeft">-->
-                                            <!--开始时间-->
-                                        <!--</div>-->
-                                        <!--<div class="itemRight">-->
-                                            <!--{{logItem.crm_wl_start_time}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemContent">-->
-                                        <!--<div class="itemLeft">-->
-                                            <!--结束时间-->
-                                        <!--</div>-->
-                                        <!--<div class="itemRight">-->
-                                            <!--{{logItem.crm_wl_end_time}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="itemContent">-->
-                                        <!--<div class="itemLeft">-->
-                                            <!--备注-->
-                                        <!--</div>-->
-                                        <!--<div class="itemRight">-->
-                                            <!--{{if logItem.crm_wl_remark}}-->
-                                            <!--<span>{{logItem.crm_wl_remark}}</span>-->
-                                            <!--{{else}}-->
-                                            <!--<span>无</span>-->
-                                            <!--{{/if}}-->
-
-                                            <!--{{each logItem.remarkImg as src}}-->
-                                            <!--<img src={{src}} alt="">-->
-                                            <!--{{/each}}-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--{{/each}}-->
-                        <!--{{/if}}-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="crmTab2" class="tab">-->
-                <!--<div class="content-block">-->
-                    <!--<div class="list-block media-list">-->
-                        <!--{{if contacts}}-->
-                        <!--{{each contacts as contact}}-->
-                        <!--<a href="contactsDetail.html?crm_cc_id={{contact.crm_cc_id}}" class="item-content item-link bg-white" data-ccId = {{contact.crm_c_id}}>-->
-                            <!--&lt;!&ndash;<div class="item-media">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<img src={{contact.contactImg}} alt="" width="50">&ndash;&gt;-->
-                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                            <!--<div class="item-inner">-->
-                                <!--<div class="item-title-row">-->
-                                    <!--<div class="item-title">{{contact.crm_cc_name}}</div>-->
-                                    <!--<div class="item-after">{{contact.crm_cc_position}}</div>-->
-                                <!--</div>-->
-                                <!--<div class="item-subtitle">-->
-                                    <!--电话：{{contact.crm_cc_phone}}-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</a>-->
-                        <!--{{/each}}-->
-                        <!--{{/if}}-->
-                    <!--</div>-->
-                    <!--<div class="list-block inset nomargin">-->
-                        <!--<a href="javascript:;" class="weui-btn weui-btn_primary button-nav open-popup" data-popup=".popup-addContacts">新增联系人</a>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<div class="weui-footer_fixed-bottom">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="weui-btn-area">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<a href="javascript:;" class="weui-btn weui-btn_primary button-nav open-popup" data-popup=".popup-addContacts">新增联系人</a>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="crmTab3" class="tab">-->
-                <!--<div class="content-block">-->
-                    <!--<div class="weui-footer_fixed-bottom">-->
-                        <!--<div class="weui-btn-area">-->
-                            <!--<a href="javascript:;" class="weui-btn weui-btn_primary">更新状态</a>-->
-                            <!--<a href="javascript:;" class="weui-btn weui-btn_primary">重新分配</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
-
-<!--详情页样式二-->
 <script type="text/html" id="crmTargetDetail">
     <header class="bar bar-nav">
         <a class="button button-link button-nav pull-left back" href="crm.html">
@@ -567,8 +377,7 @@
                 <div class="content-block">
                     <div class="weui-footer_fixed-bottom">
                         <div class="weui-btn-area">
-                            <a href="javascript:;" class="weui-btn weui-btn_primary">更新状态</a>
-                            <a href="javascript:;" class="weui-btn weui-btn_primary">重新分配</a>
+                            <a href="javascript:;" class="weui-btn weui-btn_primary open-popup btn-redistribute" data-popup=".popup-addContactsRedistribute">重新分配</a>
                         </div>
                     </div>
                 </div>
@@ -747,17 +556,17 @@
                                 <div class="item-input partnerType">
                                     <label for="personal">
                                         {{if detail.crm_c_category == 1}}
-                                        <input type="radio" name="partnerType" id="personal" value="1" checked>
+                                        <input type="radio" name="partnerType" id="personal" value="1" checked disabled>
                                         {{else}}
-                                        <input type="radio" name="partnerType" id="personal" value="1">
+                                        <input type="radio" name="partnerType" id="personal" value="1" disabled>
                                         {{/if}}
                                         个人
                                     </label>
                                     <label for="organization">
                                         {{if detail.crm_c_category == 2}}
-                                        <input type="radio" name="partnerType" id="organization" value="2" checked>
+                                        <input type="radio" name="partnerType" id="organization" value="2" checked disabled>
                                         {{else}}
-                                        <input type="radio" name="partnerType" id="organization" value="2">
+                                        <input type="radio" name="partnerType" id="organization" value="2" disabled>
                                         {{/if}}
                                         组织
                                     </label>
@@ -765,7 +574,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="organizationNone">
+                    <li class="organizationNone" style="display: none;">
                         <div class="item-content">
                             <div class="item-inner">
                                 <div class="item-title label">名称</div>
@@ -832,21 +641,21 @@
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">备注</div>
-                                <div class="item-input">
-                                    {{if detail.crm_c_remark}}
-                                    <input type="text" value="{{detail.crm_c_remark}}" placeholder="选填" class="partnerRemark">
-                                    {{else}}
-                                    <input type="text" value="" placeholder="选填" class="partnerRemark">
-                                    {{/if}}
+                    <!--<li>-->
+                        <!--<div class="item-content">-->
+                            <!--<div class="item-inner">-->
+                                <!--<div class="item-title label">备注</div>-->
+                                <!--<div class="item-input">-->
+                                    <!--{{if detail.crm_c_remark}}-->
+                                    <!--<input type="text" value="{{detail.crm_c_remark}}" placeholder="选填" class="partnerRemark">-->
+                                    <!--{{else}}-->
+                                    <!--<input type="text" value="" placeholder="选填" class="partnerRemark">-->
+                                    <!--{{/if}}-->
 
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
                 </ul>
             </div>
         </div>
@@ -968,21 +777,21 @@
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title label">备注</div>
-                                <div class="item-input">
-                                    {{if detail.crm_c_remark}}
-                                    <input type="text" value="{{detail.crm_c_remark}}" placeholder="选填" class="deptRemark">
-                                    {{else}}
-                                    <input type="text" value="" placeholder="选填" class="deptRemark">
-                                    {{/if}}
+                    <!--<li>-->
+                        <!--<div class="item-content">-->
+                            <!--<div class="item-inner">-->
+                                <!--<div class="item-title label">备注</div>-->
+                                <!--<div class="item-input">-->
+                                    <!--{{if detail.crm_c_remark}}-->
+                                    <!--<input type="text" value="{{detail.crm_c_remark}}" placeholder="选填" class="deptRemark">-->
+                                    <!--{{else}}-->
+                                    <!--<input type="text" value="" placeholder="选填" class="deptRemark">-->
+                                    <!--{{/if}}-->
 
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
                 </ul>
             </div>
         </div>
@@ -1142,6 +951,7 @@
                     <div class="screeningItem" data-value="2">一周内</div>
                     <div class="screeningItem" data-value="3">一月内</div>
                     <div class="screeningItem" data-value="4">一季内</div>
+                    <div class="screeningItem" data-value="0">全部</div>
                 </div>
             </div>
         </div>
@@ -1226,6 +1036,7 @@
                     <div class="screeningItem" data-value="2">一周内</div>
                     <div class="screeningItem" data-value="3">一月内</div>
                     <div class="screeningItem" data-value="4">一季内</div>
+                    <div class="screeningItem" data-value="0">全部</div>
                 </div>
             </div>
         </div>
@@ -1294,40 +1105,91 @@
         </a>
         <h1 class="title titleHead">考勤</h1>
     </header>
-    <div class="content">
+
+    <div class="subHeader">
+        <div class="subnavContainer clearfloat">
+            <div class="right">
+                <div class="btn-screening">
+                    <span class="icon icon-caret"></span>
+                    <span class="screeningContent" data-value={{screeningValue}}>{{screening}}</span>
+                </div>
+                <div class="screeningItems">
+                    <div class="screeningItem" data-value="1">今天</div>
+                    <div class="screeningItem" data-value="2">一周内</div>
+                    <div class="screeningItem" data-value="3">一月内</div>
+                    <div class="screeningItem" data-value="4">一季内</div>
+                    <div class="screeningItem" data-value="0">全部</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" style="margin-top:2.2rem;">
         <div class="deptContainer">
             <ul>
-                {{if depts}}
-                    {{each depts as dept}}
-                        <li>
-                            <div class="header bgTwo" data-id={{dept.deptId}}>
-                                <span>{{dept.deptName}}</span>
-                                <span class="icon icon-right"></span>
-                            </div>
-                            <div class="detail bgThree">
-                                <div class="detailHeader">
-                                    <div class="left">
-                                        打卡人数<span class="leftNum">{{dept.attendNum}}</span>人
-                                    </div>
-                                    <div class="right">
-                                        缺卡<span class="rightNum">{{dept.noAttendNum}}</span>次
-                                    </div>
-                                </div>
-                                <div class="detailContent">
-                                    {{if dept.deptPersons}}
-                                        {{each dept.deptPersons as deptPerson}}
-                                            <a href="adminLog-attendanceDetail.html?personId={{deptPerson.personId}}">
-                                                <span class="name">{{deptPerson.personName}}</span>
-                                                <span class="state">{{deptPerson.personState}}</span>
-                                            </a>
-                                        {{/each}}
-                                    {{/if}}
-                                </div>
-                            </div>
-                        </li>
-                    {{/each}}
+                {{if dept}}
+                {{each dept as item}}
+                <li class="dept{{item.crm_department_id}}" data-id="{{item.crm_department_id}}" data-path="{{item.crm_department_path}}" data-value="{{screeningValue}}">
+                    <div class="header bgTwo" data-id={{item.crm_department_id}}>
+                        <span>{{item.crm_department_name}}</span>
+                        <span class="icon icon-right"></span>
+                    </div>
+                    <!--<div class="detail bgThree">-->
+                    <!--<div class="detailHeader">-->
+                    <!--<div class="left">-->
+                    <!--打卡人数<span class="leftNum">{{usercount}}</span>人-->
+                    <!--</div>-->
+                    <!--<div class="right">-->
+                    <!--缺卡<span class="rightNum">{{notCT}}</span>次-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="detailContent">-->
+                    <!--{{if r}}-->
+                    <!--{{each r as deptPerson}}-->
+                    <!--<a href="adminLog-attendanceDetail.html?userid={{deptPerson.crm_user_id}}&&value={{screeningValue}}">-->
+                    <!--<span class="name">{{deptPerson.crm_name}}</span>-->
+                    <!--{{if deptPerson.notC == 0}}-->
+                    <!--<span class="state">考勤正常</span>-->
+                    <!--{{else}}-->
+                    <!--<span class="state">缺卡{{deptPerson.notC}}次</span>-->
+                    <!--{{/if}}-->
+                    <!--</a>-->
+                    <!--{{/each}}-->
+                    <!--{{/if}}-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </li>
+                {{/each}}
                 {{/if}}
+
             </ul>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="adminLogAttendanceDeptDetail">
+    <div class="detail bgThree">
+        <div class="detailHeader">
+            <div class="left">
+                打卡人数<span class="leftNum">{{usercount}}</span>人
+            </div>
+            <div class="right">
+                缺卡<span class="rightNum">{{notCT}}</span>次
+            </div>
+        </div>
+        <div class="detailContent">
+            {{if r}}
+            {{each r as deptPerson}}
+            <a href="adminLog-attendanceDetail.html?userid={{deptPerson.crm_user_id}}&&value={{screeningValue}}">
+                <span class="name">{{deptPerson.crm_name}}</span>
+                {{if deptPerson.notC == 0}}
+                <span class="state">考勤正常</span>
+                {{else}}
+                <span class="state">缺卡{{deptPerson.notC}}次</span>
+                {{/if}}
+            </a>
+            {{/each}}
+            {{/if}}
         </div>
     </div>
 </script>
@@ -1339,75 +1201,78 @@
         </a>
         <h1 class="title titleHead">考勤详情</h1>
     </header>
-    <div class="content">
-        <div class="subnavContainer clearfloat">
-            <div class="left">
-                <span class="name">{{personName}}</span>
-                <span class="state">{{personState}}</span>
-            </div>
-            <div class="right">
-                <div class="btn-screening">
-                    <span class="icon icon-caret"></span>
-                    <span class="screeningContent">筛选</span>
-                </div>
-                <div class="screeningItems">
-                    <div class="screeningItem" data-value="1">昨日</div>
-                    <div class="screeningItem" data-value="2">本月</div>
-                </div>
-            </div>
-        </div>
+
+    {{if dates}}
+    {{if dates.length != 0}}
+    <!--<div class="fixedHead">-->
+        <!--<div class="subnavContainer clearfloat">-->
+            <!--<div class="right">-->
+                <!--<div class="btn-screening">-->
+                    <!--<span class="icon icon-caret"></span>-->
+                    <!--<span class="screeningContent" data-value={{screeningValue}}>{{screening}}</span>-->
+                <!--</div>-->
+                <!--<div class="screeningItems">-->
+                    <!--<div class="screeningItem" data-value="1">今天</div>-->
+                    <!--<div class="screeningItem" data-value="2">一周内</div>-->
+                    <!--<div class="screeningItem" data-value="3">一月内</div>-->
+                    <!--<div class="screeningItem" data-value="4">一季内</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="content">  <!--如果加筛选按钮 添加类 marginTopSubHeader-->
         <div class="detailItems">
-            {{if dates}}
-                {{each dates as date}}
-                    <div class="detailItem">
-                        <div class="center">
-                            {{if date.dateState}}
-                            <div class="center-item time">{{date.date}}<span class="state"></span></div>
-                            {{if date.stateState}}
-                            <div class="center-item">
-                                <div class="center-LR">
-                                    <div class="center-L">上班打卡<span class="marginLeft">{{date.stateTime}}</span></div>
-                                    <div class="center-R">来自{{date.stateDevice}}设备</div>
-                                </div>
-                                <div class="adress">
-                                    {{date.stateAdress}}
-                                </div>
-                            </div>
-                            {{else}}
-                            <div class="center-item">
-                                <div class="center-LR">
-                                    <div class="center-L">上班打卡<span class="marginLeft">未打卡</span></div>
-                                </div>
-                            </div>
-                            {{/if}}
-
-                            {{if date.endState}}
-                            <div class="center-item">
-                                <div class="center-LR">
-                                    <div class="center-L">下班打卡<span class="marginLeft">{{date.endTime}}</span></div>
-                                    <div class="center-R">来自{{date.endDevice}}设备</div>
-                                </div>
-                                <div class="adress">
-                                    {{date.endAdress}}
-                                </div>
-                            </div>
-                            {{else}}
-                            <div class="center-item">
-                                <div class="center-LR">
-                                    <div class="center-L">下班打卡<span class="marginLeft">未打卡</span></div>
-                                </div>
-                            </div>
-                            {{/if}}
-
-                            {{else}}
-                            <div class="center-item time">{{date.date}}<span class="state">未打卡</span></div>
+            {{each dates as date}}
+            <div class="detailItem">
+                <div class="center">
+                    <div class="center-item time">{{date.dateTime}}<span class="state"></span></div>
+                    {{if date.start}}
+                    <div class="center-item">
+                        <div class="center-LR">
+                            <div class="center-L">上班打卡<span class="marginLeft">{{date.start.time}}</span></div>
+                            {{if date.start.crm_phone}}
+                            <div class="center-R">来自{{date.start.crm_phone}}</div>
                             {{/if}}
                         </div>
+                        <div class="adress">
+                            {{date.start.crm_map}}
+                        </div>
                     </div>
-                {{/each}}
-            {{/if}}
+                    {{else}}
+                    <div class="center-item">
+                        <div class="center-LR">
+                            <div class="center-L">上班打卡<span class="marginLeft">未打卡</span></div>
+                        </div>
+                    </div>
+                    {{/if}}
+
+                    {{if date.end}}
+                    <div class="center-item">
+                        <div class="center-LR">
+                            <div class="center-L">下班打卡<span class="marginLeft">{{date.end.time}}</span></div>
+                            {{if date.end.crm_phone}}
+                            <div class="center-R">来自{{date.end.crm_phone}}</div>
+                            {{/if}}
+                        </div>
+                        <div class="adress">
+                            {{date.end.crm_map}}
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="center-item">
+                        <div class="center-LR">
+                            <div class="center-L">下班打卡<span class="marginLeft">未打卡</span></div>
+                        </div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
+    {{/if}}
+    {{/if}}
 </script>
 
 <script type="text/html" id="adminLogAttendanceMy">
@@ -1539,15 +1404,15 @@
     {{/if}}
 </script>
 
-<!--日志样式一-->
-<!--<script type="text/html" id="adminLogLog">-->
-    <!--<header class="bar bar-nav">-->
-        <!--<a class="button button-link button-nav pull-left back" href="adminLog.html">-->
-            <!--<span class="icon icon-left"></span>-->
-        <!--</a>-->
-        <!--<h1 class="title titleHead">{{targetName}}</h1>-->
-    <!--</header>-->
-    <!--<div class="content">-->
+<script type="text/html" id="adminLogLog">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" href="adminLog.html">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title titleHead">{{targetName}}</h1>
+    </header>
+
+    <div class="subHeader">
         <!--<div class="logStatisticsHD">-->
             <!--<div class="container">-->
                 <!--{{if typeNum}}-->
@@ -1592,15 +1457,18 @@
                 <!--{{/if}}-->
             <!--</div>-->
         <!--</div>-->
+    </div>
 
-        <!--<div class="buttons-tab">-->
-            <!--<a href="#adminLogTab1" class="tab-link button active">今日</a>-->
-            <!--<a href="#adminLogTab2" class="tab-link button">近7天</a>-->
-            <!--<a href="#adminLogTab3" class="tab-link button">月</a>-->
-            <!--<a href="#adminLogTab4" class="tab-link button">季度</a>-->
-        <!--</div>-->
-        <!--<div class="tabs">-->
-            <!--<div id="adminLogTab1" class="tab active">-->
+    <div class="content marginTopLog">
+        <div class="buttons-tab">
+            <a href="#adminLogTab1" class="tab-switch tab-link button active" data-value="1">今日</a>
+            <a href="#adminLogTab2" class="tab-switch tab-link button" data-value="2">近7天</a>
+            <a href="#adminLogTab3" class="tab-switch tab-link button" data-value="3">月</a>
+            <a href="#adminLogTab4" class="tab-switch tab-link button" data-value="4">季度</a>
+            <a href="#adminLogTab0" class="tab-switch tab-link button" data-value="0">全部</a>
+        </div>
+        <div class="tabs">
+            <div id="adminLogTab1" class="tab active tabScrollContent">
                 <!--<div class="content-block">-->
                     <!--<div class="sectionsContainer">-->
                         <!--{{if compareData}}-->
@@ -1612,7 +1480,7 @@
                                 <!--<div class="sectionCenter"></div>-->
                                 <!--<div class="sectionRight">-->
                                     <!--{{if compareData.jump}}-->
-                                    <!--<a href="adminLog-logCompareDetail.html?targetId={{item.targetId}}">{{item.targetName}}</a>-->
+                                    <!--<a href="adminLog-logCompareDetail.html?targetId={{item.targetId}}" class="aFontColor">{{item.targetName}}</a>-->
                                     <!--{{else}}-->
                                     <!--{{item.targetName}}-->
                                     <!--{{/if}}-->
@@ -1622,14 +1490,18 @@
                                 <!--<div class="sectionLeft">{{item.me.name}}</div>-->
                                 <!--<div class="sectionCenter">{{item.me.num}}</div>-->
                                 <!--<div class="sectionRight">-->
-                                    <!--<div class="shapeShow shapeShowBgOne" style="width:{{item.me.percent}};"></div>-->
+                                    <!--<div class="shapeShow shapeShowBgOne" style="width:{{item.me.percent}};">-->
+                                        <!--<span>{{item.me.percent}}</span>-->
+                                    <!--</div>-->
                                 <!--</div>-->
                             <!--</div>-->
                             <!--<div class="sectionRow">-->
                                 <!--<div class="sectionLeft">{{item.first.name}}</div>-->
                                 <!--<div class="sectionCenter">{{item.first.num}}</div>-->
                                 <!--<div class="sectionRight">-->
-                                    <!--<div class="shapeShow shapeShowBgOne" style="width:{{item.first.percent}};"></div>-->
+                                    <!--<div class="shapeShow shapeShowBgOne" style="width:{{item.first.percent}};">-->
+                                        <!--<span>{{item.first.percent}}</span>-->
+                                    <!--</div>-->
                                 <!--</div>-->
                             <!--</div>-->
                         <!--</div>-->
@@ -1641,171 +1513,189 @@
                         <!--<a href="adminLog-logDetail.html?targetId={{targetId}}&value=1" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>-->
                     <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
-            <!--<div id="adminLogTab2" class="tab">-->
-                <!--<div class="content-block">-->
+            </div>
+            <div id="adminLogTab2" class="tab tabScrollContent">
+                <div class="content-block">
                     <!--<h1>近7天</h1>-->
                     <!--<div class="list-block clearfloat">-->
                         <!--<a href="adminLog-logDetail.html?targetId={{targetId}}&value=2" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>-->
                     <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="adminLogTab3" class="tab">-->
+                </div>
+            </div>
+            <div id="adminLogTab3" class="tab tabScrollContent">
                 <!--<div class="content-block">-->
                     <!--<h1>月</h1>-->
                     <!--<div class="list-block clearfloat">-->
                         <!--<a href="adminLog-logDetail.html?targetId={{targetId}}&value=3" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>-->
                     <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
-            <!--<div id="adminLogTab4" class="tab">-->
+            </div>
+            <div id="adminLogTab4" class="tab tabScrollContent">
                 <!--<div class="content-block">-->
                     <!--<h1>季度</h1>-->
                     <!--<div class="list-block clearfloat">-->
                         <!--<a href="adminLog-logDetail.html?targetId={{targetId}}&value=4" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>-->
                     <!--</div>-->
                 <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
-
-<!--日志样式二-->
-<script type="text/html" id="adminLogLog">
-    <header class="bar bar-nav">
-        <a class="button button-link button-nav pull-left back" href="adminLog.html">
-            <span class="icon icon-left"></span>
-        </a>
-        <h1 class="title titleHead">{{targetName}}</h1>
-    </header>
-
-    <div class="subHeader">
-        <div class="logStatisticsHD">
-            <div class="container">
-                {{if typeNum}}
-                <div class="row no-gutter">
-                    <div class="col-33">
-                        <div class="numberUp">{{typeNum.t1}}</div>
-                        <div class="wordsDown">学校</div>
-                    </div>
-                    <div class="col-33">
-                        <div class="numberUp">{{typeNum.t3}}</div>
-                        <div class="wordsDown">教育机构</div>
-                    </div>
-                    <div class="col-33">
-                        <div class="numberUp">{{typeNum.t2}}</div>
-                        <div class="wordsDown">合伙人</div>
-                    </div>
-                </div>
-                {{/if}}
-
-                <div class="row no-gutter">
-                    <div class="col-100">
-                        <span>{{count}}</span>联系人
-                    </div>
-                </div>
-                {{if trackNum}}
-                <div class="row no-gutter fontBig">
-                    <div class="col-50">
-                        <span>{{trackNum.t1}}</span>待联络
-                    </div>
-                    <div class="col-50">
-                        <span>{{trackNum.t2}}</span>待参会
-                    </div>
-                </div>
-                <div class="row no-gutter fontBig">
-                    <div class="col-50">
-                        <span>{{trackNum.t3}}</span>待签约
-                    </div>
-                    <div class="col-50">
-                        <span>{{trackNum.t4}}</span>待回款
-                    </div>
-                </div>
-                {{/if}}
+            </div>
+            <div id="adminLogTab0" class="tab tabScrollContent">
+                <!--<div class="content-block">-->
+                <!--<h1>全部</h1>-->
+                <!--<div class="list-block clearfloat">-->
+                <!--<a href="adminLog-logDetail.html?targetId={{targetId}}&value=0" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
     </div>
+</script>
 
-    <div class="content marginTopLog">
-        <div class="buttons-tab">
-            <a href="#adminLogTab1" class="tab-link button active">今日</a>
-            <a href="#adminLogTab2" class="tab-link button">近7天</a>
-            <a href="#adminLogTab3" class="tab-link button">月</a>
-            <a href="#adminLogTab4" class="tab-link button">季度</a>
+<script type="text/html" id="adminLogLogSubheader">
+    <div class="logStatisticsHD">
+        <div class="container">
+            {{if typeNum}}
+            <div class="row no-gutter">
+                <div class="col-33">
+                    <div class="numberUp">{{typeNum.t1}}</div>
+                    <div class="wordsDown">学校</div>
+                </div>
+                <div class="col-33">
+                    <div class="numberUp">{{typeNum.t3}}</div>
+                    <div class="wordsDown">教育机构</div>
+                </div>
+                <div class="col-33">
+                    <div class="numberUp">{{typeNum.t2}}</div>
+                    <div class="wordsDown">合伙人</div>
+                </div>
+            </div>
+            {{/if}}
+
+            <div class="row no-gutter">
+                <div class="col-100">
+                    <span>{{count}}</span>联系人
+                </div>
+            </div>
+            {{if trackNum}}
+            <div class="row no-gutter fontBig">
+                <div class="col-50">
+                    <span>{{trackNum.t1}}</span>待联络
+                </div>
+                <div class="col-50">
+                    <span>{{trackNum.t2}}</span>待参会
+                </div>
+            </div>
+            <div class="row no-gutter fontBig">
+                <div class="col-50">
+                    <span>{{trackNum.t3}}</span>待签约
+                </div>
+                <div class="col-50">
+                    <span>{{trackNum.t4}}</span>待回款
+                </div>
+            </div>
+            {{/if}}
         </div>
-        <div class="tabs">
-            <div id="adminLogTab1" class="tab active tabScrollContent">
-                <div class="content-block">
-                    <div class="sectionsContainer">
-                        {{if compareData}}
-                        {{if compareData.today}}
-                        {{each compareData.today as item}}
-                        <div class="section">
-                            <div class="sectionRow">
-                                <div class="sectionLeft"></div>
-                                <div class="sectionCenter"></div>
-                                <div class="sectionRight">
-                                    {{if compareData.jump}}
-                                    <a href="adminLog-logCompareDetail.html?targetId={{item.targetId}}" class="aFontColor">{{item.targetName}}</a>
-                                    {{else}}
-                                    {{item.targetName}}
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="sectionRow">
-                                <div class="sectionLeft">{{item.me.name}}</div>
-                                <div class="sectionCenter">{{item.me.num}}</div>
-                                <div class="sectionRight">
-                                    <div class="shapeShow shapeShowBgOne" style="width:{{item.me.percent}};">
-                                        <span>{{item.me.percent}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sectionRow">
-                                <div class="sectionLeft">{{item.first.name}}</div>
-                                <div class="sectionCenter">{{item.first.num}}</div>
-                                <div class="sectionRight">
-                                    <div class="shapeShow shapeShowBgOne" style="width:{{item.first.percent}};">
-                                        <span>{{item.first.percent}}</span>
-                                    </div>
-                                </div>
-                            </div>
+    </div>
+</script>
+
+<script type="text/html" id="adminLogLogTabContent">
+    {{if targetId == 3}}
+    <div class="content-block">
+        <div class="sectionsContainer">
+            <a href="adminLog-logCompareDetail.html?type=1&&targetId={{targetId}}" class="section">
+                <div class="sectionRow">
+                    <div class="sectionL">联络客户</div>
+                    <div class="sectionR">{{t1}}</div>
+                </div>
+            </a>
+            <a href="adminLog-logCompareDetail.html?type=2&&targetId={{targetId}}" class="section">
+                <div class="sectionRow">
+                    <div class="sectionL">参会客户</div>
+                    <div class="sectionR">{{t2}}</div>
+                </div>
+            </a>
+            <a href="adminLog-logCompareDetail.html?type=3&&targetId={{targetId}}" class="section">
+                <div class="sectionRow">
+                    <div class="sectionL">签约客户</div>
+                    <div class="sectionR">{{t3}}</div>
+                </div>
+            </a>
+            <a href="adminLog-logCompareDetail.html?type=4&&targetId={{targetId}}" class="section">
+                <div class="sectionRow">
+                    <div class="sectionL">回款客户</div>
+                    <div class="sectionR">{{t4}}</div>
+                </div>
+            </a>
+        </div>
+        <div class="list-block clearfloat">
+            <a href="adminLog-logDetail.html?targetId={{targetId}}&value={{value}}" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
+        </div>
+    </div>
+    {{else}}
+    <div class="content-block">
+        <div class="sectionsContainer">
+            {{each dataArr as item}}
+            {{if jump}}
+            <a href="adminLog-logCompareDetail.html?type={{item.type}}&&targetId={{targetId}}" class="section">
+                <div class="sectionRow">
+                    <div class="sectionLeft"></div>
+                    <div class="sectionCenter"></div>
+                    <div class="sectionRight">{{item.targetName}}</div>
+                </div>
+                <div class="sectionRow">
+                    <div class="sectionLeft">{{item.me.name}}</div>
+                    <div class="sectionCenter">{{item.me.num}}</div>
+                    <div class="sectionRight">
+                        <div class="shapeShow shapeShowBgOne" style="width:{{item.me.percent}};">
+                            <span>{{item.me.percent}}</span>
                         </div>
-                        {{/each}}
-                        {{/if}}
-                        {{/if}}
                     </div>
-                    <div class="list-block clearfloat">
-                        <a href="adminLog-logDetail.html?targetId={{targetId}}&value=1" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
+                </div>
+                <div class="sectionRow">
+                    <div class="sectionLeft">{{item.first.name}}</div>
+                    <div class="sectionCenter">{{item.first.num}}</div>
+                    <div class="sectionRight">
+                        <div class="shapeShow shapeShowBgOne" style="width:{{item.first.percent}};">
+                            <span>{{item.first.percent}}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {{else}}
+            <div class="section">
+                <div class="sectionRow">
+                    <div class="sectionLeft"></div>
+                    <div class="sectionCenter"></div>
+                    <div class="sectionRight">{{item.targetName}}</div>
+                </div>
+                <div class="sectionRow">
+                    <div class="sectionLeft">{{item.me.name}}</div>
+                    <div class="sectionCenter">{{item.me.num}}</div>
+                    <div class="sectionRight">
+                        <div class="shapeShow shapeShowBgOne" style="width:{{item.me.percent}};">
+                            <span>{{item.me.percent}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sectionRow">
+                    <div class="sectionLeft">{{item.first.name}}</div>
+                    <div class="sectionCenter">{{item.first.num}}</div>
+                    <div class="sectionRight">
+                        <div class="shapeShow shapeShowBgOne" style="width:{{item.first.percent}};">
+                            <span>{{item.first.percent}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="adminLogTab2" class="tab tabScrollContent">
-                <div class="content-block">
-                    <h1>近7天</h1>
-                    <div class="list-block clearfloat">
-                        <a href="adminLog-logDetail.html?targetId={{targetId}}&value=2" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
-                    </div>
-                </div>
-            </div>
-            <div id="adminLogTab3" class="tab tabScrollContent">
-                <div class="content-block">
-                    <h1>月</h1>
-                    <div class="list-block clearfloat">
-                        <a href="adminLog-logDetail.html?targetId={{targetId}}&value=3" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
-                    </div>
-                </div>
-            </div>
-            <div id="adminLogTab4" class="tab tabScrollContent">
-                <div class="content-block">
-                    <h1>季度</h1>
-                    <div class="list-block clearfloat">
-                        <a href="adminLog-logDetail.html?targetId={{targetId}}&value=4" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
-                    </div>
-                </div>
-            </div>
+            {{/if}}
+
+            {{/each}}
+        </div>
+        <div class="list-block clearfloat">
+            <a href="adminLog-logDetail.html?targetId={{targetId}}&value={{value}}" class="weui-btn weui-btn_primary weui-btn_mini flRight">日志详情</a>
         </div>
     </div>
+    {{/if}}
+
 </script>
 
 <script type="text/html" id="adminLogLogCompareDetail">
@@ -1821,9 +1711,9 @@
             {{each detailData.r as item}}
             <div class="section">
                 <div class="sectionRow">
-                    <div class="sectionLeft">{{item.name}}</div>
-                    <div class="sectionCenter">{{item.num}}</div>
-                    <div class="sectionRight">
+                    <div class="sectionLeft height">{{item.name}}</div>
+                    <div class="sectionCenter height">{{item.num}}</div>
+                    <div class="sectionRight height">
                         <div class="shapeShow shapeShowBgOne" style="width:{{item.percent}};">
                             <span>{{item.percent}}</span>
                         </div>
@@ -2574,7 +2464,7 @@
             <ul>
                 {{each deptMembers as member}}
                     <li>
-                        <div class="item-content" memberId="{{member.crm_user_id}}">
+                        <div class="item-content btn-removeMemver" data-userId="{{member.crm_user_id}}">
                             <div class="item-inner">
                                 <div class="item-title-row">
                                     <div class="item-title">{{member.crm_name}}</div>
@@ -2640,7 +2530,7 @@
             <ul>
                 {{each deptMembers as member}}
                 <li>
-                    <div class="item-content" memberId="{{member.crm_user_id}}">
+                    <div class="item-content btn-removeMemver" data-userId="{{member.crm_user_id}}">
                         <div class="item-inner">
                             <div class="item-title-row">
                                 <div class="item-title">{{member.crm_name}}</div>
@@ -2662,7 +2552,7 @@
 
 <!-------------------------------------------->
 <script src="lib/dist/js/base.js"></script>
-<script src="js/demos.js"></script>
+<!--<script src="js/demos.js"></script>-->
 <script src="lib/dist/js/city-picker.js"></script>
 </body>
 </html>

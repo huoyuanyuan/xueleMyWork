@@ -36,12 +36,12 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             self.data = templateData;
@@ -112,6 +112,7 @@ $(function () {
 
     var crmTargetDetail = {
         data:{},
+        userList:[],
         init: function () {
             this.getPageData();
         },
@@ -198,12 +199,12 @@ $(function () {
                             flgccDetail = true;
                         })
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
             //根据客户ID获取联系人
@@ -219,12 +220,12 @@ $(function () {
                         templateData.contacts = data.r;
                         flgccLink = true;
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             })
 
@@ -252,12 +253,12 @@ $(function () {
                         templateData.logItems = dataArr;
                         flgccLog = true;
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             //渲染模板数据
@@ -281,6 +282,70 @@ $(function () {
         //初始化页面事件
         pageEvent: function () {
             this.addNewCC();
+            this.redistributeEvent();
+        },
+        //重新分配事件
+        redistributeEvent: function () {
+            var self = this;
+            $(".btn-redistribute").unbind("touchstart").on("touchstart", function () {
+                var container = $("#userName");
+                $.ajax({
+                    url:"/webjson/dept/getMyDeptList.aspx",
+                    type:"GET",
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.status == 1){
+                            self.initUserData(data.r);
+                            var userList = self.userList;
+                            var optionStr = ""
+                            userList.forEach(function (item) {
+                                optionStr += "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
+                            })
+                           container.html(optionStr);
+                        }else {
+                            console.error(data);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                })
+
+                self.saveRedistributeEvent();
+            });
+        },
+        //保存分配
+        saveRedistributeEvent: function () {
+            $(".btn-saveRedistribute").on("touchend", function () {
+                var userId = $("#userName").val();
+                var userName = $("#userName").find("option:checked").html();
+                var urlData = comFunc.url(window.location.href);
+                var crm_c_id = urlData.crm_c_id
+                console.log("userId:"+userId);
+                console.log("userName:"+userName);
+                console.log("crm_c_id:"+crm_c_id)
+                $.confirm(userName+"?","确定分配给", function () {
+
+                    //下面写保存ajax
+                    $.alert("确定");
+                })
+            });
+        },
+        //处理查询后成员数据
+        initUserData: function (data) {
+            var self = this;
+            var userData = data;
+            var userArr = userData.user_list;
+            userArr.forEach(function (item) {
+                self.userList.push(item)
+            });
+            if(userData.dept_list){
+                userData.dept_list.forEach(function (item) {
+                    self.initUserData(item)
+                })
+            }else {
+                return;
+            }
         },
         //添加联系人
         addNewCC: function () {
@@ -306,6 +371,7 @@ $(function () {
                         crm_c_id:crm_c_id
                     }];
                     var postData = JSON.stringify(data);
+                    $.showPreloader("Loading...")
                     $.ajax({
                         url:"/webjson/contact/addContact.aspx",
                         type:"POST",
@@ -350,7 +416,7 @@ $(function () {
          * }
          */
         ccDom: function (obj) {
-            var domStr =    "<div class='item-content bg-white'>"
+            var domStr =    "<a href='contactsDetail.html?crm_cc_id="+obj.crm_cc_id+"' class='item-content item-link bg-white' data-ccId='"+obj.crm_c_id+"'>"
                             +   "<div class='item-inner'>"
                             +       "<div class='item-title-row'>"
                             +           "<div class='item-title'>"+obj.crm_cc_name+"</div>"
@@ -358,7 +424,7 @@ $(function () {
                             +       "</div>"
                             +   "   <div class='item-subtitle'>电话："+obj.crm_cc_phone+"</div>"
                             +   "</div>";
-                            +"</div>"
+                            +"</a>"
             $("#crmTab2").find(".media-list").append(domStr);
         }
     };
@@ -421,6 +487,7 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             })
 
@@ -435,7 +502,7 @@ $(function () {
         //添加页面事件
         pageEvent: function () {
             $("#city-picker").cityPicker({});
-            //this.radioChange();
+            this.radioChange();
             this.editDept();
             this.editSchool();
             this.editPartner();
@@ -505,6 +572,7 @@ $(function () {
                         },
                         error: function (err) {
                             console.log(err);
+                            $.alert("保存失败，请稍后重试")
                         }
                     });
                 }
@@ -573,6 +641,7 @@ $(function () {
                         },
                         error: function (err) {
                             console.log(err);
+                            $.alert("保存失败，请稍后重试")
                         }
                     });
                 }
@@ -635,6 +704,7 @@ $(function () {
                             },
                             error: function (err) {
                                 console.log(err);
+                                $.alert("保存失败，请稍后重试")
                             }
                         });
                 }
@@ -663,16 +733,20 @@ $(function () {
                 type:"GET",
                 success: function (data) {
                     var data = JSON.parse(data);
-                    templateData.count = data.count;
-                    var items = self.initTemplateData(data);
-                    templateData.alphabets = items;
-                    self.data = templateData;
-                    self.useTemplate();
-                    $.hidePreloader();
+                    if(data.status == 1){
+                        templateData.count = data.count;
+                        var items = self.initTemplateData(data);
+                        templateData.alphabets = items;
+                        self.data = templateData;
+                        self.useTemplate();
+                        $.hidePreloader();
+                    }else {
+                        console.error(data);
+                    }
                 },
                 error: function (data) {
                     console.log(data);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             self.data = templateData;
@@ -746,12 +820,12 @@ $(function () {
                         self.uesTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
 
@@ -792,11 +866,13 @@ $(function () {
                             editCCPhone.val(ccData.crm_cc_phone);
                             editCCPosition.val(ccData.crm_cc_position);
                         }else {
-                            console.error("查询出错")
+                            console.error();
+                            $.alert("查询出错")
                         }
                     },
                     error: function (err) {
                         console.log(err);
+                        $.alert("服务器繁忙，请稍后重试");
                     }
                 });
             });
@@ -910,6 +986,9 @@ $(function () {
                     sdate = timeSlot.quarterAgo;
                     templateData.screening = "一季内";
                     break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    templateData.screening = "全部";
             }
             var postData = {
                 type:parseInt(type),
@@ -950,7 +1029,7 @@ $(function () {
                                     pagesArr.push(i);
                                 }
                             }else {
-                                for(var i = currentPage;i<=sloatNum;i++){
+                                for(var i = currentPage;i<currentPage+sloatNum;i++){
                                     pagesArr.push(i);
                                 }
                             }
@@ -964,12 +1043,12 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
         },
@@ -1106,6 +1185,10 @@ $(function () {
                     sdate = timeSlot.quarterAgo;
                     templateData.screening = "一季内";
                     break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    templateData.screening = "全部";
+                    break;
             }
             var postData = {
                 page:parseInt(page),
@@ -1145,7 +1228,7 @@ $(function () {
                                     pagesArr.push(i);
                                 }
                             }else {
-                                for(var i = currentPage;i<=sloatNum;i++){
+                                for(var i = currentPage;i<currentPage+sloatNum;i++){
                                     pagesArr.push(i);
                                 }
                             }
@@ -1160,12 +1243,12 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             })
         },
@@ -1235,83 +1318,241 @@ $(function () {
 
     var adminLogAttendance = {
         data:{},
+        dataDetail:{},
+        deptArr:[],
         init: function () {
             this.getPageData();
         },
         getPageData: function () {
-            var self = this
 
-            var data = {
-                depts:[
-                    {
-                        deptName:"技术部",
-                        deptId:"1",
-                        attendNum:"8",
-                        noAttendNum:"5",
-                        deptPersons:[
-                            {
-                                personName:"王凯帆",
-                                personId:"1",
-                                personState:"考勤正常"
-                            },
-                            {
-                                personName:"霍园园",
-                                personId:"2",
-                                personState:"缺卡1次"
-                            },
-                        ]
-                    },
-                    {
-                        deptName:"编辑部",
-                        deptId:"2",
-                        attendNum:"9",
-                        noAttendNum:"3",
-                        deptPersons:[
-                            {
-                                personName:"王凯帆",
-                                personId:"1",
-                                personState:"缺卡3次"
-                            },
-                            {
-                                personName:"霍园园",
-                                personId:"2",
-                                personState:"考勤正常"
-                            },
-                        ]
-                    },
-                    {
-                        deptName:"内容部",
-                        deptId:"3",
-                        attendNum:"4",
-                        noAttendNum:"0",
-                        deptPersons:[
-                            {
-                                personName:"王凯帆",
-                                personId:"1",
-                                personState:"考勤正常"
-                            },
-                            {
-                                personName:"霍园园",
-                                personId:"2",
-                                personState:"考勤正常"
-                            },
-                        ]
-                    },
-                ]
-            }
+            this.getAllDeptData(1);
 
-            self.data = data;
-            self.useTemplate();
+            this.useTemplate();
         },
         useTemplate: function () {
             var html = template("adminLogAttendance",this.data);
             $("#page-adminLog-attendance").html(html);
             this.pageEvent();
         },
+        useTemplateDetail: function (id) {
+            var html = template("adminLogAttendanceDeptDetail",this.dataDetail);
+            $(".dept"+id).append(html);
+        },
         //初始化页面事件
         pageEvent: function () {
-            comFunc.clickToShow();
-        }
+            comFunc.screening();
+            this.screeningTime();
+            this.getDeptSignInEvent();
+        },
+        //添加事件 实现点击部门获取 部门成员具体签到情况
+        getDeptSignInEvent: function () {
+            var self = this;
+            $(".deptContainer").find("li").unbind("click").on("click", function (e) {
+                var _this = this;
+                var detail = $(this).find(".detail");
+                var flgNext = false;
+                if(detail.length == 0){
+                    var path = $(this).data("path");
+                    var value = $(this).data("value");
+                    var id = $(this).data("id");
+                    self.getDeptSignIn(value,path,id, function () {
+                        flgNext = true;
+                    })
+                }else {
+                    flgNext = true;
+                }
+
+                var end = setInterval(function () {
+                    if(flgNext){
+                        return self.clickToShow(e,_this,end);
+                    }
+                },100)
+
+            })
+        },
+        //点击展开事件
+        clickToShow: function (e,_this,end) {
+            if(e.target === $(_this).find(".header")[0]){
+                var detail = $(_this).find(".detail");
+                var icon = $(_this).find(".icon");
+                if($(_this).hasClass("show")){
+                    $(_this).removeClass("show");
+                    detail.slideUp(300);
+                    icon.removeClass("icon-down").addClass("icon-right");
+                }else {
+                    var show = $(".deptContainer").find("li.show");
+                    show.removeClass("show");
+                    show.find(".detail").slideUp(300);
+                    show.find(".icon").removeClass("icon-down").addClass("icon-right");
+                    $(_this).addClass("show");
+                    detail.slideDown(300);
+                    icon.removeClass("icon-right").addClass("icon-down")
+                }
+            }
+            clearInterval(end);
+        },
+        //获取指定部门人员签到情况    value(时间代码 1.当天 2.一周 3.一月 4.一个季度 0 全部) path(部门路径) id(部门ID)
+        getDeptSignIn: function (value,path,id,call) {
+            var self = this;
+            var timeSlot = comFunc.getNowTimeSlot();
+            var sdate = "";
+            var screening = ""
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSlot.currentDay;
+                    screening = "今天";
+                    break;
+                case 2:
+                    sdate = timeSlot.weekAgo;
+                    screening = "一周内";
+                    break;
+                case 3:
+                    sdate = timeSlot.monthAgo;
+                    screening = "一月内";
+                    break;
+                case 4:
+                    sdate = timeSlot.quarterAgo;
+                    screening = "一季内";
+                    break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    screening = "全部";
+                    break;
+            }
+            var postData = {
+                sdate:sdate,
+                edate:timeSlot.currentTime,
+                path:path
+            };
+            $.showPreloader("Loading...")
+            $.ajax({
+                url:"/webjson/signin/getDeptSignIn.aspx",
+                type:"GET",
+                data:postData,
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if(data.status == 1){
+                        var templateData = self.initSignInData(data);
+                        templateData.screening = screening;
+                        templateData.screeningValue = value;
+                        console.log(templateData);
+                        self.dataDetail = templateData;
+                        self.useTemplateDetail(id)
+                        call && call();
+                        $.hidePreloader();
+                    }else {
+                        console.error(data);
+                    }
+                },
+                error: function (err) {
+                    console.loe(err);
+                }
+            });
+        },
+        //请求所有部门数据 value(时间代码 1.当天 2.一周 3.一月 4.一个季度 0 全部)
+        getAllDeptData: function (value) {
+            var self = this;
+            var templateData = {};
+
+            var timeSlot = comFunc.getNowTimeSlot();
+            var sdate = "";
+            var screening = ""
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSlot.currentDay;
+                    screening = "今天";
+                    break;
+                case 2:
+                    sdate = timeSlot.weekAgo;
+                    screening = "一周内";
+                    break;
+                case 3:
+                    sdate = timeSlot.monthAgo;
+                    screening = "一月内";
+                    break;
+                case 4:
+                    sdate = timeSlot.quarterAgo;
+                    screening = "一季内";
+                    break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    screening = "全部";
+                    break;
+            }
+
+            templateData.screening = screening;
+            templateData.screeningValue = value;
+            //请求所有部门
+            $.ajax({
+                url:"/webjson/dept/getMyDeptList.aspx",
+                type:"GET",
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if(data.status == 1){
+                        self.initDeptData(data.r);
+                        templateData.dept = self.deptArr;
+                        self.data = templateData;
+                        self.useTemplate();
+                    }else {
+                        console.error(data);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    $.alert("服务器繁忙，请稍后重试")
+                }
+            });
+        },
+        //处理部门数据
+        initDeptData: function (data) {
+            var self = this;
+            var deptData = data;
+            var obj = {};
+            obj.crm_department_id = deptData.crm_department_id;
+            obj.crm_department_name = deptData.crm_department_name;
+            obj.crm_department_parent = deptData.crm_department_parent;
+            obj.crm_department_path = deptData.crm_department_path;
+            this.deptArr.push(obj);
+            if(deptData.dept_list){
+                deptData.dept_list.forEach(function (item) {
+                    self.initDeptData(item)
+                })
+            }else {
+                return;
+            }
+
+        },
+        //处理签到数据
+        initSignInData: function (data) {
+            var dataObj = data;
+            var daycount = dataObj.daycount;
+            var notCT = 0;
+            var memberArr = dataObj.r;
+            if(memberArr){
+                memberArr.forEach(function (item) {
+                    var c = item.c;
+                    var notC = 0;
+                    if(c){
+                        notC = daycount * 2 - c;
+                    }else {
+                        notC = daycount * 2;
+                    }
+                    notCT += notC;
+                    item.notC = notC;
+                });
+            }
+            dataObj.notCT = notCT;
+            return dataObj;
+        },
+        //筛选按钮功能
+        screeningTime: function () {
+            var self = this;
+            $("#page-adminLog-attendance").find(".screeningItem").unbind("touchstart").on("touchstart", function () {
+                var value = $(this).data("value");
+                self.getAllDeptData(value)
+            })
+        },
+
     };
 
     var adminLogAttendanceDetail = {
@@ -1320,138 +1561,152 @@ $(function () {
             this.getPageData();
         },
         getPageData: function () {
-            var self = this;
-            var url = window.location.href;
-            var urlData = comFunc.url(url);
+            var urlData = comFunc.url(window.location.href);
 
-            var personId = urlData.personId;
-            //根据ID ajax请求数据
-            //现模拟数据
-            if(personId === "1"){
-                var data = {
-                    personName:"王凯帆",
-                    personId:"1",
-                    personState:"缺卡5次",
-                    dates:[
-                        {
-                            date:"2016年12月12日",
-                            dateState:true,
-                            stateState:true,
-                            stateTime:"08:30",
-                            stateDevice:"iphone6",
-                            stateAdress:"浙江省杭州市滨江区智慧e谷",
-                            endState:true,
-                            endTime:"19:30",
-                            endDevice:"iphone6",
-                            endAdress:"浙江省杭州市滨江区智慧e谷"
-                        },
-                        {
-                            date:"2016年12月11日",
-                            dateState:true,
-                            stateState:true,
-                            stateTime:"08:30",
-                            stateDevice:"iphone6",
-                            stateAdress:"浙江省杭州市滨江区智慧e谷",
-                            endState:false,
-                            endTime:"",
-                            endDevice:"",
-                            endAdress:""
-                        },
-                        {
-                            date:"2016年12月10日",
-                            dateState:false,
-                            stateState:"",
-                            stateTime:"",
-                            stateDevice:"",
-                            stateAdress:"",
-                            endState:"",
-                            endTime:"",
-                            endDevice:"",
-                            endAdress:""
-                        },
-                        {
-                            date:"2016年12月09日",
-                            dateState:true,
-                            stateState:false,
-                            stateTime:"",
-                            stateDevice:"",
-                            stateAdress:"",
-                            endState:true,
-                            endTime:"19:30",
-                            endDevice:"iphone6",
-                            endAdress:"浙江省杭州市滨江区智慧e谷"
-                        }
-                    ]
-                }
-            }else if(personId === "2"){
-                var data = {
-                    personName:"霍园园",
-                    personId:"2",
-                    personState:"考勤正常",
-                    dates:[
-                        {
-                            date:"2016年12月12日",
-                            dateState:true,
-                            stateState:true,
-                            stateTime:"08:30",
-                            stateDevice:"Android",
-                            stateAdress:"浙江省杭州市滨江区智慧e谷",
-                            endState:true,
-                            endTime:"19:30",
-                            endDevice:"Android",
-                            endAdress:"浙江省杭州市滨江区智慧e谷"
-                        },
-                        {
-                            date:"2016年12月11日",
-                            dateState:true,
-                            stateState:true,
-                            stateTime:"08:30",
-                            stateDevice:"Android",
-                            stateAdress:"浙江省杭州市滨江区智慧e谷",
-                            endState:false,
-                            endTime:"",
-                            endDevice:"",
-                            endAdress:""
-                        },
-                        {
-                            date:"2016年12月10日",
-                            dateState:false,
-                            stateState:"",
-                            stateTime:"",
-                            stateDevice:"",
-                            stateAdress:"",
-                            endState:"",
-                            endTime:"",
-                            endDevice:"",
-                            endAdress:""
-                        },
-                        {
-                            date:"2016年12月09日",
-                            dateState:true,
-                            stateState:false,
-                            stateTime:"",
-                            stateDevice:"",
-                            stateAdress:"",
-                            endState:true,
-                            endTime:"19:30",
-                            endDevice:"Android",
-                            endAdress:"浙江省杭州市滨江区智慧e谷"
-                        }
-                    ]
-                }
-            }
+            var userid = urlData.userid;
+            var value = urlData.value;
 
-            self.data = data;
-            self.useTemplate();
+            this.refreshPage(userid,value);
+            this.useTemplate();
         },
         useTemplate: function () {
             var html = template("adminLogAttendanceDetail",this.data);
             $("#page-adminLog-attendanceDetail").html(html);
             this.pageEvent();
         },
+        //刷新页面  输入 userid(用户ID),value(筛选代号)
+        refreshPage: function (userid,value) {
+            var self = this;
+            var templateData = {};
+            templateData.screeningValue = value;
+            var sdate = "";
+            var timeSlot = comFunc.getNowTimeSlot();
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSlot.currentDay;
+                    templateData.screening = "今天";
+                    break;
+                case 2:
+                    sdate = timeSlot.weekAgo;
+                    templateData.screening = "一周内";
+                    break;
+                case 3:
+                    sdate = timeSlot.monthAgo;
+                    templateData.screening = "一月内";
+                    break;
+                case 4:
+                    sdate = timeSlot.quarterAgo;
+                    templateData.screening = "一季内";
+                    break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    templateData.screening = "全部"
+                    break;
+            }
+            var postData = {
+                userid:userid,
+                sdate:sdate,
+                edate:timeSlot.currentTime
+            }
+            $.showPreloader("Loading...")
+            //获取当前用户考勤信息
+            console.log(postData);
+            $.ajax({
+                url:"/webjson/signin/getSignInByUserID.aspx",
+                type:"GET",
+                data:postData,
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if(data.status == 1){
+                        console.log(data);
+                        var dates = self.initTemplateData(data);
+                        templateData.dates = dates;
+                        console.log(templateData);
+                        self.data = templateData;
+                        self.useTemplate();
+                        $.hidePreloader();
+                    }else {
+                        console.error(data);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    $.alert("服务器繁忙，请稍后重试");
+                }
+            });
+        },
         //初始化页面事件
         pageEvent: function () {
             comFunc.screening();
+            this.screeningTime();
+        },
+        //筛选按钮功能
+        screeningTime: function () {
+            var self = this;
+            $("#page-adminLog-attendanceDetail").find(".screeningItem").unbind("touchstart").on("touchstart", function () {
+                var value = $(this).data("value");
+                var urlData = comFunc.url(window.location.href);
+                var userid = urlData.userid;
+                self.refreshPage(userid,value)
+            })
+        },
+        //处理模板数据
+        initTemplateData: function (data) {
+            var dataArr = data.r;
+            var dateObj = {};
+            var resultArr = [];
+            dataArr.forEach(function (item) {
+                var signInLog = item.SignInLog;
+                signInLog.forEach(function (signItem) {
+                    var crm_addtime = signItem.crm_addtime;
+                    var data = crm_addtime.slice(0,10);
+                    var time = crm_addtime.slice(11)
+                    if(!dateObj[data]){
+                        dateObj[data] = [];
+                        dateObj[data].push(signItem)
+                    }else {
+                        dateObj[data].push(signItem)
+                    }
+                })
+            })
+            for(index in dateObj){
+                var obj = {};
+                obj.dateTime = index;
+                var arr = dateObj[index];
+                arr.forEach(function (item) {
+                    var crm_tag = item.crm_tag;
+                    var lastFlg = crm_tag.slice(crm_tag.length-1);
+                    if(lastFlg == "1"){
+                        var start = {};
+                        start.crm_phone = item.crm_phone
+                        start.crm_map = item.crm_map;
+                        start.crm_addtime = item.crm_addtime;
+                        start.crm_tag = item.crm_tag
+                        start.crm_user_id = item.crm_user_id;
+                        start.id = item.id
+                        start.time = item.crm_addtime.slice(11);
+                        obj.start = start;
+                    }else if(lastFlg == "2"){
+                        var end = {};
+                        end.crm_phone = item.crm_phone
+                        end.crm_map = item.crm_map;
+                        end.crm_addtime = item.crm_addtime;
+                        end.crm_tag = item.crm_tag
+                        end.crm_user_id = item.crm_user_id;
+                        end.id = item.id
+                        end.time = item.crm_addtime.slice(11);
+                        obj.end = end;
+                    }
+                })
+                resultArr.push(obj);
+            };
+            //倒序排列
+            resultArr.sort(function (a,b) {
+                if(a.dateTime < b.dateTime){return 1;};
+                if(a.dateTime > b.dateTime){return -1};
+                return 0;
+            })
+            return resultArr;
         }
     };
 
@@ -1506,6 +1761,7 @@ $(function () {
             }
             $.showPreloader("Loading...")
             //获取当前用户考勤信息
+            console.log(postData);
             $.ajax({
                 url:"/webjson/signin/getSignInByUserID.aspx",
                 type:"GET",
@@ -1520,12 +1776,12 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.ajax("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
         },
@@ -1539,20 +1795,23 @@ $(function () {
         },
         //处理模板数据
         initTemplateData: function (data) {
+            console.log(data);
             var dataArr = data.r;
-            console.log(dataArr)
             var dateObj = {};
             var resultArr = [];
             dataArr.forEach(function (item) {
-                var crm_addtime = item.crm_addtime;
-                var data = crm_addtime.slice(0,10);
-                var time = crm_addtime.slice(11)
-                if(!dateObj[data]){
-                    dateObj[data] = [];
-                    dateObj[data].push(item)
-                }else {
-                    dateObj[data].push(item)
-                }
+                var signInLog = item.SignInLog;
+                signInLog.forEach(function (signItem) {
+                    var crm_addtime = signItem.crm_addtime;
+                    var data = crm_addtime.slice(0,10);
+                    var time = crm_addtime.slice(11)
+                    if(!dateObj[data]){
+                        dateObj[data] = [];
+                        dateObj[data].push(signItem)
+                    }else {
+                        dateObj[data].push(signItem)
+                    }
+                })
             })
             for(index in dateObj){
                 var obj = {};
@@ -1586,71 +1845,382 @@ $(function () {
                 resultArr.push(obj);
             };
             //倒序排列
-            //resultArr.sort(function (a,b) {
-            //    if(a.dateTime < b.dateTime){return -1;};
-            //    if(a.dateTime > b.dateTime){return 1};
-            //    return 0;
-            //})
+            resultArr.sort(function (a,b) {
+                if(a.dateTime < b.dateTime){return 1;};
+                if(a.dateTime > b.dateTime){return -1};
+                return 0;
+            })
             return resultArr;
         }
     };
 
     var adminLogLog = {
         data:{},
+        subHeaderData:{},
+        tabContentData:{},
         init: function () {
             this.getPageData();
         },
         getPageData: function () {
             var self = this;
-            var url = window.location.href;
-            var urlData = comFunc.url(url);
+            var urlData = comFunc.url(window.location.href);
             var targetId = urlData.targetId;
+            var templateData = {};
+
+            switch (parseInt(targetId)){
+                case 1:
+                    templateData.targetName = "我的日志";
+                    break;
+                case 2:
+                    templateData.targetName = "部门日志";
+                    break;
+                case 3:
+                    templateData.targetName = "全部日志";
+                    break;
+            }
+            self.data = templateData;
+            self.useTemplate();
+
+            var flgSubHeader = false,
+                flgTabContent = false;
+            var trackNum = "";
+
+            $.showPreloader("Loading...")
+            //刷新subHeader
+            self.refreshSubHeaderData(targetId,0, function (data) {
+                var templateDataSubHeader = data;
+                console.log(templateDataSubHeader);
+                self.subHeaderData = templateDataSubHeader;
+                self.useTemplateSubheader();
+
+                flgSubHeader = true;
+            })
+
+            //获得客户跟踪结果分类数量
+            self.getResultCount(targetId,1, function (data) {
+                trackNum = data;
+            })
+
+            //刷新tabContent
+            self.refreshTabContent(targetId,1, function (data) {
+                var end = setInterval(function () {
+                    if(trackNum){
+                        if(targetId == 1 || targetId == 2){
+                            data.trackNum = trackNum;
+                            data.targetId = targetId;
+                            var tabData = self.initTabData(data);
+                            var jump = false;
+                            if(targetId == 2){
+                                jump = true;
+                            }
+                            tabData.targetId = targetId;
+                            tabData.jump = jump;
+                            tabData.value = 1;
+                            console.log(tabData);
+                            self.tabContentData = tabData;
+                            self.useTemplateTabContent(1);
+                        }else {
+                            var tabData = trackNum;
+                            tabData.targetId = targetId;
+                            tabData.value = 1;
+                            console.log(tabData);
+                            self.tabContentData = tabData;
+                            self.useTemplateTabContent(1);
+                        }
+                        flgTabContent = true;
+
+                        trackNum = "";
+                        clearInterval(end);
+                    }
+                },100)
+            });
+
+            var end = setInterval(function () {
+                if(flgSubHeader && flgTabContent){
+                    $.hidePreloader();
+                    flgSubHeader = false;
+                    flgTabContent = false;
+                    clearInterval(end)
+                }
+            },100)
+        },
+        useTemplate: function () {
+            var html = template("adminLogLog",this.data);
+            $("#page-adminLog-log").html(html);
+            this.pageEvent();
+        },
+        useTemplateSubheader: function () {
+            var html = template("adminLogLogSubheader",this.subHeaderData);
+            $("#page-adminLog-log").find(".subHeader").html(html);
+        },
+        useTemplateTabContent: function (id) {
+            var html = template("adminLogLogTabContent",this.tabContentData);
+            $("#adminLogTab"+id).html(html);
+        },
+        //初始化页面事件
+        pageEvent: function () {
+            this.tabSwitch();
+        },
+        //初始化tabData
+        initTabData: function (data) {
+            var maxData = data.r;
+            var meData = data.trackNum;
+            var targetId = data.targetId;
+            var tabDataObj = {};
+
+            var selfName = "";
+            if(targetId == 1){
+                selfName = "我";
+            }else if(targetId == 2){
+                selfName = "本部门"
+            }
+
+            var dataArr = [];
+            for(var i=1;i<=4;i++){
+                var targetName = "";
+                var type = "";
+                switch (i){
+                    case 1:
+                        targetName = "联络客户";
+                        type = "1";
+                        break;
+                    case 2:
+                        targetName = "参会客户";
+                        type = "2";
+                        break;
+                    case 3:
+                        targetName = "签约客户";
+                        type = "3";
+                        break;
+                    case 4:
+                        targetName = "回款客户";
+                        type = "4";
+                        break;
+                }
+                var obj = {};
+                var objMe = {};
+                var objFirst = {};
+                var meNum,maxNum;
+                var maxObj = {};
+                obj.targetName = targetName;
+                obj.type = type;
+                meNum = meData["t"+i];
+                var maxArr;
+                maxArr = maxData.filter(function (item) {
+                    return item.type == type
+                });
+                if(maxArr.length == 0){
+                    objMe.name = selfName;
+                    objMe.num = meNum;
+                    objMe.percent = "0%";
+                    obj.me = objMe;
+
+                    objFirst.name = "第一名";
+                    objFirst.num = 0;
+                    objFirst.percent = "0%";
+                    obj.first = objFirst;
+
+                }else {
+                    var maxObj = maxArr[0];
+                    maxNum = maxObj.count;
+                    var total = meNum + maxNum;
+                    objMe.name = selfName;
+                    objMe.num = meNum;
+                    objMe.percent = (meNum/total).toFixed(2)*100+"%";
+                    obj.me = objMe;
+
+                    objFirst.name = maxObj.name;
+                    objFirst.num = maxNum;
+                    objFirst.percent = (maxNum/total).toFixed(2)*100+"%";
+                    obj.first = objFirst;
+                }
+                dataArr.push(obj);
+            }
+            tabDataObj.dataArr = dataArr;
+            return tabDataObj;
+        },
+        //tab之间切换事件
+        tabSwitch: function () {
+            var self = this;
+            $(".tab-switch").unbind("click").on("click", function () {
+                var urlData = comFunc.url(window.location.href);
+                var targetId = urlData.targetId;
+                var value = $(this).data("value");
+                var flgSubHeader = false,
+                    flgTabContent = false;
+                var trackNum = "";
+
+                $.showPreloader("Loading...")
+                //刷新subHeader
+                //self.refreshSubHeaderData(targetId,value, function (data) {
+                //    var templateDataSubHeader = data;
+                //    console.log(templateDataSubHeader);
+                //    trackNum = templateDataSubHeader.trackNum
+                //    self.subHeaderData = templateDataSubHeader;
+                //    self.useTemplateSubheader();
+                //
+                //    flgSubHeader = true;
+                //})
+
+                //获得客户跟踪结果分类数量
+                self.getResultCount(targetId,value, function (data) {
+                    trackNum = data;
+                })
+
+                //刷新tabContent
+                self.refreshTabContent(targetId,value, function (data) {
+                    var end = setInterval(function () {
+                        if(trackNum){
+                            if(targetId == 1 || targetId == 2){
+                                data.trackNum = trackNum;
+                                data.targetId = targetId;
+                                var tabData = self.initTabData(data);
+                                var jump = false;
+                                if(targetId == 2){
+                                    jump = true;
+                                }
+                                tabData.targetId = targetId;
+                                tabData.jump = jump;
+                                tabData.value = value;
+                                console.log(tabData);
+                                self.tabContentData = tabData;
+                                self.useTemplateTabContent(value);
+                                $.hidePreloader();
+                            }else {
+                                var tabData = trackNum;
+                                tabData.targetId = targetId;
+                                tabData.value = 1;
+                                console.log(tabData);
+                                self.tabContentData = tabData;
+                                self.useTemplateTabContent(value);
+                                $.hidePreloader();
+                            }
+                            trackNum = "";
+                            clearInterval(end);
+                        }
+                    },100)
+                });
+            })
+        },
+
+        //获得客户跟踪结果分类数量
+        getResultCount: function (targetId,value,call) {
+            var urlGetResultCount = "";
+
+            var sdate = "";
+            var timeSloat = comFunc.getNowTimeSlot();
+
+            switch (parseInt(targetId)){
+                case 1:
+                    urlGetResultCount = "/webjson/customer/getResultCountByUserID.aspx";
+                    break;
+                case 2:
+                    urlGetResultCount = "/webjson/customer/getDeptResultCount.aspx";
+                    break;
+                case 3:
+                    console.log(">>缺少result")
+                    urlGetResultCount = "/webjson/customer/getResultCountByUserID.aspx";
+                    break;
+            }
+
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSloat.currentDay;
+                    break;
+                case 2:
+                    sdate = timeSloat.weekAgo;
+                    break;
+                case 3:
+                    sdate = timeSloat.monthAgo;
+                    break;
+                case 4:
+                    sdate = timeSloat.quarterAgo;
+                    break;
+                case 0:
+                    sdate = timeSloat.beginTime;
+                    break;
+            };
+
+            var postData = {
+                sdate:sdate,
+                edate:timeSloat.currentTime
+            }
+            //获取 客户跟踪结果分类数量
+            $.ajax({
+                url:urlGetResultCount,
+                type:"GET",
+                data:postData,
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    call && call(data);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        },
+
+        //刷新subHeader数据 targetId(三种类型 1：我的 2：部门 3：全部) value（时间段 1：当天 2：一周 3：一月 4：一季度）
+        refreshSubHeaderData: function (targetId,value,call) {
+            var urlGetTypeCount = "",
+                urlGetContactCount = "",
+                urlGetResultCount = "";
 
             var flgType = false,
                 flgTrack = false,
                 flgCount = false;
 
-            var urlGetTypeCount = "",
-                urlGetContactCount = "",
-                urlGetResultCount = "";
-
+            var sdate = "";
+            var timeSloat = comFunc.getNowTimeSlot();
 
             var templateData = {};
-            templateData.targetId = targetId;
 
             switch (parseInt(targetId)){
                 case 1:
-                    templateData.targetName = "我的日志";
                     urlGetTypeCount = "/webjson/customer/getTypeCountByUserID.aspx";
                     urlGetContactCount = "/webjson/contact/getContactCountByUserID.aspx";
                     urlGetResultCount = "/webjson/customer/getResultCountByUserID.aspx";
                     break;
                 case 2:
                     console.log(">>缺少contact")
-                    templateData.targetName = "部门日志";
                     urlGetTypeCount = "/webjson/customer/getDeptTypeCount.aspx";
                     urlGetContactCount = "/webjson/contact/getContactCountByUserID.aspx";
                     urlGetResultCount = "/webjson/customer/getDeptResultCount.aspx";
                     break;
                 case 3:
                     console.log(">>缺少type contact  result")
-                    templateData.targetName = "全部日志";
                     urlGetTypeCount = "/webjson/customer/getTypeCountByUserID.aspx";
                     urlGetContactCount = "/webjson/contact/getContactCountByUserID.aspx";
                     urlGetResultCount = "/webjson/customer/getResultCountByUserID.aspx";
                     break;
             }
-
-            $.showPreloader("Loading...")
-            //获取指定用户客户类别数量
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSloat.currentDay;
+                    break;
+                case 2:
+                    sdate = timeSloat.weekAgo;
+                    break;
+                case 3:
+                    sdate = timeSloat.monthAgo;
+                    break;
+                case 4:
+                    sdate = timeSloat.quarterAgo;
+                    break;
+                case 0:
+                    sdate = timeSloat.beginTime;
+                    break;
+            }
+            var postData = {
+                sdate:sdate,
+                edate:timeSloat.currentTime
+            }
+            console.log(postData)
+            //获取 客户类别数量
             $.ajax({
                 url:urlGetTypeCount,
                 type:"GET",
-                data:{
-                    id:"",
-                    sdate:"",
-                    edate:""
-                },
+                data:postData,
                 success: function (data) {
                     var data = JSON.parse(data);
                     templateData.typeNum = data;
@@ -1658,7 +2228,6 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
                 }
             });
 
@@ -1666,9 +2235,7 @@ $(function () {
             $.ajax({
                 url:urlGetContactCount,
                 type:"GET",
-                data:{
-                    id:"",
-                },
+                data:postData,
                 success: function (data) {
                     var data = JSON.parse(data);
                     templateData.count = data.count;
@@ -1676,18 +2243,13 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
                 }
             });
-            //获取指定用户客户跟踪结果分类数量
+            //获取 客户跟踪结果分类数量
             $.ajax({
                 url:urlGetResultCount,
                 type:"GET",
-                data:{
-                    id:"",
-                    sdate:"",
-                    edate:""
-                },
+                data:postData,
                 success: function (data) {
                     var data = JSON.parse(data);
                     templateData.trackNum = data;
@@ -1695,95 +2257,63 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
                 }
             });
 
-            //获取对比关系数据
-            var compareData = {
-                jump:true,
-                today:[
-                    {
-                        targetName:"联络客户",
-                        targetId:1,
-                        me:{
-                            name:"我",
-                            num:5,
-                            percent:"25%"
-                        },
-                        first:{
-                            name:"第一",
-                            num:20,
-                            percent:"100%"
-                        }
-                    },
-                    {
-                        targetName:"参会客户",
-                        targetId:2,
-                        me:{
-                            name:"我",
-                            num:4,
-                            percent:"20%"
-                        },
-                        first:{
-                            name:"第一",
-                            num:20,
-                            percent:"100%"
-                        }
-                    },
-                    {
-                        targetName:"签约客户",
-                        targetId:3,
-                        me:{
-                            name:"我",
-                            num:10,
-                            percent:"50%"
-                        },
-                        first:{
-                            name:"第一",
-                            num:20,
-                            percent:"100%"
-                        }
-                    },
-                    {
-                        targetName:"回款客户",
-                        targetId:4,
-                        me:{
-                            name:"我",
-                            num:15,
-                            percent:"75%"
-                        },
-                        first:{
-                            name:"第一",
-                            num:20,
-                            percent:"100%"
-                        }
-                    }
-                ]
-            };
-            templateData.compareData = compareData;
-
             var end = setInterval(function () {
                 if(flgTrack && flgType && flgCount){
-                    console.log(templateData);
-                    self.data = templateData;
-                    self.useTemplate();
-                    $.hidePreloader();
+                    call && call(templateData);
                     clearInterval(end);
                 }
             },100)
-            self.data = templateData;
-            self.useTemplate();
         },
-        useTemplate: function () {
-            var html = template("adminLogLog",this.data);
-            $("#page-adminLog-log").html(html);
-        },
-        //初始化页面事件
-        pageEvent: function () {
+        //刷新每个tab页面内容 targetId(三种类型 1：我的 2：部门 3：全部) value（时间段 1：当天 2：一周 3：一月 4：一季度）
+        refreshTabContent: function (targetId,value,call) {
+            var getUrl = "";
+            if(targetId == 1 || targetId == 2){
+                getUrl = "/webjson/customer/getCustomerResultMax.aspx"
+            }else if(targetId == 3){
+                call && call();
+                return;
+            }
+            var sdate = "";
+            var timeSloat = comFunc.getNowTimeSlot();
+            switch (parseInt(value)){
+                case 1:
+                    sdate = timeSloat.currentDay;
+                    break;
+                case 2:
+                    sdate = timeSloat.weekAgo;
+                    break;
+                case 3:
+                    sdate = timeSloat.monthAgo;
+                    break;
+                case 4:
+                    sdate = timeSloat.quarterAgo;
+                    break;
+            }
+            var postData = {
+                sdate:sdate,
+                edate:timeSloat.currentTime
+            }
 
-        },
-
+            $.ajax({
+                url:getUrl,
+                type:"GET",
+                data:postData,
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    if(data.status == 1){
+                        call && call(data);
+                    }else {
+                        console.error(data);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
     };
 
     var adminLogLogCompareDetail = {
@@ -1795,9 +2325,12 @@ $(function () {
             var self = this;
             var templateData = {};
             var urlData = comFunc.url(window.location.href);
+            var type = urlData.type;
             var targetId = urlData.targetId;
+            console.log("type:"+type);
+            console.log("targetId:"+targetId);
             var targetName =""
-            switch (parseInt(targetId)){
+            switch (parseInt(type)){
                 case 1:
                     targetName = "联络客户详情";
                     break;
@@ -1909,6 +2442,9 @@ $(function () {
                 case 4:
                     sdate = timeSlot.quarterAgo;
                     break;
+                case 0:
+                    sdate = timeSlot.beginTime;
+                    break;
             };
             var useId = "";
             var flgNext = false;
@@ -1974,7 +2510,7 @@ $(function () {
                                             pagesArr.push(i);
                                         }
                                     }else {
-                                        for(var i = currentPage;i<=sloatNum;i++){
+                                        for(var i = currentPage;i<currentPage+sloatNum;i++){
                                             pagesArr.push(i);
                                         }
                                     }
@@ -2066,12 +2602,12 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             self.data = templateData;
@@ -2114,84 +2650,14 @@ $(function () {
                         self.useTemplate();
                         $.hidePreloader();
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
-            //if(deptId === "1"){
-            //    var data = {
-            //        deptMembers:[
-            //            {
-            //                memberId:"1",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"技术部1",
-            //                memberPost:"职务名称1"
-            //            },
-            //            {
-            //                memberId:"2",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"技术部2",
-            //                memberPost:"职务名称2"
-            //            },
-            //            {
-            //                memberId:"3",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"技术部3",
-            //                memberPost:"职务名称3"
-            //            }
-            //        ]
-            //    }
-            //}else if(deptId === "2"){
-            //    var data = {
-            //        deptMembers:[
-            //            {
-            //                memberId:"1",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"编辑部1",
-            //                memberPost:"职务名称1"
-            //            },
-            //            {
-            //                memberId:"2",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"编辑部2",
-            //                memberPost:"职务名称2"
-            //            },
-            //            {
-            //                memberId:"3",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"编辑部3",
-            //                memberPost:"职务名称3"
-            //            }
-            //        ]
-            //    }
-            //}else if(deptId === "3"){
-            //    var data = {
-            //        deptMembers:[
-            //            {
-            //                memberId:"1",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"内容部1",
-            //                memberPost:"职务名称1"
-            //            },
-            //            {
-            //                memberId:"2",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"内容部2",
-            //                memberPost:"职务名称2"
-            //            },
-            //            {
-            //                memberId:"3",
-            //                memberImg:"../imgs/1.jpg",
-            //                memberName:"内容部3",
-            //                memberPost:"职务名称3"
-            //            }
-            //        ]
-            //    }
-            //}
             self.data = templateData;
             self.useTemplate();
         },
@@ -2339,7 +2805,7 @@ $(function () {
                                     pagesArr.push(i);
                                 }
                             }else {
-                                for(var i = currentPage;i<=sloatNum;i++){
+                                for(var i = currentPage;i<currentPage+sloatNum;i++){
                                     pagesArr.push(i);
                                 }
                             }
@@ -2363,6 +2829,7 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
         },
@@ -2473,6 +2940,7 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
         }
@@ -2504,12 +2972,12 @@ $(function () {
                         templateData.deptData = deptData;
                         flgDept = true;
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             //获取部门成员列表
@@ -2525,12 +2993,12 @@ $(function () {
                         templateData.deptMembers = data.r;
                         flgMember = true;
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
             var end = setInterval(function () {
@@ -2557,6 +3025,17 @@ $(function () {
             this.addNewDept();
             this.addNewMember();
             this.addActionSheet();
+            this.removeMember();
+        },
+        //删除成员操作
+        removeMember: function () {
+            $(".btn-removeMemver").on("click", function () {
+                var useId = $(this).data("userId");
+                $.confirm(useId+"?","确定删除", function () {
+                    $.alert("确定");
+                })
+                console.log(useId);
+            })
         },
         //添加选择操作
         addActionSheet: function () {
@@ -2583,6 +3062,16 @@ $(function () {
                         color: 'success',
                         class:"open-popup",
                         data_popup:".popup-editDept",
+                    },
+                    {
+                        text:"移除部门",
+                        bold:true,
+                        color:"success",
+                        onClick: function () {
+                            $.confirm("移除部门将一并移除部门下的所有成员，是否确认？","移除部门", function () {
+                                $.alert("确定");
+                            });
+                        }
                     }
                 ];
                 var buttons2 = [
@@ -2656,6 +3145,7 @@ $(function () {
                     },
                     error: function (err) {
                         console.log(err);
+                        $.alert("服务器繁忙，请稍后重试");
                     }
                 });
             }
@@ -2683,11 +3173,12 @@ $(function () {
                         },100)
 
                     }else {
-                        console.error("获取所有部门失败")
+                        console.error(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
         },
@@ -2723,12 +3214,12 @@ $(function () {
                                 parentDeptContainer.html(domStr);
                             });
                         }else {
-                            $.alert("加载出错")
+                            console.error(data);
                         }
                     },
                     error: function (err) {
                         console.log(err);
-                        $.alert("加载出错")
+                        $.alert("服务器繁忙，请稍后重试");
                     }
                 });
             });
@@ -2925,12 +3416,13 @@ $(function () {
                         templateData.deptData = deptData;
                         flgDept = true;
                     }else {
-                        $.alert("加载出错")
+                        console.error(data);
                     }
 
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
             //获取部门成员列表
@@ -2946,12 +3438,12 @@ $(function () {
                         templateData.deptMembers = data.r;
                         flgMember = true;
                     }else {
-                        $.alert("加载出错")
+                        console.log(data);
                     }
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("载入出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
 
@@ -3052,12 +3544,12 @@ $(function () {
                                 parentDeptContainer.html(domStr);
                             });
                         }else {
-                            $.alert("加载出错")
+                            console.error(data);
                         }
                     },
                     error: function (err) {
                         console.log(err);
-                        $.alert("加载出错")
+                        $.alert("服务器繁忙，请稍后重试");
                     }
                 });
             });

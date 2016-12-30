@@ -140,22 +140,22 @@ $(function () {
                                                 $.alert("保存成功")
                                                 self.clearInputDept();
                                             }else {
-                                                $.alert("保存失败")
+                                                console.error(data);
                                             }
                                         },
                                         error: function (err) {
                                             console.log(err);
-                                            $.alert("保存失败")
+                                            $.alert("保存失败,请稍后重试")
                                         }
                                     })
                                 }
                                 else {
-                                    $.alert("保存失败")
+                                    console.error(data);
                                 }
                             },
                             error: function (err) {
                                 console.log(err);
-                                $.alert("保存失败")
+                                $.alert("保存失败,请稍后重试");
                             }
                         });
                     }
@@ -262,22 +262,22 @@ $(function () {
                                                 $.alert("保存成功")
                                                 self.clearInputSchool();
                                             }else {
-                                                $.alert("保存失败")
+                                                console.error(data);
                                             }
                                         },
                                         error: function (err) {
                                             console.log(err);
-                                            $.alert("保存失败")
+                                            $.alert("保存失败,请稍后重试")
                                         }
                                     })
                                 }
                                 else {
-                                    $.alert("保存失败")
+                                    console.error(data);
                                 }
                             },
                             error: function (err) {
                                 console.log(err);
-                                $.alert("保存失败")
+                                $.alert("保存失败,请稍后重试")
                             }
                         });
                     }
@@ -385,22 +385,22 @@ $(function () {
                                                 $.alert("保存成功")
                                                 self.clearInputPartner();
                                             }else {
-                                                $.alert("保存失败")
+                                                console.error(data);
                                             }
                                         },
                                         error: function (err) {
                                             console.log(err);
-                                            $.alert("保存失败")
+                                            $.alert("保存失败,请稍后重试")
                                         }
                                     })
                                 }
                                 else {
-                                    $.alert("保存失败")
+                                    console.error(data);
                                 }
                             },
                             error: function (err) {
                                 console.log(err);
-                                $.alert("保存失败")
+                                $.alert("保存失败,请稍后重试")
                             }
                         });
                     }
@@ -506,12 +506,12 @@ $(function () {
                                 workContancts.attr("disabled","disabled");
                                 $.hidePreloader();
                             }else {
-                                $.alert("加载出错")
+                                console.error(data);
                             }
                         },
                         error: function (err) {
                             console.log(err);
-                            $.alert("加载出错")
+                            $.alert("服务器繁忙，请稍后重试");
                         }
                     })
                 }
@@ -543,12 +543,12 @@ $(function () {
                                 workContancts.removeAttr("disabled");
                                 $.hidePreloader();
                             }else {
-                                $.alert("加载出错")
+                                console.error(data);
                             }
                         },
                         error: function (err) {
                             console.log(err);
-                            $.alert("加载出错");
+                            $.alert("服务器繁忙，请稍后重试");
                         }
                     });
                 }
@@ -615,12 +615,12 @@ $(function () {
                                 $.alert("保存成功");
                                 self.clearInput();
                             }else {
-                                $.alert("保存失败")
+                                console.error(data);
                             }
                         },
                         error: function (err) {
                             console.log(err);
-                            $.alert("保存失败")
+                            $.alert("保存失败,请稍后重试")
                         }
                     });
                 }
@@ -653,7 +653,7 @@ $(function () {
             var urlData = comFunc.url(window.location.href);
             var type = urlData.type;
             var timeSlot = comFunc.getNowTimeSlot();
-            var currentTime = timeSlot.currentTime;
+            var currentTime = timeSlot.currentTimeH;
             var hintDom = self.makeHintDom(type,currentTime);
             var map = comFunc.getLocation();
             var phoneMsg = comFunc.getPhoneMsg();
@@ -673,11 +673,16 @@ $(function () {
                 success: function (data) {
                     var data = JSON.parse(data);
                     if(data.status == 1){
-                        var dataArr = data.r.reverse();
+                        console.log(data);
+                        var dataArr = data.r;
                         dataArr.forEach(function (item) {
-                            var type = item.crm_tag.slice(-1);
-                            var time = item.crm_addtime;
-                            container.append(self.makeHintDom(type,time));
+                            var signInLog = item.SignInLog;
+                            signInLog.forEach(function (signItem) {
+                                var type = signItem.crm_tag.slice(-1);
+                                var time = signItem.crm_addtime;
+                                container.append(self.makeHintDom(type,time));
+                            })
+
                         })
                     }else {
                         console.error(data);
@@ -685,6 +690,7 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
+                    $.alert("服务器繁忙，请稍后重试")
                 }
             });
             //签到
@@ -722,12 +728,12 @@ $(function () {
                 hintMsg = "提示：下班签到成功";
             }
             var domStr =    "<div class='signInItem'>"
-                +       "<div class='time'>"+time+"</div>"
-                +       "<div class='msgConatiner'>"
-                +           "<span class='icon icon-emoji'></span>"
-                +           "<p class='hintMsg'>"+hintMsg+"</p>"
-                +       "</div>"
-                +"</div>";
+                            +       "<div class='time'>"+time+"</div>"
+                            +       "<div class='msgConatiner'>"
+                            +           "<span class='icon icon-emoji'></span>"
+                            +           "<p class='hintMsg'>"+hintMsg+"</p>"
+                            +       "</div>"
+                            +"</div>";
             return domStr;
         }
     };
@@ -757,7 +763,7 @@ $(function () {
                 },
                 error: function (err) {
                     console.log(err);
-                    $.alert("加载出错")
+                    $.alert("服务器繁忙，请稍后重试");
                 }
             });
         }
@@ -829,6 +835,19 @@ $(function () {
     function init(){
         initFunc.init();
     }
+
+    $(document).on("pageInit", "#page-datetime-picker", function(e) {
+        $(".datetime-picker").datetimePicker({
+            toolbarTemplate: '<header class="bar bar-nav">\
+      <button class="button button-link pull-right close-picker">OK</button>\
+      <h1 class="title">datetime</h1>\
+      </header>'
+        });
+    });
+    $(document).on("pageInit", "#page-city-picker", function(e) {
+        $("#city-picker").cityPicker({});
+    });
+
     $(document).on("pageInit", function () {
         init();
     });
