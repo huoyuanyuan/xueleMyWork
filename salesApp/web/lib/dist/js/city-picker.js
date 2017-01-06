@@ -17921,6 +17921,9 @@
                 rotateEffect: false,  //为了性能
 
                 onChange: function (picker, values, displayValues) {
+                    // 只要有change，重新赋值
+                    setCurrentAreaCode(values)
+
                     var newProvince = values[0];
                     var newCity, newDist, currentDist;
                     if(newProvince !== currentProvince) {
@@ -17940,8 +17943,7 @@
                         currentCity = newCity;
                         picker.updateValue();
                     }
-                    // 只要有change，重新赋值
-                    setCurrentAreaCode(values)
+
                 },
 
                 cols: [

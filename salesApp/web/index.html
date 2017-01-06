@@ -6,7 +6,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>home</title>
+    <title></title>
     <!--库文件-->
     <script src="lib/jquery.min.js"></script>
     <link rel="stylesheet" href="lib/dist/css/icon.css">
@@ -367,15 +367,15 @@
                         <!--<a href="javascript:;" class="weui-btn weui-btn_primary button-nav open-popup" data-popup=".popup-addContacts">新增联系人</a>-->
                     <!--</div>-->
                     <div class="subFooter">
-                    <div class="weui-btn-area">
-                        <a href="javascript:;" class="weui-btn weui-btn_primary button-nav open-popup" data-popup=".popup-addContacts">新增联系人</a>
+                        <div class="weui-btn-area">
+                            <a href="javascript:;" class="weui-btn weui-btn_primary button-nav open-popup" data-popup=".popup-addContacts">新增联系人</a>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
             <div id="crmTab3" class="tab tabScrollContent">
                 <div class="content-block">
-                    <div class="weui-footer_fixed-bottom">
+                    <div class="subFooter">
                         <div class="weui-btn-area">
                             <a href="javascript:;" class="weui-btn weui-btn_primary open-popup btn-redistribute" data-popup=".popup-addContactsRedistribute">重新分配</a>
                         </div>
@@ -965,8 +965,8 @@
                 <ul>
                     {{if card.items}}
                     {{each card.items as item}}
-                    <li class="item-content">
-                        <!--<a href="crm-targetDetail.html?type={{type}}&crm_c_id={{item.crm_c_id}}" class="item-link item-content">-->
+                    <li>
+                        <a href="crm-targetDetail.html?type={{type}}&crm_c_id={{item.crm_c_id}}" class="item-link item-content">
                             <div class="item-inner">
                                 <div class="item-title-row">
                                     <div class="item-title">{{item.crm_c_name}}</div>
@@ -976,7 +976,7 @@
                                     <span>{{item.timeDiff}}</span>
                                 </div>
                             </div>
-                        <!--</a>-->
+                        </a>
                     </li>
                     {{/each}}
                     {{/if}}
@@ -1105,7 +1105,7 @@
         </a>
         <h1 class="title titleHead">考勤</h1>
     </header>
-
+    {{if screening}}
     <div class="subHeader">
         <div class="subnavContainer clearfloat">
             <div class="right">
@@ -1123,6 +1123,8 @@
             </div>
         </div>
     </div>
+    {{/if}}
+
 
     <div class="content" style="margin-top:2.2rem;">
         <div class="deptContainer">
@@ -1180,7 +1182,7 @@
         <div class="detailContent">
             {{if r}}
             {{each r as deptPerson}}
-            <a href="adminLog-attendanceDetail.html?userid={{deptPerson.crm_user_id}}&&value={{screeningValue}}">
+            <a href="adminLog-attendanceDetail.html?userid={{deptPerson.crm_user_id}}&value={{screeningValue}}">
                 <span class="name">{{deptPerson.crm_name}}</span>
                 {{if deptPerson.notC == 0}}
                 <span class="state">考勤正常</span>
@@ -1601,25 +1603,25 @@
     {{if targetId == 3}}
     <div class="content-block">
         <div class="sectionsContainer">
-            <a href="adminLog-logCompareDetail.html?type=1&&targetId={{targetId}}" class="section">
+            <a href="adminLog-logCompareDetail.html?type=1&targetId={{targetId}}&value={{value}}&total={{t1}}" class="section">
                 <div class="sectionRow">
                     <div class="sectionL">联络客户</div>
                     <div class="sectionR">{{t1}}</div>
                 </div>
             </a>
-            <a href="adminLog-logCompareDetail.html?type=2&&targetId={{targetId}}" class="section">
+            <a href="adminLog-logCompareDetail.html?type=2&targetId={{targetId}}&value={{value}}&total={{t2}}" class="section">
                 <div class="sectionRow">
                     <div class="sectionL">参会客户</div>
                     <div class="sectionR">{{t2}}</div>
                 </div>
             </a>
-            <a href="adminLog-logCompareDetail.html?type=3&&targetId={{targetId}}" class="section">
+            <a href="adminLog-logCompareDetail.html?type=3&targetId={{targetId}}&value={{value}}&total={{t3}}" class="section">
                 <div class="sectionRow">
                     <div class="sectionL">签约客户</div>
                     <div class="sectionR">{{t3}}</div>
                 </div>
             </a>
-            <a href="adminLog-logCompareDetail.html?type=4&&targetId={{targetId}}" class="section">
+            <a href="adminLog-logCompareDetail.html?type=4&targetId={{targetId}}&value={{value}}&total={{t4}}" class="section">
                 <div class="sectionRow">
                     <div class="sectionL">回款客户</div>
                     <div class="sectionR">{{t4}}</div>
@@ -1635,7 +1637,7 @@
         <div class="sectionsContainer">
             {{each dataArr as item}}
             {{if jump}}
-            <a href="adminLog-logCompareDetail.html?type={{item.type}}&&targetId={{targetId}}" class="section">
+            <a href="adminLog-logCompareDetail.html?type={{item.type}}&targetId={{targetId}}&value={{value}}&total={{item.me.num}}" class="section">
                 <div class="sectionRow">
                     <div class="sectionLeft"></div>
                     <div class="sectionCenter"></div>
@@ -1707,12 +1709,12 @@
     </header>
     <div class="content">
         <div class="sectionsContainer">
-            {{if detailData}}
-            {{each detailData.r as item}}
+            {{if dataArr}}
+            {{each dataArr as item}}
             <div class="section">
                 <div class="sectionRow">
                     <div class="sectionLeft height">{{item.name}}</div>
-                    <div class="sectionCenter height">{{item.num}}</div>
+                    <div class="sectionCenter height">{{item.count}}</div>
                     <div class="sectionRight height">
                         <div class="shapeShow shapeShowBgOne" style="width:{{item.percent}};">
                             <span>{{item.percent}}</span>
@@ -1886,28 +1888,19 @@
     <div class="content">
         <div class="list-block media-list nomargin">
             <ul>
-                <!--{{if depts}}-->
-                <!--{{each depts as dept}}-->
-                <!--<li>-->
-                    <!--<a href="adminLog-myDeptMember.html?deptId={{dept.deptId}}" class="item-link item-content">-->
-                        <!--<div class="item-inner">-->
-                            <!--<div class="item-title">-->
-                                <!--{{dept.deptName}}<span class="memberNum">（{{dept.deptMemberNum}}）</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</a>-->
-                <!--</li>-->
-                <!--{{/each}}-->
-                <!--{{/if}}-->
+                {{if deptArr}}
+                {{each deptArr as item}}
                 <li>
-                    <a href="adminLog-myDeptMember.html?deptId={{crm_department_id}}" class="item-link item-content">
+                    <a href="adminLog-myDeptMember.html?deptId={{item.crm_department_id}}" class="item-link item-content">
                         <div class="item-inner">
                             <div class="item-title">
-                                {{crm_department_name}}<span class="memberNum">（{{deptMemberNum}}）</span>
+                                {{item.crm_department_name}}<span class="memberNum">（{{item.deptMemberNum}}）</span>
                             </div>
                         </div>
                     </a>
                 </li>
+                {{/each}}
+                {{/if}}
             </ul>
         </div>
     </div>
@@ -1943,313 +1936,313 @@
     </div>
 </script>
 
-<script type="text/html" id="adminLogMyCheckOld">
-    <header class="bar bar-nav">
-        <a class="button button-link button-nav pull-left back" href="adminLog.html">
-            <span class="icon icon-left"></span>
-        </a>
-        <h1 class="title titleHead">我的审核</h1>
-    </header>
-    <div class="content">
-        <div class="buttons-tab">
-            <a href="#myCheckTab1" class="tab-link button active">待审核</a>
-            <a href="#myCheckTab2" class="tab-link button">已审核</a>
-        </div>
-        <div class="tabs">
-            <div id="myCheckTab1" class="tab active tabScrollContent">
-                {{if log1}}
-                <div class="subnavContainer clearfloat mycheckScreening">
-                    <div class="left">
-                        <div class="leftStyle">
-                            <span>{{log1.count}}</span>篇
-                        </div>
-                    </div>
-                    <!--<div class="right">-->
-                        <!--<div class="btn-screening">-->
-                            <!--<span class="icon icon-caret"></span>-->
-                            <!--<span class="screeningContent">筛选</span>-->
-                        <!--</div>-->
-                        <!--<div class="screeningItems">-->
-                            <!--<div class="screeningItem" data-value="1">今天</div>-->
-                            <!--<div class="screeningItem" data-value="2">一周内</div>-->
-                            <!--<div class="screeningItem" data-value="3">一月内</div>-->
-                            <!--<div class="screeningItem" data-value="4">一季内</div>-->
+<!--<script type="text/html" id="adminLogMyCheckOld">-->
+    <!--<header class="bar bar-nav">-->
+        <!--<a class="button button-link button-nav pull-left back" href="adminLog.html">-->
+            <!--<span class="icon icon-left"></span>-->
+        <!--</a>-->
+        <!--<h1 class="title titleHead">我的审核</h1>-->
+    <!--</header>-->
+    <!--<div class="content">-->
+        <!--<div class="buttons-tab">-->
+            <!--<a href="#myCheckTab1" class="tab-link button active">待审核</a>-->
+            <!--<a href="#myCheckTab2" class="tab-link button">已审核</a>-->
+        <!--</div>-->
+        <!--<div class="tabs">-->
+            <!--<div id="myCheckTab1" class="tab active tabScrollContent">-->
+                <!--{{if log1}}-->
+                <!--<div class="subnavContainer clearfloat mycheckScreening">-->
+                    <!--<div class="left">-->
+                        <!--<div class="leftStyle">-->
+                            <!--<span>{{log1.count}}</span>篇-->
                         <!--</div>-->
                     <!--</div>-->
-                </div>
+                    <!--&lt;!&ndash;<div class="right">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="btn-screening">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="icon icon-caret"></span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="screeningContent">筛选</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="screeningItems">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="1">今天</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="2">一周内</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="3">一月内</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="4">一季内</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
 
-                <div class="content-block marginTopMycheck">
-                    <div class="historyContainer">
-                        {{if log1.logs}}
-                        {{each log1.logs as logItem}}
-                        <div class="historyItem">
-                            <div class="list-block media-list nomargin">
-                                <div class="state bgwait">
-                                    {{logItem.status_str}}
-                                </div>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title logDept">{{logItem.crm_c_name}}</div>
-                                            <div class="item-after btn-style">{{logItem.type_name}}</div>
-                                        </div>
-                                        <div class="item-subtitle">
-                                            {{logItem.crm_user_name}}
-                                            {{logItem.timeDiff}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="historyItemContent">
-                                    <div class="itemHead clearfloat">
-                                        <div class="left">
-                                            目标
-                                            <span class="redFont">{{logItem.target_name}}</span>
-                                        </div>
-                                        <div class="right">
-                                            结果
-                                            <span class="redFont">{{logItem.result_name}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="itemHead clearfloat">
-                                        <div class="middle">
-                                            客户状态
-                                            <span class="redFont">{{logItem.stage_name}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            同行人员
-                                        </div>
-                                        <div class="itemRight">
-                                            {{if logItem.crm_wl_other}}
-                                            {{logItem.crm_wl_other}}
-                                            {{else}}
-                                            无
-                                            {{/if}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            联系人
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_cc_name}}
+                <!--<div class="content-block marginTopMycheck">-->
+                    <!--<div class="historyContainer">-->
+                        <!--{{if log1.logs}}-->
+                        <!--{{each log1.logs as logItem}}-->
+                        <!--<div class="historyItem">-->
+                            <!--<div class="list-block media-list nomargin">-->
+                                <!--<div class="state bgwait">-->
+                                    <!--{{logItem.status_str}}-->
+                                <!--</div>-->
+                                <!--<div class="item-content">-->
+                                    <!--<div class="item-inner">-->
+                                        <!--<div class="item-title-row">-->
+                                            <!--<div class="item-title logDept">{{logItem.crm_c_name}}</div>-->
+                                            <!--<div class="item-after btn-style">{{logItem.type_name}}</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="item-subtitle">-->
+                                            <!--{{logItem.crm_user_name}}-->
+                                            <!--{{logItem.timeDiff}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="historyItemContent">-->
+                                    <!--<div class="itemHead clearfloat">-->
+                                        <!--<div class="left">-->
+                                            <!--目标-->
+                                            <!--<span class="redFont">{{logItem.target_name}}</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="right">-->
+                                            <!--结果-->
+                                            <!--<span class="redFont">{{logItem.result_name}}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemHead clearfloat">-->
+                                        <!--<div class="middle">-->
+                                            <!--客户状态-->
+                                            <!--<span class="redFont">{{logItem.stage_name}}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--同行人员-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{if logItem.crm_wl_other}}-->
+                                            <!--{{logItem.crm_wl_other}}-->
+                                            <!--{{else}}-->
+                                            <!--无-->
+                                            <!--{{/if}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--联系人-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_cc_name}}-->
 
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            开始时间
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_wl_start_time}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            结束时间
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_wl_end_time}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            备注
-                                        </div>
-                                        <div class="itemRight">
-                                            {{if logItem.crm_wl_remark}}
-                                            <span>{{logItem.crm_wl_remark}}</span>
-                                            {{else}}
-                                            <span>无</span>
-                                            {{/if}}
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--开始时间-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_wl_start_time}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--结束时间-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_wl_end_time}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--备注-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{if logItem.crm_wl_remark}}-->
+                                            <!--<span>{{logItem.crm_wl_remark}}</span>-->
+                                            <!--{{else}}-->
+                                            <!--<span>无</span>-->
+                                            <!--{{/if}}-->
 
-                                            <!--{{each logItem.remarkImg as src}}-->
-                                            <!--<img src={{src}} alt="">-->
-                                            <!--{{/each}}-->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="btn-checkContainer">
-                                    <button class="weui-btn weui-btn_primary btn-check" data-logId={{logItem.crm_wl_id}}>审核</button>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                        {{/if}}
-                    </div>
-                    <div class="subFooter">
-                        <div class="sloatPage">
-                            <div class="buttonContainer">
-                                {{if log1.pages}}
-                                {{if log1.pages.length > 0}}
-                                <span>{{log1.currentPage}}/{{log1.maxPage}}</span>
-                                <a href="javascript:;" class="btn-sloatPage1 icon icon-left" data-page="left"></a>
-                                {{each log1.pages as page}}
-
-                                {{if page == log1.currentPage}}
-                                <a href="javascript:;" class="btn-sloatPage1 active" data-page={{page}}>{{page}}</a>
-                                {{else}}
-                                <a href="javascript:;" class="btn-sloatPage1" data-page={{page}}>{{page}}</a>
-                                {{/if}}
-
-                                {{/each}}
-                                <a href="javascript:;" class="btn-sloatPage1 icon icon-right" data-page="right"></i></a>
-                                {{/if}}
-                                {{/if}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{/if}}
-
-            </div>
-            <div id="myCheckTab2" class="tab tabScrollContent">
-                {{if log2}}
-                <div class="subnavContainer clearfloat mycheckScreening">
-                    <div class="left">
-                        <div class="leftStyle">
-                            <span>{{log2.count}}</span>篇
-                        </div>
-                    </div>
-                    <!--<div class="right">-->
-                        <!--<div class="btn-screening">-->
-                            <!--<span class="icon icon-caret"></span>-->
-                            <!--<span class="screeningContent">筛选</span>-->
+                                            <!--&lt;!&ndash;{{each logItem.remarkImg as src}}&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<img src={{src}} alt="">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;{{/each}}&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="btn-checkContainer">-->
+                                    <!--<button class="weui-btn weui-btn_primary btn-check" data-logId={{logItem.crm_wl_id}}>审核</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         <!--</div>-->
-                        <!--<div class="screeningItems">-->
-                            <!--<div class="screeningItem" data-value="1">今天</div>-->
-                            <!--<div class="screeningItem" data-value="2">一周内</div>-->
-                            <!--<div class="screeningItem" data-value="3">一月内</div>-->
-                            <!--<div class="screeningItem" data-value="4">一季内</div>-->
+                        <!--{{/each}}-->
+                        <!--{{/if}}-->
+                    <!--</div>-->
+                    <!--<div class="subFooter">-->
+                        <!--<div class="sloatPage">-->
+                            <!--<div class="buttonContainer">-->
+                                <!--{{if log1.pages}}-->
+                                <!--{{if log1.pages.length > 0}}-->
+                                <!--<span>{{log1.currentPage}}/{{log1.maxPage}}</span>-->
+                                <!--<a href="javascript:;" class="btn-sloatPage1 icon icon-left" data-page="left"></a>-->
+                                <!--{{each log1.pages as page}}-->
+
+                                <!--{{if page == log1.currentPage}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage1 active" data-page={{page}}>{{page}}</a>-->
+                                <!--{{else}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage1" data-page={{page}}>{{page}}</a>-->
+                                <!--{{/if}}-->
+
+                                <!--{{/each}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage1 icon icon-right" data-page="right"></i></a>-->
+                                <!--{{/if}}-->
+                                <!--{{/if}}-->
+                            <!--</div>-->
                         <!--</div>-->
                     <!--</div>-->
-                </div>
+                <!--</div>-->
+                <!--{{/if}}-->
 
-                <div class="content-block marginTopMycheck">
-                    <div class="historyContainer">
-                        {{if log2.logs}}
-                        {{each log2.logs as logItem}}
-                        <div class="historyItem">
-                            <div class="list-block media-list nomargin">
-                                <div class="state bgresult">
-                                    审核结果：{{logItem.status_str}}
-                                </div>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title logDept">{{logItem.crm_c_name}}</div>
-                                            <div class="item-after btn-style">{{logItem.type_name}}</div>
-                                        </div>
-                                        <div class="item-subtitle">
-                                            {{logItem.crm_user_name}}
-                                            {{logItem.timeDiff}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="historyItemContent">
-                                    <div class="itemHead clearfloat">
-                                        <div class="left">
-                                            目标
-                                            <span class="redFont">{{logItem.target_name}}</span>
-                                        </div>
-                                        <div class="right">
-                                            结果
-                                            <span class="redFont">{{logItem.result_name}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="itemHead clearfloat">
-                                        <div class="middle">
-                                            客户状态
-                                            <span class="redFont">{{logItem.stage_name}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            同行人员
-                                        </div>
-                                        <div class="itemRight">
-                                            {{if logItem.crm_wl_other}}
-                                            {{logItem.crm_wl_other}}
-                                            {{else}}
-                                            无
-                                            {{/if}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            联系人
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_cc_name}}
+            <!--</div>-->
+            <!--<div id="myCheckTab2" class="tab tabScrollContent">-->
+                <!--{{if log2}}-->
+                <!--<div class="subnavContainer clearfloat mycheckScreening">-->
+                    <!--<div class="left">-->
+                        <!--<div class="leftStyle">-->
+                            <!--<span>{{log2.count}}</span>篇-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="right">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="btn-screening">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="icon icon-caret"></span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="screeningContent">筛选</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="screeningItems">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="1">今天</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="2">一周内</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="3">一月内</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="screeningItem" data-value="4">一季内</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
 
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            开始时间
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_wl_start_time}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            结束时间
-                                        </div>
-                                        <div class="itemRight">
-                                            {{logItem.crm_wl_end_time}}
-                                        </div>
-                                    </div>
-                                    <div class="itemContent">
-                                        <div class="itemLeft">
-                                            备注
-                                        </div>
-                                        <div class="itemRight">
-                                            {{if logItem.crm_wl_remark}}
-                                            <span>{{logItem.crm_wl_remark}}</span>
-                                            {{else}}
-                                            <span>无</span>
-                                            {{/if}}
-                                            <!--{{each logItem.remarkImg as src}}-->
-                                            <!--<img src={{src}} alt="">-->
-                                            <!--{{/each}}-->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                        {{/if}}
-                    </div>
-                    <div class="subFooter">
-                        <div class="sloatPage">
-                            <div class="buttonContainer">
-                                {{if log2.pages}}
-                                {{if log2.pages.length > 0}}
-                                <span>{{log2.currentPage}}/{{log2.maxPage}}</span>
-                                <a href="javascript:;" class="btn-sloatPage2 icon icon-left" data-page="left"></a>
-                                {{each log2.pages as page}}
+                <!--<div class="content-block marginTopMycheck">-->
+                    <!--<div class="historyContainer">-->
+                        <!--{{if log2.logs}}-->
+                        <!--{{each log2.logs as logItem}}-->
+                        <!--<div class="historyItem">-->
+                            <!--<div class="list-block media-list nomargin">-->
+                                <!--<div class="state bgresult">-->
+                                    <!--审核结果：{{logItem.status_str}}-->
+                                <!--</div>-->
+                                <!--<div class="item-content">-->
+                                    <!--<div class="item-inner">-->
+                                        <!--<div class="item-title-row">-->
+                                            <!--<div class="item-title logDept">{{logItem.crm_c_name}}</div>-->
+                                            <!--<div class="item-after btn-style">{{logItem.type_name}}</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="item-subtitle">-->
+                                            <!--{{logItem.crm_user_name}}-->
+                                            <!--{{logItem.timeDiff}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="historyItemContent">-->
+                                    <!--<div class="itemHead clearfloat">-->
+                                        <!--<div class="left">-->
+                                            <!--目标-->
+                                            <!--<span class="redFont">{{logItem.target_name}}</span>-->
+                                        <!--</div>-->
+                                        <!--<div class="right">-->
+                                            <!--结果-->
+                                            <!--<span class="redFont">{{logItem.result_name}}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemHead clearfloat">-->
+                                        <!--<div class="middle">-->
+                                            <!--客户状态-->
+                                            <!--<span class="redFont">{{logItem.stage_name}}</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--同行人员-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{if logItem.crm_wl_other}}-->
+                                            <!--{{logItem.crm_wl_other}}-->
+                                            <!--{{else}}-->
+                                            <!--无-->
+                                            <!--{{/if}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--联系人-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_cc_name}}-->
 
-                                {{if page == log2.currentPage}}
-                                <a href="javascript:;" class="btn-sloatPage2 active" data-page={{page}}>{{page}}</a>
-                                {{else}}
-                                <a href="javascript:;" class="btn-sloatPage2" data-page={{page}}>{{page}}</a>
-                                {{/if}}
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--开始时间-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_wl_start_time}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--结束时间-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{logItem.crm_wl_end_time}}-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="itemContent">-->
+                                        <!--<div class="itemLeft">-->
+                                            <!--备注-->
+                                        <!--</div>-->
+                                        <!--<div class="itemRight">-->
+                                            <!--{{if logItem.crm_wl_remark}}-->
+                                            <!--<span>{{logItem.crm_wl_remark}}</span>-->
+                                            <!--{{else}}-->
+                                            <!--<span>无</span>-->
+                                            <!--{{/if}}-->
+                                            <!--&lt;!&ndash;{{each logItem.remarkImg as src}}&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<img src={{src}} alt="">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;{{/each}}&ndash;&gt;-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--{{/each}}-->
+                        <!--{{/if}}-->
+                    <!--</div>-->
+                    <!--<div class="subFooter">-->
+                        <!--<div class="sloatPage">-->
+                            <!--<div class="buttonContainer">-->
+                                <!--{{if log2.pages}}-->
+                                <!--{{if log2.pages.length > 0}}-->
+                                <!--<span>{{log2.currentPage}}/{{log2.maxPage}}</span>-->
+                                <!--<a href="javascript:;" class="btn-sloatPage2 icon icon-left" data-page="left"></a>-->
+                                <!--{{each log2.pages as page}}-->
 
-                                {{/each}}
-                                <a href="javascript:;" class="btn-sloatPage2 icon icon-right" data-page="right"></i></a>
-                                {{/if}}
-                                {{/if}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{/if}}
-            </div>
-        </div>
-    </div>
-</script>
+                                <!--{{if page == log2.currentPage}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage2 active" data-page={{page}}>{{page}}</a>-->
+                                <!--{{else}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage2" data-page={{page}}>{{page}}</a>-->
+                                <!--{{/if}}-->
+
+                                <!--{{/each}}-->
+                                <!--<a href="javascript:;" class="btn-sloatPage2 icon icon-right" data-page="right"></i></a>-->
+                                <!--{{/if}}-->
+                                <!--{{/if}}-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--{{/if}}-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</script>-->
 
 <script type="text/html" id="adminLogMyCheck">
     <div class="subnavContainer clearfloat mycheckScreening">
@@ -2464,7 +2457,7 @@
             <ul>
                 {{each deptMembers as member}}
                     <li>
-                        <div class="item-content btn-removeMemver" data-userId="{{member.crm_user_id}}">
+                        <div class="item-content btn-removeMember" data-userId="{{member.crm_user_id}}">
                             <div class="item-inner">
                                 <div class="item-title-row">
                                     <div class="item-title">{{member.crm_name}}</div>
@@ -2530,7 +2523,7 @@
             <ul>
                 {{each deptMembers as member}}
                 <li>
-                    <div class="item-content btn-removeMemver" data-userId="{{member.crm_user_id}}">
+                    <div class="item-content btn-removeMember" data-userId="{{member.crm_user_id}}">
                         <div class="item-inner">
                             <div class="item-title-row">
                                 <div class="item-title">{{member.crm_name}}</div>
