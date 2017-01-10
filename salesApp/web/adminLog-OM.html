@@ -37,10 +37,13 @@
                     </div>
                 </div>
             </div>
-
+            <span class="addDeptMsg promptMsg"></span>
             <div class="content-block">
-                <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveNewDept">保存</a>
-                <span class="addDeptMsg promptMsg"></span>
+                <div class="subFooter">
+                    <div class="weui-btn-area">
+                        <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveNewDept">保存</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -120,10 +123,13 @@
                     </div>
                 </div>
             </div>
-
+            <span class="addMemberMsg promptMsg"></span>
             <div class="content-block">
-                <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveNewMember">保存</a>
-                <span class="addMemberMsg promptMsg"></span>
+                <div class="subFooter">
+                    <div class="weui-btn-area">
+                        <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveNewMember">保存</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -157,17 +163,74 @@
                     </div>
                     <div class="item-input">
                         <select class="parentDeptContainer">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+
                         </select>
                     </div>
                 </div>
             </div>
-
+            <span class="editDeptMsg promptMsg"></span>
             <div class="content-block">
-                <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveEditDept">保存</a>
-                <span class="editDeptMsg promptMsg"></span>
+                <div class="subFooter">
+                    <div class="weui-btn-area">
+                        <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveEditDept">保存</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popup popup-changeDept">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-right close-popup" style="color:white;">
+            关闭
+        </a>
+        <h1 class="title titleHead">更换部门</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        姓名
+                    </div>
+                    <div class="item-input">
+                        <input type="text" placeholder="" required="required" class="changeMem" data-id="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        部门名称
+                    </div>
+                    <div class="item-input">
+                        <select class="changeDept"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">
+                        部门级别
+                    </div>
+                    <div class="item-input">
+                        <select class="deptType">
+                            <option value="1">普通员工</option>
+                            <option value="2">管理者</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <span class="editDeptMsg promptMsg"></span>
+            <div class="content-block">
+                <div class="subFooter">
+                    <div class="weui-btn-area">
+                        <a href="javascript:;" class="weui-btn weui-btn_primary btn-saveChangeMemDept">保存</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

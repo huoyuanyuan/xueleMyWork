@@ -5,7 +5,6 @@ $(function () {
     var initFunc = {
         init: function () {
             this.addFooterClickEvent();
-            this.addNewContacts();
         },
         //添加footer点击事件
         addFooterClickEvent: function () {
@@ -21,30 +20,33 @@ $(function () {
                     else {
                         item_catefory.fadeOut(200);
                     }
-
                 }
-            });
-        },
-        //点击添加联系人按钮
-        //容器类名 .addNewContactsContainer
-        //添加内容Id名 #addNewContacts
-        //添加点击事件类名 .addNewContacts
-        addNewContacts: function () {
-            $(".addNewContacts").on("touchstart", function () {
-                var container = $(".addNewContactsContainer");
-                var innerHtml = $("#addNewContacts").html();
-                container.append(innerHtml);
             });
         }
     };
 
     var crm = {
         init: function () {
+            this.addNewContacts();
             this.radioChange();
             this.newDept();
             this.newSchool();
             this.newPartner();
         },
+        //点击添加联系人按钮
+        //容器类名 .addNewContactsContainer
+        //添加内容Id名 #addNewContacts
+        //添加点击事件类名 .addNewContacts
+        addNewContacts: function () {
+            var self = this;
+            $(".addNewContacts").on("touchend", function (e) {
+                var container = $(".addNewContactsContainer");
+                var innerHtml = $("#addNewContacts").html();
+                container.append(innerHtml);
+                $.initSwipeout(container.find(".swipeout"));
+            });
+        },
+
         //新增合伙人  单选项不同 是否新增一项
         //选择个人 隐藏（默认）   选择组织  显示
         radioChange: function () {
@@ -453,14 +455,20 @@ $(function () {
                         success: function (data) {
                             var data = JSON.parse(data);
                             if(data.status == 1){
-                                var userList = data.r.user_list;
-                                var userList = userList.filter(function (item) {
-                                    return item.crm_user_id != currentUserId
-                                })
-                                userList.forEach(function (item) {
-                                    var optionStr = "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
-                                    domStr += optionStr;
-                                })
+                                if(data.r){
+                                    var userList = data.r.user_list;
+                                    var userList = userList.filter(function (item) {
+                                        return item.crm_user_id != currentUserId
+                                    })
+                                    userList.forEach(function (item) {
+                                        var optionStr = "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
+                                        domStr += optionStr;
+                                    })
+                                }else {
+                                    domStr = "<option>无同事</option>"
+                                }
+
+
                                 container.append(domStr);
                             }
                         }
@@ -587,42 +595,50 @@ $(function () {
                 }else if(wl_end_time === ""){
                     $.alert("请选择终止时间")
                 }else {
-                    var map = comFunc.getLocation();
-                    var data = {
-                        type:parseInt(type),
-                        c_id:c_id,
-                        c_name:c_name,
-                        cc_id:cc_id,
-                        cc_name:cc_name,
-                        wl_stage:wl_stage,
-                        wl_target:parseInt(wl_target),
-                        wl_result:parseInt(wl_result),
-                        wl_start_time:wl_start_time,
-                        wl_end_time:wl_end_time,
-                        wl_remark:wl_remark,
-                        wl_other:wl_other,
-                        map:map
-                    }
-                    console.log(data);
-                    $.showPreloader("Loading...")
-                    $.ajax({
-                        url:"/webjson/work/addWorkLog.aspx",
-                        type:"POST",
-                        data:data,
-                        success: function (data) {
-                            var data = JSON.parse(data);
-                            if(data.errcode == "1"){
-                                $.alert("保存成功");
-                                self.clearInput();
-                            }else {
-                                console.error(data);
-                            }
-                        },
-                        error: function (err) {
-                            console.log(err);
-                            $.alert("保存失败,请稍后重试")
+                    comFunc.getLocation(function (result) {
+                        var map_name = result.detail.address;
+                        var map = JSON.stringify(result.detail.location);
+                        //微信服务器上图片ID （数组）
+                        var serverId = imageOption.imgInfo.uploadImageID;
+
+                        var data = {
+                            type:parseInt(type),
+                            c_id:c_id,
+                            c_name:c_name,
+                            cc_id:cc_id,
+                            cc_name:cc_name,
+                            wl_stage:wl_stage,
+                            wl_target:parseInt(wl_target),
+                            wl_result:parseInt(wl_result),
+                            wl_start_time:wl_start_time,
+                            wl_end_time:wl_end_time,
+                            wl_remark:wl_remark,
+                            wl_other:wl_other,
+                            map:map,
+                            map_name:map_name
                         }
-                    });
+                        console.log(data);
+                        $.showPreloader("Loading...")
+                        $.ajax({
+                            url:"/webjson/work/addWorkLog.aspx",
+                            type:"POST",
+                            data:data,
+                            success: function (data) {
+                                var data = JSON.parse(data);
+                                if(data.errcode == "1"){
+                                    $.alert("保存成功");
+                                    self.clearInput();
+                                }else {
+                                    console.error(data);
+                                }
+                            },
+                            error: function (err) {
+                                console.log(err);
+                                $.alert("保存失败,请稍后重试")
+                            }
+                        });
+                    })
+
                 }
             })
         },
@@ -655,7 +671,6 @@ $(function () {
             var timeSlot = comFunc.getNowTimeSlot();
             var currentTime = timeSlot.currentTimeH;
             var hintDom = self.makeHintDom(type,currentTime);
-            var map = comFunc.getLocation();
             var phoneMsg = comFunc.getPhoneMsg();
 
             //读取签到信息
@@ -693,31 +708,38 @@ $(function () {
                     $.alert("服务器繁忙，请稍后重试")
                 }
             });
-            //签到
-            var postData = {
-                type:parseInt(type),
-                map:map,
-                phone:phoneMsg
-            };
-            console.log(postData);
-            $.showPreloader("Loading...");
-            $.ajax({
-                url:"/webjson/signin/addSignIn.aspx",
-                type:"POST",
-                data:postData,
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    console.log(data);
-                    if(data.errcode == 1){
-                        container.append(hintDom);
-                        $.hidePreloader();
-                    }else if(data.errcode == -301){
-                        $.alert("已经打卡")
-                    }else {
-                        $.alert("打卡失败")
+
+            comFunc.getLocation(function (result) {
+                var map_name = result.detail.address;
+                var map = JSON.stringify(result.detail.location);
+                //签到
+                var postData = {
+                    type:parseInt(type),
+                    map:map,
+                    map_name:map_name,
+                    phone:phoneMsg
+                };
+                console.log(postData);
+                $.showPreloader("Loading...");
+                $.ajax({
+                    url:"/webjson/signin/addSignIn.aspx",
+                    type:"POST",
+                    data:postData,
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        console.log(data);
+                        if(data.errcode == 1){
+                            container.append(hintDom);
+                            $.hidePreloader();
+                        }else if(data.errcode == -301){
+                            $.alert("已经打卡")
+                        }else {
+                            $.alert("打卡失败")
+                        }
                     }
-                }
+                })
             })
+
         },
         //输入type 和 time 生成签到提示信息DOM
         makeHintDom: function (type,time) {
@@ -744,10 +766,10 @@ $(function () {
         },
         myInfo: function () {
             var container = $("#page-adminLog-myInfo");
-            var userName = container.find(".userName");
-            var userDept = container.find(".userDept");
-            var userPosition = container.find(".userPosition");
-            var userPhone = container.find(".userPhone");
+            var userNameDom = container.find(".userName");
+            var userDeptDom = container.find(".userDept");
+            var userPositionDom = container.find(".userPosition");
+            var userPhoneDom = container.find(".userPhone");
             //获取当前登录用户信息
             $.showPreloader("Loading...");
             $.ajax({
@@ -755,10 +777,35 @@ $(function () {
                 type:"GET",
                 success: function (data) {
                     var data = JSON.parse(data);
-                    userName.html(data.crm_name);
-                    userDept.html(data.department_info.crm_department_name);
-                    userPosition.html(data.crm_position);
-                    userPhone.html(data.crm_mobile);
+                    console.log(data);
+                    var userName = "",
+                        userDept = "",
+                        userPosition = "",
+                        userPhone = "";
+                    if(data.crm_name){
+                        userName = data.crm_name
+                    }else {
+                        userDept = "暂无";
+                    };
+                    if(data.department_info){
+                        userDept = data.department_info.crm_department_name
+                    }else {
+                        userDept = "暂无"
+                    };
+                    if(data.crm_position){
+                        userPosition = data.crm_position
+                    }else {
+                        userPosition = "暂无";
+                    };
+                    if(data.crm_mobile){
+                        userPhone = data.crm_mobile;
+                    }else {
+                        userPhone = "暂无"
+                    }
+                    userNameDom.html(userName);
+                    userDeptDom.html(userDept);
+                    userPositionDom.html(userPosition);
+                    userPhoneDom.html(userPhone);
                     $.hidePreloader();
                 },
                 error: function (err) {
@@ -832,6 +879,83 @@ $(function () {
         }
     };
 
+    var imageOption = {
+        imgInfo:{
+            chooseImageID:[],
+            uploadImageID:[],
+        },
+        uploadFinsh:true,
+        init: function () {
+            this.addPic();
+        },
+        addPic: function () {
+            var self = this;
+            $(".btn-addPic").on("click", function () {
+                wxJSSDK.imageApi({
+                    chooseImage:{
+                        success: function (res) {
+                            console.log(res);
+                            var chooseImageId = [];
+                            chooseImageId = res.localIds;   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            if(chooseImageId == 0){
+                                return false;
+                            }
+
+                            chooseImageId.forEach(function (item) {
+                                self.imgInfo.chooseImageID.push(item);
+                            })
+                            var imgStr = "";
+                            chooseImageId.forEach(function (item) {
+                                imgStr += "<img src='"+item+"' class='btn-preview'>"
+                            })
+                            $(".uploadPicContainer").find(".file_input").before(imgStr);
+
+                            //添加预览功能
+                            self.previewPic();
+
+                            //上传图片
+                            self.uploadFinsh = false;
+                            var i = 0,length = chooseImageId.length;
+
+                            function upload(){
+                                wxJSSDK.imageApi({
+                                    uploadImage:{
+                                        localId:chooseImageId[i],
+                                        success: function (res) {
+                                            i++;
+                                            self.imgInfo.uploadImageID.push(res.serverId);
+                                            if(i<length){
+                                                upload();
+                                            }else {
+                                                self.uploadFinsh = true;
+                                            }
+                                        },
+                                        fail: function (res) {
+                                            $.alert(JSON.stringify(res));
+                                        }
+                                    }
+                                })
+                            }
+                            upload();
+                        }
+                    }
+                })
+            });
+        },
+        previewPic: function () {
+            var self = this;
+            $(".btn-preview").unbind("touchend").on("touchend", function () {
+                var currentImgSrc = $(this).attr("src");
+                wxJSSDK.imageApi({
+                    previewImage:{
+                        current:currentImgSrc,
+                        urls:self.imgInfo.chooseImageID
+                    }
+                })
+            });
+        }
+    }
+
     function init(){
         initFunc.init();
     }
@@ -853,7 +977,8 @@ $(function () {
     });
     $(document).on("pageInit","#page-datetime-picker", function () {
         myLog.init();
-        uploadPic.init();
+        //uploadPic.init();
+        imageOption.init();
     });
     $(document).on("pageInit","#page-myLog-signIn", function () {
         myLog.signIn();

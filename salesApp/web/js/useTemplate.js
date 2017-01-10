@@ -28,6 +28,7 @@ $(function () {
                 success: function (data) {
                     var data = JSON.parse(data);
                     if(data.status == "1"){
+                        console.log(data);
                         templateData.count = data.count;
                         var cards = self.initTemplateData(data);
                         templateData.cards = cards;
@@ -80,6 +81,7 @@ $(function () {
                     areaObj[areaCode].push(dataArr[i]);
                 }
             }
+            console.log(areaObj)
             for(var index in areaObj){
                 var obj = {};
                 var items = areaObj[index];
@@ -264,8 +266,10 @@ $(function () {
             //渲染模板数据
             var end = setInterval(function () {
                 if(flgccDetail && flgccLink && flgccLog){
-                    self.data = templateData;
+                    var userType = UserInfo.user_department_info.crm_type;
+                    templateData.userType = userType;
                     console.log(templateData);
+                    self.data = templateData;
                     self.useTemplate();
                     $.hidePreloader();
                     clearInterval(end);
@@ -288,6 +292,7 @@ $(function () {
         redistributeEvent: function () {
             var self = this;
             $(".btn-redistribute").unbind("touchstart").on("touchstart", function () {
+                self.userList = [];
                 var container = $("#userName");
                 $.ajax({
                     url:"/webjson/dept/getMyDeptList.aspx",
@@ -295,13 +300,18 @@ $(function () {
                     success: function (data) {
                         var data = JSON.parse(data);
                         if(data.status == 1){
-                            self.initUserData(data.r);
-                            var userList = self.userList;
                             var optionStr = ""
-                            userList.forEach(function (item) {
-                                optionStr += "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
-                            })
-                           container.html(optionStr);
+                            if(data.r){
+                                self.initUserData(data.r);
+                                var userList = self.userList;
+                                userList.forEach(function (item) {
+                                    optionStr += "<option value='"+item.crm_user_id+"'>"+item.crm_name+"</option>"
+                                })
+
+                            }else {
+                                optionStr = "<option value='0'>无人员</option>"
+                            }
+                            container.html(optionStr);
                         }else {
                             console.error(data);
                         }
@@ -324,34 +334,38 @@ $(function () {
                 console.log("userId:"+userId);
                 console.log("userName:"+userName);
                 console.log("crm_c_id:"+crm_c_id)
-                $.confirm(userName+"?","确定分配给", function () {
-                    var postData = {
-                        id:crm_c_id,
-                        user_id:userId
-                    };
-                    console.log(postData);
-                    //设置客户归属人
-                    $.showPreloader("Loading...");
-                    $.ajax({
-                        url:"/webjson/customer/setCustomerUserID.aspx",
-                        type:"POST",
-                        data:postData,
-                        success: function (data) {
-                            var data = JSON.parse(data);
-                            if(data.errcode == 1){
-                                $.alert("分配成功");
-                            }else {
-                                console.error(data);
-                                $.alert("分配失败，请稍后重试")
+                if(userId == 0){
+                    $.alert("请选择人员")
+                }else {
+                    $.confirm(userName+"?","确定分配给", function () {
+                        var postData = {
+                            id:crm_c_id,
+                            user_id:userId
+                        };
+                        console.log(postData);
+                        //设置客户归属人
+                        $.showPreloader("Loading...");
+                        $.ajax({
+                            url:"/webjson/customer/setCustomerUserID.aspx",
+                            type:"POST",
+                            data:postData,
+                            success: function (data) {
+                                var data = JSON.parse(data);
+                                if(data.errcode == 1){
+                                    $.alert("分配成功");
+                                }else {
+                                    console.error(data);
+                                    $.alert("分配失败，请稍后重试")
+                                }
+                            },
+                            error: function (err) {
+                                console.log(err);
+                                $.alert("服务器繁忙，请稍后重试");
                             }
-                        },
-                        error: function (err) {
-                            console.log(err);
-                            $.alert("服务器繁忙，请稍后重试");
-                        }
-                    });
+                        });
+                    })
+                }
 
-                })
             });
         },
         //处理查询后成员数据
@@ -901,7 +915,7 @@ $(function () {
             });
             //保存编辑信息
             $(".btn-saveEditCC").unbind("touchstart").on("touchstart", function () {
-                var content = $(this).parent().parent();
+                var content = $(this).parents(".content");
                 var editCCName = content.find(".editCCName").val();
                 var editCCPhone = content.find(".editCCPhone").val();
                 var editCCPosition = content.find(".editCCPosition").val();
@@ -945,6 +959,29 @@ $(function () {
                     });
                 }
             })
+        }
+    };
+
+    var adminLog = {
+        data:{},
+        init: function () {
+            this.getPageData();
+        },
+        getPageData: function () {
+            var userType = UserInfo.user_department_info.crm_type;
+            var templateData = {};
+            templateData = UserInfo;
+            this.data = templateData;
+            console.log(templateData);
+            this.useTemplate();
+        },
+        useTemplate: function () {
+            var html = template("adminLog",this.data);
+            $("#page-adminLog").html(html);
+            this.pageEvent();
+        },
+        pageEvent: function () {
+            comFunc.addFooterClickEvent();
         }
     }
 
@@ -1476,6 +1513,7 @@ $(function () {
         getAllDeptData: function (value) {
             var self = this;
             var templateData = {};
+            self.deptArr = [];
 
             var timeSlot = comFunc.getNowTimeSlot();
             var sdate = "";
@@ -1513,12 +1551,16 @@ $(function () {
                 success: function (data) {
                     var data = JSON.parse(data);
                     if(data.status == 1){
-                        self.initDeptData(data.r);
-                        templateData.dept = self.deptArr;
-                        console.log(templateData);
-                        self.data = templateData;
-                        self.useTemplate();
-                        $.hidePreloader();
+                        if(data.r){
+                            self.initDeptData(data.r);
+                            templateData.dept = self.deptArr;
+                            console.log(templateData);
+                            self.data = templateData;
+                            self.useTemplate();
+                            $.hidePreloader();
+                        }else {
+                            $.alert("无部门")
+                        }
                     }else {
                         console.error(data);
                     }
@@ -1704,6 +1746,7 @@ $(function () {
                         var start = {};
                         start.crm_phone = item.crm_phone
                         start.crm_map = item.crm_map;
+                        start.crm_map_name = item.crm_map_name;
                         start.crm_addtime = item.crm_addtime;
                         start.crm_tag = item.crm_tag
                         start.crm_user_id = item.crm_user_id;
@@ -1714,6 +1757,7 @@ $(function () {
                         var end = {};
                         end.crm_phone = item.crm_phone
                         end.crm_map = item.crm_map;
+                        end.crm_map_name = item.crm_map_name;
                         end.crm_addtime = item.crm_addtime;
                         end.crm_tag = item.crm_tag
                         end.crm_user_id = item.crm_user_id;
@@ -1848,6 +1892,7 @@ $(function () {
                         var start = {};
                         start.crm_phone = item.crm_phone
                         start.crm_map = item.crm_map;
+                        start.crm_map_name = item.crm_map_name;
                         start.crm_addtime = item.crm_addtime;
                         start.crm_tag = item.crm_tag
                         start.crm_user_id = item.crm_user_id;
@@ -1858,6 +1903,7 @@ $(function () {
                         var end = {};
                         end.crm_phone = item.crm_phone
                         end.crm_map = item.crm_map;
+                        end.crm_map_name = item.crm_map_name;
                         end.crm_addtime = item.crm_addtime;
                         end.crm_tag = item.crm_tag
                         end.crm_user_id = item.crm_user_id;
@@ -2746,29 +2792,40 @@ $(function () {
         getPageData: function () {
             var self = this;
             var templateData = {};
+            self.deptArr = [];
+
             //获取当前登录用户信息
-            $.showPreloader("Loading...")
-            $.ajax({
-                url:"/webjson/dept/getMyDeptList.aspx",
-                type:"GET",
-                success: function (data) {
-                    var data = JSON.parse(data);
-                    if(data.status == 1){
-                        self.initDeptData(data.r);
-                        templateData.deptArr = self.deptArr;
-                        self.data = templateData;
-                        console.log(templateData);
-                        self.useTemplate();
-                        $.hidePreloader();
-                    }else {
-                        console.error(data);
+            var userInfo = UserInfo;
+            var userType = userInfo.user_department_info.crm_type;
+            if(userType == 1){
+                userInfo.department_info.deptMemberNum = userInfo.department_info.crm_department_count
+                self.deptArr.push(userInfo.department_info);
+                templateData.deptArr = self.deptArr;
+            }else {
+                $.showPreloader("Loading...")
+                $.ajax({
+                    url:"/webjson/dept/getMyDeptList.aspx",
+                    type:"GET",
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.status == 1){
+                            self.initDeptData(data.r);
+                            templateData.deptArr = self.deptArr;
+                            self.data = templateData;
+                            console.log(templateData);
+                            self.useTemplate();
+                            $.hidePreloader();
+                        }else {
+                            console.error(data);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.alert("服务器繁忙，请稍后重试")
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                    $.alert("服务器繁忙，请稍后重试")
-                }
-            });
+                });
+            }
+
             self.data = templateData;
             self.useTemplate();
         },
@@ -3129,6 +3186,7 @@ $(function () {
         data:{},
         init: function () {
             this.getPageData();
+            $.initSwipeout();
         },
         getPageData: function () {
             var self = this;
@@ -3203,17 +3261,27 @@ $(function () {
             this.addNewDept();
             this.addNewMember();
             this.addActionSheet();
+            //this.operationMember();
+
             this.removeMember();
+            this.optionMember();
         },
-        //删除成员操作
+
+        //成员操作
+        //移除成员
         removeMember: function () {
             var self = this;
-            $(".btn-removeMember").on("click", function () {
-                var useId = $(this).data("userId");
-                var useName = $(this).find(".item-title").html();
-                $.confirm("确定移除"+useName+"?","移除成员", function () {
+            $(".btn-deleteUser").on("click", function () {
+                var clicked = $(this);
+
+                var userId = $(this).data("userId");
+                var userName = $(this).data("userName");
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                $.confirm("确定移除"+userName+"?","移除成员", function () {
                     var postData = {
-                        id:useId
+                        id:userId
                     }
                     console.log(postData);
                     $.showPreloader("Loading...")
@@ -3224,7 +3292,8 @@ $(function () {
                         success: function (data) {
                             var data = JSON.parse(data);
                             if(data.errcode == 1){
-                                self.getPageData();
+                                $.swipeoutDelete(clicked.parents('.swipeout'));
+                                $.hidePreloader();
                             }else{
                                 console.error(data);
                                 $.alert("删除失败，请稍后重试")
@@ -3235,9 +3304,203 @@ $(function () {
                             $.alert("服务器繁忙，请稍后重试");
                         }
                     });
-
                 })
+
+            });
+        },
+        //设置成员
+        optionMember: function () {
+            var self = this;
+            $(".btn-changeUser").on("click", function () {
+                var userId = $(this).data("userId");
+                var userName = $(this).data("userName");
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                var editPageDom = $(".popup-changeDept")
+                var editPage = editPageDom.eq(editPageDom.length-1);
+                var memName = editPage.find(".changeMem");
+                var deptName = editPage.find(".changeDept");
+                var deptType = editPage.find(".deptType");
+
+                memName.val(userName);
+                memName.data("id",userId);
+
+                deptType.find("option[value="+userType+"]").attr("selected",true);
+
+                var optionStr = "";
+                //获取部门列表
+                $.ajax({
+                    url:"/webjson/dept/list.aspx?id=0",
+                    type:"GET",
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.status == 1){
+                            console.log(data);
+                            if(data.r){
+                                var dataArr = data.r;
+                                dataArr.forEach(function (item) {
+                                    optionStr += "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
+                                })
+                            }else {
+                                optionStr = "<option value='0'>无部门</option>"
+                            }
+                            deptName.html(optionStr);
+                            deptName.find("option[value="+deptId+"]").attr("selected",true);
+                        }else {
+                            console.error(data);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.alert("服务器繁忙，请稍后重试")
+                    }
+                });
+                self.saveChangeMem();
+            });
+        },
+
+        //成员操作 (目前没有使用这个方法)
+        //交互为效果为：点击选择操作
+        operationMember: function () {
+            var self = this;
+            $(".btn-operationMember").on("click", function () {
+                var userId = $(this).data("userId");
+                var userName = $(this).find(".item-title").html();
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                //添加操作选择
+                var buttons1 = [
+                    {
+                        text: '更换部门',
+                        bold: true,
+                        color: 'success',
+                        class:"open-popup",
+                        data_popup:".popup-changeDept",
+                        onClick: function () {
+                            var editPageDom = $(".popup-changeDept")
+                            var editPage = editPageDom.eq(editPageDom.length-1);
+                            var memName = editPage.find(".changeMem");
+                            var deptName = editPage.find(".changeDept");
+                            var deptType = editPage.find(".deptType");
+
+                            memName.val(userName);
+                            memName.data("id",userId);
+
+                            deptType.find("option[value="+userType+"]").attr("selected",true);
+
+                            var optionStr = "";
+                            //获取部门列表
+                            $.ajax({
+                                url:"/webjson/dept/list.aspx?id=0",
+                                type:"GET",
+                                success: function (data) {
+                                    var data = JSON.parse(data);
+                                    if(data.status == 1){
+                                        console.log(data);
+                                        if(data.r){
+                                            var dataArr = data.r;
+                                            dataArr.forEach(function (item) {
+                                                optionStr += "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
+                                            })
+                                        }else {
+                                            optionStr = "<option value='0'>无部门</option>"
+                                        }
+                                        deptName.html(optionStr);
+                                        deptName.find("option[value="+deptId+"]").attr("selected",true);
+                                    }else {
+                                        console.error(data);
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                    $.alert("服务器繁忙，请稍后重试")
+                                }
+                            });
+                            self.saveChangeMem();
+                        }
+                    },
+                    {
+                        text:"移除成员",
+                        bold:true,
+                        color:"success",
+                        onClick: function () {
+                            $.confirm("确定移除"+userName+"?","移除成员", function () {
+                                var postData = {
+                                    id:userId
+                                }
+                                console.log(postData);
+                                $.showPreloader("Loading...")
+                                $.ajax({
+                                    url:"/webjson/employee/delDept.aspx",
+                                    type:"POST",
+                                    data:postData,
+                                    success: function (data) {
+                                        var data = JSON.parse(data);
+                                        if(data.errcode == 1){
+                                            self.getPageData();
+                                        }else{
+                                            console.error(data);
+                                            $.alert("删除失败，请稍后重试")
+                                        }
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                        $.alert("服务器繁忙，请稍后重试");
+                                    }
+                                });
+                            })
+                        }
+                    }
+                ];
+                var buttons2 = [
+                    {
+                        text: '关闭',
+                        bg: 'danger'
+                    }
+                ];
+                var groups = [buttons1, buttons2];
+                $.actions(groups);
             })
+        },
+        //成员更换部门保存操作
+        saveChangeMem: function () {
+            var self = this;
+            $(".btn-saveChangeMemDept").on("click", function () {
+                var content = $(this).parents(".content");
+                var userId = content.find(".changeMem").data("id");
+                var did = content.find(".changeDept").val();
+                var type = content.find(".deptType").val();
+                var postData = {
+                    user_id:userId,
+                    did:did,
+                    type:type
+                };
+                console.log(postData);
+                //修改设置员工部门
+                $.showPreloader("Loading...");
+                $.ajax({
+                    url:"/webjson/employee/setUserDepartment.aspx",
+                    type:"POST",
+                    data:postData,
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.errcode == 1){
+                            self.getPageData();
+                            comFunc.refreshLoginUserInfo();
+                            $.alert("修改成功")
+                        }else {
+                            console.error(data);
+                            $.alert("修改失败，请稍后重试")
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.alert("服务器繁忙，请稍后重试");
+                    }
+                });
+            });
         },
         //删除部门操作 deptId(部门ID)
         removeDept: function (deptId) {
@@ -3408,7 +3671,6 @@ $(function () {
                 success: function (data) {
                     var data = JSON.parse(data);
                     if(data.status == 1){
-                        console.log(data);
                         var allDeptArr = data.r;
                         canMoveDept = allDeptArr.filter(function (item) {
                             var path = item.crm_department_path.slice(0,currentDeptPath.length);
@@ -3416,8 +3678,7 @@ $(function () {
                         });
                         var end = setInterval(function () {
                             if(flgParent){
-                                canMoveDept.unshift(parentDept)
-                                call&&call(canMoveDept);
+                                call&&call(canMoveDept,currentDeptParentId);
                                 flgParent = false;
                                 clearInterval(end);
                             }
@@ -3455,14 +3716,16 @@ $(function () {
                             var currentDept = data.r[0];
                             deptName.val(currentDept.crm_department_name);
                             deptName.attr("data-id",currentDept.crm_department_id)
-                            self.getCanMoveDept(data, function (canMoveDept) {
+                            self.getCanMoveDept(data, function (canMoveDept,currentDeptParentId) {
                                 var canMoveDept = canMoveDept;
+                                var currentDeptParentId = currentDeptParentId;
                                 var domStr = "";
                                 canMoveDept.forEach(function (item) {
                                     var optionStr = "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
                                     domStr += optionStr;
                                 });
                                 parentDeptContainer.html(domStr);
+                                parentDeptContainer.find("option[value="+currentDeptParentId+"]").attr("selected",true);
                             });
                         }else {
                             console.error(data);
@@ -3476,7 +3739,7 @@ $(function () {
             });
             //监听保存事件
             $(".btn-saveEditDept").unbind("touchstart").on("touchstart", function () {
-                var content = $(this).parent().parent();
+                var content = $(this).parents(".content");
                 var editDeptMsg = content.find(".editDeptMsg");
                 var deptNameDom = content.find(".deptName");
                 var parentDeptContainerDom = content.find(".parentDeptContainer");
@@ -3645,6 +3908,7 @@ $(function () {
         data:{},
         init: function () {
             this.getPageData();
+            $.initSwipeout();
         },
         getPageData: function () {
             var self = this;
@@ -3723,17 +3987,26 @@ $(function () {
             this.addNewDept();
             this.addNewMember();
             this.addActionSheet();
+            //this.operationMember();
+
             this.removeMember();
+            this.optionMember();
         },
-        //删除成员操作
+        //成员操作
+        //移除成员
         removeMember: function () {
             var self = this;
-            $(".btn-removeMember").on("click", function () {
-                var useId = $(this).data("userId");
-                var useName = $(this).find(".item-title").html();
-                $.confirm("确定移除"+useName+"?","移除成员", function () {
+            $(".btn-deleteUser").on("click", function () {
+                var clicked = $(this);
+
+                var userId = $(this).data("userId");
+                var userName = $(this).data("userName");
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                $.confirm("确定移除"+userName+"?","移除成员", function () {
                     var postData = {
-                        id:useId
+                        id:userId
                     }
                     console.log(postData);
                     $.showPreloader("Loading...")
@@ -3744,10 +4017,11 @@ $(function () {
                         success: function (data) {
                             var data = JSON.parse(data);
                             if(data.errcode == 1){
-                                self.getPageData();
-                            }else {
+                                $.swipeoutDelete(clicked.parents('.swipeout'));
+                                $.hidePreloader();
+                            }else{
                                 console.error(data);
-                                $.alert("移除失败，请稍后重试")
+                                $.alert("删除失败，请稍后重试")
                             }
                         },
                         error: function (err) {
@@ -3755,9 +4029,203 @@ $(function () {
                             $.alert("服务器繁忙，请稍后重试");
                         }
                     });
-
                 })
+
+            });
+        },
+        //设置成员
+        optionMember: function () {
+            var self = this;
+            $(".btn-changeUser").on("click", function () {
+                var userId = $(this).data("userId");
+                var userName = $(this).data("userName");
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                var editPageDom = $(".popup-changeDept")
+                var editPage = editPageDom.eq(editPageDom.length-1);
+                var memName = editPage.find(".changeMem");
+                var deptName = editPage.find(".changeDept");
+                var deptType = editPage.find(".deptType");
+
+                memName.val(userName);
+                memName.data("id",userId);
+
+                deptType.find("option[value="+userType+"]").attr("selected",true);
+
+                var optionStr = "";
+                //获取部门列表
+                $.ajax({
+                    url:"/webjson/dept/list.aspx?id=0",
+                    type:"GET",
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.status == 1){
+                            console.log(data);
+                            if(data.r){
+                                var dataArr = data.r;
+                                dataArr.forEach(function (item) {
+                                    optionStr += "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
+                                })
+                            }else {
+                                optionStr = "<option value='0'>无部门</option>"
+                            }
+                            deptName.html(optionStr);
+                            deptName.find("option[value="+deptId+"]").attr("selected",true);
+                        }else {
+                            console.error(data);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.alert("服务器繁忙，请稍后重试")
+                    }
+                });
+                self.saveChangeMem();
+            });
+        },
+        //成员操作 (目前没有使用这个方法)
+        //交互为效果为：点击选择操作
+        operationMember: function () {
+            var self = this;
+            $(".btn-operationMember").on("click", function () {
+                var userId = $(this).data("userId");
+                var userName = $(this).find(".item-title").html();
+                var userType = $(this).data("userType");
+                var deptId = comFunc.url(window.location.href).deptId;
+
+                //添加操作选择
+                var buttons1 = [
+                    {
+                        text: '更换部门',
+                        bold: true,
+                        color: 'success',
+                        class:"open-popup",
+                        data_popup:".popup-changeDept",
+                        onClick: function () {
+                            var editPageDom = $(".popup-changeDept");
+                            var editPage = editPageDom.eq(editPageDom.length-1);
+                            var memName = editPage.find(".changeMem");
+                            var deptName = editPage.find(".changeDept");
+                            var deptType = editPage.find(".deptType");
+
+                            memName.val(userName);
+                            memName.data("id",userId);
+
+                            deptType.find("option[value="+userType+"]").attr("selected",true);
+
+
+                            var optionStr = "";
+                            //获取部门列表
+                            $.ajax({
+                                url:"/webjson/dept/list.aspx?id=0",
+                                type:"GET",
+                                success: function (data) {
+                                    var data = JSON.parse(data);
+                                    if(data.status == 1){
+                                        console.log(data);
+                                        if(data.r){
+                                            var dataArr = data.r;
+                                            dataArr.forEach(function (item) {
+                                                optionStr += "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
+                                            })
+                                        }else {
+                                            optionStr = "<option value='0'>无部门</option>"
+                                        }
+                                        deptName.html(optionStr);
+                                        deptName.find("option[value="+deptId+"]").attr("selected",true);
+                                    }else {
+                                        console.error(data);
+                                    }
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                    $.alert("服务器繁忙，请稍后重试")
+                                }
+                            });
+                            self.saveChangeMem();
+                        }
+                    },
+                    {
+                        text:"移除成员",
+                        bold:true,
+                        color:"success",
+                        onClick: function () {
+                            $.confirm("确定移除"+userName+"?","移除成员", function () {
+                                var postData = {
+                                    id:useId
+                                }
+                                console.log(postData);
+                                $.showPreloader("Loading...")
+                                $.ajax({
+                                    url:"/webjson/employee/delDept.aspx",
+                                    type:"POST",
+                                    data:postData,
+                                    success: function (data) {
+                                        var data = JSON.parse(data);
+                                        if(data.errcode == 1){
+                                            self.getPageData();
+                                        }else{
+                                            console.error(data);
+                                            $.alert("删除失败，请稍后重试")
+                                        }
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                        $.alert("服务器繁忙，请稍后重试");
+                                    }
+                                });
+                            })
+                        }
+                    }
+                ];
+                var buttons2 = [
+                    {
+                        text: '关闭',
+                        bg: 'danger'
+                    }
+                ];
+                var groups = [buttons1, buttons2];
+                $.actions(groups);
             })
+        },
+        //成员更换部门保存操作
+        saveChangeMem: function () {
+            var self = this;
+            $(".btn-saveChangeMemDept").on("click", function () {
+                var content = $(this).parents(".content");
+                var userId = content.find(".changeMem").data("id");
+                var did = content.find(".changeDept").val();
+                var type = content.find(".deptType").val();
+                var postData = {
+                    user_id:userId,
+                    did:did,
+                    type:type
+                };
+                console.log(postData);
+                //修改设置员工部门
+                $.showPreloader("Loading...");
+                $.ajax({
+                    url:"/webjson/employee/setUserDepartment.aspx",
+                    type:"POST",
+                    data:postData,
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if(data.errcode == 1){
+                            self.getPageData();
+                            comFunc.refreshLoginUserInfo();
+                            $.alert("修改成功")
+                        }else {
+                            console.error(data);
+                            $.alert("修改失败，请稍后重试")
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.alert("服务器繁忙，请稍后重试");
+                    }
+                });
+            });
         },
         //删除部门操作 deptId(部门ID)
         removeDept: function (deptId) {
@@ -3879,14 +4347,16 @@ $(function () {
                             var currentDept = data.r[0];
                             deptName.val(currentDept.crm_department_name);
                             deptName.attr("data-id",currentDept.crm_department_id)
-                            adminLogOM.getCanMoveDept(data, function (canMoveDept) {
+                            adminLogOM.getCanMoveDept(data, function (canMoveDept,currentDeptParentId) {
                                 var canMoveDept = canMoveDept;
+                                var currentDeptParentId = currentDeptParentId;
                                 var domStr = "";
                                 canMoveDept.forEach(function (item) {
                                     var optionStr = "<option value='"+item.crm_department_id+"'>"+item.crm_department_name+"</option>"
                                     domStr += optionStr;
                                 });
                                 parentDeptContainer.html(domStr);
+                                parentDeptContainer.find("option[value="+currentDeptParentId+"]").attr("selected",true);
                             });
                         }else {
                             console.error(data);
@@ -3900,7 +4370,7 @@ $(function () {
             });
             //监听保存事件
             $(".btn-saveEditDeptCopy").unbind("touchstart").on("touchstart", function () {
-                var content = $(this).parent().parent();
+                var content = $(this).parents(".content");
                 var editDeptMsg = content.find(".editDeptMsg");
                 var deptNameDom = content.find(".deptName");
                 var parentDeptContainerDom = content.find(".parentDeptContainer");
@@ -4088,6 +4558,12 @@ $(function () {
         });
         $(document).on("pageInit","#page-contactsDetail" ,function () {
             contactsDetail.init();
+        });
+        $(document).on("pageInit","#page-adminLog" ,function () {
+            adminLog.init();
+        });
+        $(document).on("pageReinit","#page-adminLog" ,function () {
+            adminLog.init();
         });
         $(document).on("pageInit","#page-adminLog-newAddTarget" ,function () {
             adminLogNewAddTarget.init();

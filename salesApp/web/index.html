@@ -18,6 +18,23 @@
     <script src="js/comFunc.js"></script>
     <script src="js/base.js"></script>
     <script src="js/useTemplate.js"></script>
+    <script src="js/userInfo.js"></script>
+    <script src="js/login.js"></script>
+
+    <!--微信文件-->
+    <!--依赖腾讯地图服务-->
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&libraries=convertor"></script>
+    <!--依赖文件：微信的JSSDK源文件-->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <!--依赖文件：cookie-->
+    <script src="js/weixin/cookie.js"></script>
+    <!--JSSDK的环境-->
+    <script src="js/weixin/wxJSSDK.js"></script>
+    <!--需要微信模块-->
+    <script src="js/weixin/module/imageApi.js"></script>
+    <script src="js/weixin/module/location.js"></script>
+
+
     <script type="text/javascript">
         // 先访问 http://qyweixin.xueleyun.com/webjson/login.aspx 登录用户，访问即可无需用户名密码，服务端会写死固定用户登录
         // 本地启 gulp connect做转发服务
@@ -28,6 +45,7 @@
 //             console.log(JSON.parse(data).errcode);
 //         });
     </script>
+
 </head>
 <body>
 
@@ -89,32 +107,41 @@
 </div>
 
 <script type="text/html" id="addNewContacts">
-    <ul>
-        <li>
-            <div class="item-content">
-                <div class="item-title label">姓名</div>
-                <div class="item-input">
-                    <input type="text" placeholder="请输入姓名" class="ccName">
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-title label">职务</div>
-                <div class="item-input">
-                    <input type="text" placeholder="请输入职务" class="ccPosition">
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-title label">电话</div>
-                <div class="item-input">
-                    <input type="tel" placeholder="请输入电话" class="ccPhone">
-                </div>
-            </div>
-        </li>
-    </ul>
+    <div class="swipeout">
+        <div class="swipeout-content">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-title label">姓名</div>
+                        <div class="item-input">
+                            <input type="text" placeholder="请输入姓名" class="ccName">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-title label">职务</div>
+                        <div class="item-input">
+                            <input type="text" placeholder="请输入职务" class="ccPosition">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-title label">电话</div>
+                        <div class="item-input">
+                            <input type="tel" placeholder="请输入电话" class="ccPhone">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="swipeout-actions-left">
+            <a href="#" class="swipeout-delete bg-danger">删除</a>
+        </div>
+    </div>
+
 </script>
 
 <!-----------模板定义----------------------->
@@ -234,7 +261,9 @@
         <div class="buttons-tab">
             <a href="#crmTab1" class="tab-link button active">客户历史(<span>{{wlcount}}</span>)</a>
             <a href="#crmTab2" class="tab-link button">联系人(<span>{{contactcount}}</span>)</a>
+            {{if userType == 2}}
             <a href="#crmTab3" class="tab-link button">管理</a>
+            {{/if}}
         </div>
 
         <div class="tabs">
@@ -527,7 +556,7 @@
         </div>
         {{/if}}
     </div>
-    <div class="bar bar-standard bar-footer">
+    <div class="bar bar-standard bar-footer" style="height: 2.5rem">
         <button class="weui-btn weui-btn_primary btn-saveSchool">保存客户信息</button>
     </div>a
     {{/if}}
@@ -574,6 +603,7 @@
                             </div>
                         </div>
                     </li>
+                    {{if detail.crm_c_category == 1}}
                     <li class="organizationNone" style="display: none;">
                         <div class="item-content">
                             <div class="item-inner">
@@ -588,6 +618,23 @@
                             </div>
                         </div>
                     </li>
+                    {{else}}
+                    <li class="organizationNone">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">名称</div>
+                                <div class="item-input">
+                                    {{if detail.crm_c_category == 1}}
+                                    <input type="text" readonly value="{{detail.crm_c_name}}" placeholder="请输入名称" class="partnerOrgName">
+                                    {{else}}
+                                    <input type="text" value="{{detail.crm_c_name}}" placeholder="请输入名称" class="partnerOrgName">
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {{/if}}
+
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
@@ -661,7 +708,7 @@
         </div>
         {{/if}}
     </div>
-    <div class="bar bar-standard bar-footer">
+    <div class="bar bar-standard bar-footer" style="height: 2.5rem">
         <button class="weui-btn weui-btn_primary btn-savePartner">保存客户信息</button>
     </div>
     {{/if}}
@@ -797,7 +844,7 @@
         </div>
         {{/if}}
     </div>
-    <div class="bar bar-standard bar-footer">
+    <div class="bar bar-standard bar-footer" style="height: 2.5rem">
         <button class="weui-btn weui-btn_primary btn-saveDept">保存客户信息</button>
     </div>
     {{/if}}
@@ -810,7 +857,7 @@
         </a>
         <h1 class="title titleHead">通讯录</h1>
     </header>
-
+    {{if alphabets}}
     <div class="subHeader">
         <div class="subnavContainer clearfloat">
             <div class="left">
@@ -849,7 +896,7 @@
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--&lt;!&ndash;</div>&ndash;&gt;-->
         <!--</div>-->
-        {{if alphabets}}
+
             {{each alphabets as alphabet}}
                 <div class="content-block-title marginCard">
                     <span>{{alphabet.alphabet}}</span>
@@ -879,8 +926,8 @@
                     </div>
                 </div>
             {{/each}}
-        {{/if}}
-    </div>
+        </div>
+    {{/if}}
 </script>
 
 <script type="text/html" id="contactsDetail">
@@ -924,6 +971,173 @@
             </ul>
         </div>
     </div>
+</script>
+
+<script type="text/html" id="adminLog">
+    <header class="bar bar-nav">
+        <a class="button button-link button-nav pull-left back" href="index.html">
+            <span class="icon icon-left"></span>
+        </a>
+        <h1 class="title titleHead">管理日志</h1>
+    </header>
+    <div class="content">
+
+    </div>
+    <nav class="bar bar-tab">
+        <div class="tab-item">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">新增</span>
+            <div class="list-block item_catefory">
+                <ul>
+                    <li>
+                        <a href="adminLog-newAddTarget.html?type=3">
+                            <div class="item-content">
+                                <div class="item-inner ">
+                                    <div class="item-title font_center">机构</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-newAddTarget.html?type=1">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">学校</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-newAddTarget.html?type=2">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">合伙人</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-newAddContacts.html">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">联系人</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-item">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">日志</span>
+            <div class="list-block item_catefory">
+                <ul>
+
+                    {{if user_department_info}}
+                    {{if user_department_info.crm_type == 2}}
+                    <li>
+                        <a href="adminLog-attendance.html">
+                            <div class="item-content">
+                                <div class="item-inner ">
+                                    <div class="item-title font_center">考勤</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{/if}}
+
+                    <li>
+                        <a href="adminLog-attendanceMy.html">
+                            <div class="item-content">
+                                <div class="item-inner ">
+                                    <div class="item-title font_center">我的考勤</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-log.html?targetId=1">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">我的日志</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-log.html?targetId=2">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">部门日志</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-log.html?targetId=3">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">全部日志</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-item">
+            <span class="icon icon-menu"></span>
+            <span class="tab-label">我的</span>
+            <div class="list-block item_catefory">
+                <ul>
+                    <li>
+                        <a href="adminLog-OM.html?deptId={{user_department_info.crm_department_id}}">
+                            <div class="item-content">
+                                <div class="item-inner ">
+                                    <div class="item-title font_center">组织管理</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {{if user_department_info}}
+                    {{if user_department_info.crm_type == 2}}
+
+                    <li>
+                        <a href="adminLog-myCheck.html">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">我的审核</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {{/if}}
+                    {{/if}}
+
+                    <li>
+                        <a href="adminLog-myDept.html">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">我的部门</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="adminLog-myInfo.html">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title font_center">我的信息</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </script>
 
 <script type="text/html" id="adminLogNewAddTarget">
@@ -1238,7 +1452,7 @@
                             {{/if}}
                         </div>
                         <div class="adress">
-                            {{date.start.crm_map}}
+                            {{date.start.crm_map_name}}
                         </div>
                     </div>
                     {{else}}
@@ -1258,7 +1472,7 @@
                             {{/if}}
                         </div>
                         <div class="adress">
-                            {{date.end.crm_map}}
+                            {{date.end.crm_map_name}}
                         </div>
                     </div>
                     {{else}}
@@ -1368,7 +1582,7 @@
                             {{/if}}
                         </div>
                         <div class="adress">
-                            {{date.start.crm_map}}
+                            {{date.start.crm_map_name}}
                         </div>
                     </div>
                     {{else}}
@@ -1388,7 +1602,7 @@
                             {{/if}}
                         </div>
                         <div class="adress">
-                            {{date.end.crm_map}}
+                            {{date.end.crm_map_name}}
                         </div>
                     </div>
                     {{else}}
@@ -2374,7 +2588,7 @@
             {{/each}}
             {{/if}}
         </div>
-        <div class="subFooter">
+        <div class="subFooter" style="background-color:white;">
             <div class="sloatPage">
                 <div class="buttonContainer">
                     {{if pages}}
@@ -2456,15 +2670,22 @@
             {{if deptMembers}}
             <ul>
                 {{each deptMembers as member}}
-                    <li>
-                        <div class="item-content btn-removeMember" data-userId="{{member.crm_user_id}}">
-                            <div class="item-inner">
-                                <div class="item-title-row">
-                                    <div class="item-title">{{member.crm_name}}</div>
-                                    <div class="item-after">{{member.crm_position}}</div>
+                    <li class="swipeout">
+                        <div class="swipeout-content">
+                            <div class="item-content btn-operationMember" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">{{member.crm_name}}</div>
+                                        <div class="item-after">{{member.crm_position}}</div>
+                                    </div>
+                                    <div class="item-subtitle">电话：{{member.crm_mobile}}</div>
                                 </div>
-                                <div class="item-subtitle">电话：{{member.crm_mobile}}</div>
                             </div>
+                        </div>
+
+                        <div class="swipeout-actions-left">
+                            <a class="bg-success swipeout-close btn-changeUser open-popup" data-popup=".popup-changeDept" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}" data-userName="{{member.crm_name}}">设置</a>
+                            <a class="bg-danger swipeout-close btn-deleteUser" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}" data-userName="{{member.crm_name}}">移除</a>
                         </div>
                     </li>
                 {{/each}}
@@ -2522,15 +2743,22 @@
             {{if deptMembers}}
             <ul>
                 {{each deptMembers as member}}
-                <li>
-                    <div class="item-content btn-removeMember" data-userId="{{member.crm_user_id}}">
-                        <div class="item-inner">
-                            <div class="item-title-row">
-                                <div class="item-title">{{member.crm_name}}</div>
-                                <div class="item-after">{{member.crm_position}}</div>
+                <li class="swipeout">
+                    <div class="swipeout-content">
+                        <div class="item-content btn-operationMember" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}">
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">{{member.crm_name}}</div>
+                                    <div class="item-after">{{member.crm_position}}</div>
+                                </div>
+                                <div class="item-subtitle">电话：{{member.crm_mobile}}</div>
                             </div>
-                            <div class="item-subtitle">电话：{{member.crm_mobile}}</div>
                         </div>
+                    </div>
+
+                    <div class="swipeout-actions-left">
+                        <a class="bg-success swipeout-close btn-changeUser open-popup" data-popup=".popup-changeDept" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}" data-userName="{{member.crm_name}}">设置</a>
+                        <a class="bg-danger swipeout-close btn-deleteUser" data-userId="{{member.crm_user_id}}" data-userType="{{member.user_department_info.crm_type}}" data-userName="{{member.crm_name}}">移除</a>
                     </div>
                 </li>
                 {{/each}}
@@ -2547,5 +2775,6 @@
 <script src="lib/dist/js/base.js"></script>
 <!--<script src="js/demos.js"></script>-->
 <script src="lib/dist/js/city-picker.js"></script>
+<script src="lib/dist/js/swipeout.js"></script>
 </body>
 </html>

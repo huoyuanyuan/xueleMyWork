@@ -33,6 +33,45 @@ $(function () {
             }
         },
 
+        //添加footer点击事件
+        addFooterClickEvent: function () {
+            $(".tab-item").unbind("touchstart").on("touchstart", function () {
+                $(".tab-item").not($(this)).find(".item_catefory").hide();
+                var item_catefory = $(this).find(".item_catefory");
+                if(item_catefory.length){
+                    var height = item_catefory.height()+30;
+                    item_catefory.css("top",-height+"px");
+                    if(item_catefory.is(":hidden")){
+                        item_catefory.fadeIn(200);
+                    }
+                    else {
+                        item_catefory.fadeOut(200);
+                    }
+
+                }
+            });
+        },
+
+        //刷新登陆用户信息
+        refreshLoginUserInfo: function () {
+            $.ajax({
+                url:"/webjson/employee/getMyInfo.aspx",
+                type:"GET",
+                success: function (data) {
+                    var data = JSON.parse(data);
+                    console.log(data);
+                    if(!data.user_department_info){
+                        window.location.href = "loginError.html";
+                    }else {
+                        UserInfo = data;
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        },
+
         //使用全屏Mask
         addMask: function (element) {
             var self = this;
@@ -255,12 +294,30 @@ $(function () {
         },
 
         //获得当前定位
-        getLocation: function () {
+        getLocation: function (call) {
             var currentLocation = "";
             currentLocation = "浙江省杭州市滨江区智慧e谷";
 
-            return currentLocation;
+            var geocoder = new qq.maps.Geocoder({
+                complete: function (result) {
+                    console.log(result);
+                    call && call(result);
+                }
+            });
+            //调用微信接口获取定位信息
+            wxJSSDK.location({
+                getLocation:{
+                    success: function (res) {
+                        //获取经纬度
+                        var lat = res.latitude,
+                            lng = res.longitude,
+                            latLng = new qq.maps.LatLng(lat,lng);
+                        geocoder.getAddress(latLng);        //反地址解析
+                    }
+                }
+            })
         },
+
         //获得移动设备信息
         getPhoneMsg: function () {
             var currentPhoneMsg = "";

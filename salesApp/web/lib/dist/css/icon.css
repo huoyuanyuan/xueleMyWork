@@ -1622,6 +1622,7 @@ html:not(.watch-active-state) .list-block .item-link:active .item-inner,
 
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
+    position:relative;
 }
 .list-block .swipeout.deleting {
     -webkit-transition-duration: 300ms;
