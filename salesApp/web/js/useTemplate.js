@@ -1425,6 +1425,7 @@ $(function () {
                 var end = setInterval(function () {
                     if(flgNext){
                         return self.clickToShow(e,_this,end);
+                        clearInterval(end);
                     }
                 },100)
 

@@ -60,7 +60,7 @@ var wxJSSDK = {         //声明微信全局变量，防止污染外部变量
             "openCard"
         ]                                     //必填，需要使用的JS接口列表
     },
-    init: function () {                      //微信功能：初始化
+    init: function (call) {                      //微信功能：初始化
         if(!wx){                              //验证是否存在微信的JS组件
             alert("微信接口调用失败，请检查是否引入微信JS！");
             return;
@@ -86,6 +86,7 @@ var wxJSSDK = {         //声明微信全局变量，防止污染外部变量
                     that.config.signature = data.signature;
                     that.initWx(function () {       //初始化微信接口
                         //初始化完成后的执行
+                        call && call();
                     });
                 }else {
                     console.error("获取签名失败")

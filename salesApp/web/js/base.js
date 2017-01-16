@@ -39,7 +39,7 @@ $(function () {
         //添加点击事件类名 .addNewContacts
         addNewContacts: function () {
             var self = this;
-            $(".addNewContacts").on("touchend", function (e) {
+            $(".addNewContacts").on("click", function (e) {
                 var container = $(".addNewContactsContainer");
                 var innerHtml = $("#addNewContacts").html();
                 container.append(innerHtml);
@@ -425,6 +425,7 @@ $(function () {
     };
 
     var myLog = {
+        userList:[],
         init: function () {
             this.changeContanctsByClient();
             this.addNewLog();
@@ -432,6 +433,7 @@ $(function () {
         },
         //动态添加同事
         addColleague: function () {
+            var self = this;
             var container = $("#workPartners");
             var domStr = "";
             var currentUserId = "";
@@ -455,8 +457,10 @@ $(function () {
                         success: function (data) {
                             var data = JSON.parse(data);
                             if(data.status == 1){
+                                console.log(data);
                                 if(data.r){
-                                    var userList = data.r.user_list;
+                                    self.initUserData(data.r);
+                                    var userList = self.userList;
                                     var userList = userList.filter(function (item) {
                                         return item.crm_user_id != currentUserId
                                     })
@@ -477,6 +481,22 @@ $(function () {
                     clearInterval(end);
                 }
             },100)
+        },
+        //处理查询后成员数据
+        initUserData: function (data) {
+            var self = this;
+            var userData = data;
+            var userArr = userData.user_list;
+            userArr.forEach(function (item) {
+                self.userList.push(item)
+            });
+            if(userData.dept_list){
+                userData.dept_list.forEach(function (item) {
+                    self.initUserData(item)
+                })
+            }else {
+                return;
+            }
         },
         //动态改变选择客户和联系人
         changeContanctsByClient: function () {
@@ -598,8 +618,41 @@ $(function () {
                     comFunc.getLocation(function (result) {
                         var map_name = result.detail.address;
                         var map = JSON.stringify(result.detail.location);
-                        //微信服务器上图片ID （数组）
-                        var serverId = imageOption.imgInfo.uploadImageID;
+
+                        var files = "";
+
+                        //===测试数据===================
+                        //var filesArr = [
+                        //    {crm_weixin_fid:"1237378768e7q8e7r8qwesafdasdfasdfaxss111"},
+                        //    {crm_weixin_fid:"1237378768e7q8e7r8qwesafdasdfasdfaxss111"}
+                        //];
+                        //files = JSON.stringify(filesArr);
+                        //var map = JSON.stringify({lan:30.274085,lng:120.15507});
+                        //var map_name = "滨江区智慧e谷";
+                        //============
+
+                        var uploadFinsh = imageOption.uploadFinsh;
+                        if(uploadFinsh){
+                            //微信服务器上图片ID （数组）
+                            var serverId = imageOption.imgInfo.uploadImageID;
+                            if(serverId.length > 0){
+                                var filesArr = [];
+                                var currentYMD = comFunc.getNowTimeSlot().currentYMD;
+                                serverId.forEach(function (item) {
+                                    var obj = {};
+                                    //obj.id = "";
+                                    //obj.module_id = 0;
+                                    //obj.crm_item_id = "";
+                                    obj.crm_weixin_fid = item.toString();
+                                    //obj.crm_xuele_fid = "";
+                                    //obj.crm_file_extension = "";
+                                    //obj.crm_file_size = 0;
+                                    //obj.crm_addtime = "";
+                                    filesArr.push(obj);
+                                })
+                                files = JSON.stringify(filesArr);
+                            }
+                        }
 
                         var data = {
                             type:parseInt(type),
@@ -615,7 +668,8 @@ $(function () {
                             wl_remark:wl_remark,
                             wl_other:wl_other,
                             map:map,
-                            map_name:map_name
+                            map_name:map_name,
+                            files:files
                         }
                         console.log(data);
                         $.showPreloader("Loading...")
@@ -891,55 +945,62 @@ $(function () {
         addPic: function () {
             var self = this;
             $(".btn-addPic").on("click", function () {
-                wxJSSDK.imageApi({
-                    chooseImage:{
-                        success: function (res) {
-                            console.log(res);
-                            var chooseImageId = [];
-                            chooseImageId = res.localIds;   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                            if(chooseImageId == 0){
-                                return false;
-                            }
 
-                            chooseImageId.forEach(function (item) {
-                                self.imgInfo.chooseImageID.push(item);
-                            })
-                            var imgStr = "";
-                            chooseImageId.forEach(function (item) {
-                                imgStr += "<img src='"+item+"' class='btn-preview'>"
-                            })
-                            $(".uploadPicContainer").find(".file_input").before(imgStr);
+                setTimeout(function () {
+                    wxJSSDK.imageApi({
+                        chooseImage:{
+                            success: function (res) {
+                                console.log(res);
+                                var chooseImageId = [];
+                                chooseImageId = res.localIds;   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                if(chooseImageId == 0){
+                                    return false;
+                                }
 
-                            //添加预览功能
-                            self.previewPic();
-
-                            //上传图片
-                            self.uploadFinsh = false;
-                            var i = 0,length = chooseImageId.length;
-
-                            function upload(){
-                                wxJSSDK.imageApi({
-                                    uploadImage:{
-                                        localId:chooseImageId[i],
-                                        success: function (res) {
-                                            i++;
-                                            self.imgInfo.uploadImageID.push(res.serverId);
-                                            if(i<length){
-                                                upload();
-                                            }else {
-                                                self.uploadFinsh = true;
-                                            }
-                                        },
-                                        fail: function (res) {
-                                            $.alert(JSON.stringify(res));
-                                        }
-                                    }
+                                chooseImageId.forEach(function (item) {
+                                    self.imgInfo.chooseImageID.push(item);
                                 })
+                                var imgStr = "";
+                                chooseImageId.forEach(function (item) {
+                                    imgStr += "<img src='"+item+"' class='btn-preview'>"
+                                })
+                                $(".uploadPicContainer").find(".file_input").before(imgStr);
+
+                                //添加预览功能
+                                self.previewPic();
+
+                                //上传图片
+                                self.uploadFinsh = false;
+                                var i = 0,length = chooseImageId.length;
+
+                                function upload(){
+                                    wxJSSDK.imageApi({
+                                        uploadImage:{
+                                            localId:chooseImageId[i],
+                                            success: function (res) {
+                                                i++;
+                                                self.imgInfo.uploadImageID.push(res.serverId);
+                                                if(i<length){
+                                                    upload();
+                                                }else {
+                                                    self.uploadFinsh = true;
+                                                }
+                                            },
+                                            fail: function (res) {
+                                                $.alert(JSON.stringify(res));
+                                            }
+                                        }
+                                    })
+                                }
+                                setTimeout(function () {
+                                    upload();
+                                },100)
                             }
-                            upload();
                         }
-                    }
-                })
+                    })
+                },300)
+
+
             });
         },
         previewPic: function () {

@@ -265,6 +265,8 @@ $(function () {
             var self = this;
             var nowDate = new Date();
             var currentTime = self.dateFormat(nowDate,"yyyy-MM-dd hh:mm");
+            var currentYMD = self.dateFormat(nowDate,"yyyy-MM-dd");
+            obj.currentYMD = currentYMD;
             obj.currentTimeH = currentTime;
             var currentDay = currentTime.slice(0,11)+"00:00";
             var currentDayDate = new Date(currentDay);
@@ -295,27 +297,26 @@ $(function () {
 
         //获得当前定位
         getLocation: function (call) {
-            var currentLocation = "";
-            currentLocation = "浙江省杭州市滨江区智慧e谷";
-
-            var geocoder = new qq.maps.Geocoder({
-                complete: function (result) {
-                    console.log(result);
-                    call && call(result);
-                }
-            });
-            //调用微信接口获取定位信息
-            wxJSSDK.location({
-                getLocation:{
-                    success: function (res) {
-                        //获取经纬度
-                        var lat = res.latitude,
-                            lng = res.longitude,
-                            latLng = new qq.maps.LatLng(lat,lng);
-                        geocoder.getAddress(latLng);        //反地址解析
+            setTimeout(function () {
+                var geocoder = new qq.maps.Geocoder({
+                    complete: function (result) {
+                        console.log(result);
+                        call && call(result);
                     }
-                }
-            })
+                });
+                //调用微信接口获取定位信息
+                wxJSSDK.location({
+                    getLocation:{
+                        success: function (res) {
+                            //获取经纬度
+                            var lat = res.latitude,
+                                lng = res.longitude,
+                                latLng = new qq.maps.LatLng(lat,lng);
+                            geocoder.getAddress(latLng);        //反地址解析
+                        }
+                    }
+                })
+            },300)
         },
 
         //获得移动设备信息
