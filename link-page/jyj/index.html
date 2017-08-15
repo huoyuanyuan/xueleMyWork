@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>学乐云管理</title>
+    <script type="text/javascript" src="../lib/flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="../lib/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../lib/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/ygl.css">
+    <script type="text/javascript" src="../lib/zepto.min.js"></script>
+    <script type="text/javascript" src="../lib/swiper.min.js"></script>
+    <script type="text/javascript" src="../lib/mui.min.js"></script>
+</head>
+
+<body>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide page1">
+                <img class="yjx-bg" src="../images/ygl-bg1.png">
+                <a href="" class="download-btn jDownloadBtn">
+                    <img src="../images/download.png"> 立即下载
+                </a>
+            </div>
+            <div class="swiper-slide page2">
+                <img class="yjx-bg" src="../images/ygl-bg2.png">
+                <h3>教育管理便捷高效，全方位提升教学生产力</h3>
+                <p>学乐云可实时反馈辖区内学校的教学、学习过程情况，并通过系统自动进行数据的分析整合，帮助管理者快速、清晰地管理教育教学工作，有效提升教学效率
+                </p>
+            </div>
+            <div class="swiper-slide page3">
+                <img class="yjx-bg" src="../images/ygl-bg3.png">
+                <h3>大数据精准分析，助力管理者科学决策</h3>
+                <p>学乐云通过对区域内教学数据的精准分析，为当地教育部门的教育管理、教研、实践提供决策性依据，实现个性化教学、因材施教的最终目标
+                </p>
+            </div>
+            <div class="swiper-slide page4">
+                <img class="yjx-bg" src="../images/ygl-bg4.png">
+                <h3>均衡区域教育资源，提高教师教学能力</h3>
+                <p>学乐云打通各类优秀合作资源平台，打破教育区域的壁垒帮助教师共享优质教学资源。各种资源分类明确，调取方便，教师备课时间可以节约60%以上
+                </p>
+            </div>
+            <div class="swiper-slide page5">
+                <img class="yjx-bg" src="../images/ygl-bg5.png">
+                <h3>教学研究科学精准，教育资源高效调度</h3>
+                <p>学乐云可协助管理者多纬度查询辖区内最详尽的教学情况了解教学效果和教学过程信息，进行精准教研，帮助管理者有效调度教学资源，提升教学生产力
+                </p>
+                <img class="yjx-foot" src="../images/yjx-bgfoot.png">
+                <div class="btn-box">
+                    <p>一键拥有你的在线教育平台</p>
+                    <a href="" class="download-btn jDownloadBtn">
+                        <img src="../images/download.png"> 立即下载
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow" style="display:none;"></div>
+    <div class="dialogbox" style="display:none;">
+        <div class="close"><img src="../images/close.png" alt=""></div>
+        <div class="mui-slider">
+            <div class="mui-slider-group">
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/0.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/1.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/2.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/3.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/4.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/5.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/6.jpg" /></a>
+                </div>
+            </div>
+            <div class="mui-slider-indicator">
+                <div class="mui-indicator mui-active"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function() {
+        document.writeln('<div class="js-wxtip" style="display:none;position:fixed;z-index:100;width:100%;height:100%;background:rgba(0,0,0,0.7);top:0;left:0;"> <img style="width: 90%; position: absolute; top: 0px; right: 10px; display: block;" src="../images/wxtips.gif"> </div>');
+        var tipEle = document.querySelector('.js-wxtip');
+        tipEle.addEventListener('click', function() {
+            showtips(0)
+        }, false);
+
+        function showtips(type) {
+            if (type == 1) {
+                tipEle.style.display = "block"
+            } else {
+                tipEle.style.display = "none"
+            }
+        }
+        var u = navigator.userAgent;
+        setTimeout(function() {
+            if (u.indexOf('MicroMessenger') > -1) {
+                var obj = document.getElementsByTagName("a");
+                for (var i = 0; i < obj.length; i++) {
+                    var _name = String(obj[i].href);
+                    var _class = String(obj[i].className);
+                    if (_name.indexOf(".apk") > -1 || _name.indexOf(".sis") > -1 || _class.indexOf('jDownloadBtn') > -1) {
+                        var getObj = obj[i];
+                        getObj.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            showtips(1)
+                        }, false)
+                    }
+                }
+            }
+        }, 500)
+    })();
+
+    $(function() { 
+        (function() {
+            var url = ['http://m.xueleyun.com/download/android', 'itms-services://?action=download-manifest&url=https://m.xueleyun.com/download/ios'];
+            var uri = 'javascript:;';  // 下载地址
+            var u = navigator.userAgent,
+                app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if (isAndroid) {
+                uri = url[0];
+            }
+            if (isiOS) {
+                uri = url[1];
+
+                if (u.match(/OS 9_/i) == 'OS 9_') {
+
+                    $('.jDownloadBtn').on('touchend',function(){
+                        $('.shadow, .dialogbox').show();
+                    })
+                    $('.close').on('touchend',function(){
+                        $('.shadow, .dialogbox').hide();
+                    })
+                }
+            }
+            $('.jDownloadBtn').attr('href', uri);
+        })();
+
+        var swiper = new Swiper('.swiper-container', {
+            // freeMode: true,
+            direction: 'vertical'
+        });
+    })
+    </script>
+</body>
+
+</html>

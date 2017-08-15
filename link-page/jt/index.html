@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>学乐云家庭</title>
+    <script type="text/javascript" src="../lib/flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="../lib/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../lib/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/yjt.css">
+    <script type="text/javascript" src="../lib/zepto.min.js"></script>
+    <script type="text/javascript" src="../lib/swiper.min.js"></script>
+    <script type="text/javascript" src="../lib/mui.min.js"></script>
+</head>
+
+<body>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide page1">
+                <img class="yjx-bg" src="../images/yjt-bg1.png">
+                <a href="" class="download-btn jDownloadBtn">
+                    <img src="../images/download.png"> 立即下载
+                </a>
+            </div>
+            <div class="swiper-slide page2">
+                <img class="yjx-bg" src="../images/yjt-bg2.png">
+                <h3>家庭学校无缝连接，学生成长共同呵护</h3>
+                <p>在学乐云的帮助下，家长和老师，可通过消息、通知、空间等，及时沟通，深度交流，共同呵护孩子成长，实现家校共育
+                </p>
+            </div>
+            <div class="swiper-slide page3">
+                <img class="yjx-bg" src="../images/yjt-bg3.png">
+                <h3>360度学生成长档案，学习轨迹实时呈现</h3>
+                <p>学乐云会完整记录孩子的成长和学习中的点滴，孩子的学习过程可在家长端同步直播，帮助家长随时了解孩子的学习情况
+                </p>
+            </div>
+            <div class="swiper-slide page4">
+                <img class="yjx-bg" src="../images/yjt-bg4.png">
+                <h3>智能学生学习评价，提高优势弥补缺陷</h3>
+                <p>学乐云能科学分析孩子已掌握和未掌握的知识点，指导家长帮助孩子扬长避短，矫正学习方式，告别低效学习
+                </p>
+            </div>
+            <div class="swiper-slide page5">
+                <img class="yjx-bg" src="../images/yjt-bg5.png">
+                <h3>智能学习辅导工具，快速提升学习成绩</h3>
+                <p>学乐云会对每个孩子学情提供准确诊断，通过每个知识点一对一的讲解，指导家长帮助孩子克服短板，快速提升学习成绩
+                </p>
+                <img class="yjx-foot" src="../images/yjt-bgfoot.png">
+                <div class="btn-box">
+                    <p>一键拥有你的在线教育平台</p>
+                    <a href="" class="download-btn jDownloadBtn">
+                        <img src="../images/download.png"> 立即下载
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shadow" style="display:none;"></div>
+    <div class="dialogbox" style="display:none;">
+        <div class="close"><img src="../images/close.png" alt=""></div>
+        <div class="mui-slider">
+            <div class="mui-slider-group">
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/0.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/1.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/2.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/3.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/4.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/5.jpg" /></a>
+                </div>
+                <div class="mui-slider-item">
+                    <a href="#"><img src="../images/6.jpg" /></a>
+                </div>
+            </div>
+            <div class="mui-slider-indicator">
+                <div class="mui-indicator mui-active"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+                <div class="mui-indicator"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function() {
+        document.writeln('<div class="js-wxtip" style="display:none;position:fixed;z-index:100;width:100%;height:100%;background:rgba(0,0,0,0.7);top:0;left:0;"> <img style="width: 90%; position: absolute; top: 0px; right: 10px; display: block;" src="../images/wxtips.gif"> </div>');
+        var tipEle = document.querySelector('.js-wxtip');
+        tipEle.addEventListener('click', function() {
+            showtips(0)
+        }, false);
+
+        function showtips(type) {
+            if (type == 1) {
+                tipEle.style.display = "block"
+            } else {
+                tipEle.style.display = "none"
+            }
+        }
+        var u = navigator.userAgent;
+        setTimeout(function() {
+            if (u.indexOf('MicroMessenger') > -1) {
+                var obj = document.getElementsByTagName("a");
+                for (var i = 0; i < obj.length; i++) {
+                    var _name = String(obj[i].href);
+                    var _class = String(obj[i].className);
+                    if (_name.indexOf(".apk") > -1 || _name.indexOf(".sis") > -1 || _class.indexOf('jDownloadBtn') > -1) {
+                        var getObj = obj[i];
+                        getObj.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            showtips(1)
+                        }, false)
+                    }
+                }
+            }
+        }, 500)
+    })();
+
+    $(function() { 
+        (function() {
+            var url = ['http://m.xueleyun.com/download/android', 'itms-services://?action=download-manifest&url=https://m.xueleyun.com/download/ios'];
+            var uri = 'javascript:;';  // 下载地址
+            var u = navigator.userAgent,
+                app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if (isAndroid) {
+                uri = url[0];
+            }
+            if (isiOS) {
+                uri = url[1];
+
+                if (u.match(/OS 9_/i) == 'OS 9_') {
+
+                    $('.jDownloadBtn').on('touchend',function(){
+                        $('.shadow, .dialogbox').show();
+                    })
+                    $('.close').on('touchend',function(){
+                        $('.shadow, .dialogbox').hide();
+                    })
+                }
+            }
+            $('.jDownloadBtn').attr('href', uri);
+        })();
+
+        var swiper = new Swiper('.swiper-container', {
+            // freeMode: true,
+            direction: 'vertical'
+        });
+    })
+    </script>
+</body>
+
+</html>

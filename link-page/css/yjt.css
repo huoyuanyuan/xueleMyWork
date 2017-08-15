@@ -1,0 +1,183 @@
+ html,
+ body {
+     position: relative;
+     height: 100%;
+     background-color:#eee;
+ }
+ 
+ body {
+     font-family: Microsoft Yahei, SimSun, Helvetica;
+     margin: 0;
+     padding: 0;
+ }
+ 
+ a {
+     text-decoration: none;
+     -webkit-tap-highlight-color: transparent;
+ }
+ 
+ .swiper-container {
+     width: 100%;
+     height: 100%;
+     background-color:#fff;
+     max-width: 750px;
+     margin:0 auto;
+ }
+ [data-dpr="3"] .swiper-container {
+     max-width: 100%;
+     margin:0 auto;
+ }
+ 
+ .swiper-slide {
+     width: 100%;
+     position: relative;
+     overflow: hidden;
+ }
+ 
+ .download-btn {
+     display: block;
+     width: 5.6rem;
+     height: 1.3rem;
+     border-radius: 1.3rem;
+     background-color: #ff6631;
+     color: #fff;
+     line-height: 1.3rem;
+     font-size: 0.56rem;
+     text-align: center;
+     box-shadow: 0 15px 40px rgba(255, 102, 49, 0.3);
+     -webkit-box-shadow: 0 15px 40px rgba(255, 102, 49, 0.3);
+     -moz-box-shadow: 0 15px 40px rgba(255, 102, 49, 0.3);
+ }
+ .download-btn:active{
+     color:#fff;
+     background-color:#ff4000;
+ }
+ 
+ .download-btn img {
+     margin-right: 0.1rem;
+     vertical-align: middle;
+     width: 0.67rem;
+ }
+ 
+ .page1 .yjx-bg {
+     width: 100%;
+ }
+ 
+ .page1 .download-btn {
+     position: absolute;
+     bottom: 1rem;
+     left: 50%;
+     margin-left: -2.8rem;
+ }
+ 
+ .page2,
+ .page3,
+ .page4,
+ .page5 {
+     text-align: center;
+ }
+ 
+ .page2 .yjx-bg,
+ .page3 .yjx-bg,
+ .page4 .yjx-bg,
+ .page5 .yjx-bg {
+     display: block;
+     margin: 1rem auto 0;
+     width: 6.1rem;
+ }
+
+ .page2 .yjx-bg{
+     margin-top:2.5rem;
+ }
+ .page3 .yjx-bg{
+     margin-top:2rem;
+ }
+ .page4 .yjx-bg{
+     margin-top:2rem;
+ }
+ 
+ .page2 h3,
+ .page3 h3,
+ .page4 h3,
+ .page5 h3 {
+     margin-top: 1.6rem;
+     font-size: 0.45rem;
+     color: #212121;
+     font-weight: normal;
+ }
+ 
+ .page2 p,
+ .page3 p,
+ .page4 p,
+ .page5 p {
+     font-size: 0.35rem;
+     color: #999999;
+     width: 8.4rem;
+     margin: 0.5rem auto 0;
+     text-align: left;
+     line-height: 1.6em;
+ }
+ 
+ .page5 .yjx-foot {
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+ }
+ 
+ .page5 .btn-box {
+     width: 10rem;
+     position: absolute;
+     bottom: 1rem;
+     left: 50%;
+     margin-left: -5rem;
+ }
+ 
+ .page5 .btn-box p {
+     font-size: 0.43rem;
+     color: #3a3a3c;
+     text-align: center;
+     margin-bottom: 0.2rem;
+ }
+ 
+ .page5 .btn-box .download-btn {
+     margin: 0 auto;
+ }
+ 
+ .shadow {
+     position: fixed;
+     background: #333;
+     z-index: 10;
+     bottom: 0px;
+     left: 0px;
+     right: 0px;
+     top: 0px;
+     filter: alpha(opacity=70)!important;
+     -moz-opacity: 0.7!important;
+     opacity: 0.7!important;
+ }
+ 
+ .dialogbox {
+     position: fixed;
+     top: 0.5rem;
+     border: 2px solid #ccc;
+     right: 0.5rem;
+     left: 0.5rem;
+     bottom: 1.5rem;
+     background: #efefef;
+     padding: 0.7rem 0.2rem 0.2rem 0.2rem;
+     z-index: 15;
+     border-radius: 10px;
+ }
+ 
+ .dialogbox .close {
+     position: fixed;
+     z-index: 16;
+     right: -0.4rem;
+     top: -0.4rem;
+     width: 1rem;
+ }
+ 
+ .dialogbox .close img {
+     width: 1rem;
+ }

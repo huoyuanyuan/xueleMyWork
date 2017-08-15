@@ -1,0 +1,134 @@
+ html,
+ body {
+     position: relative;
+     height: 100%;
+     background-color:#eee;
+     -webkit-text-size-adjust: 100%
+ }
+ 
+ body {
+     font-family: 'Helvetica Neue',Helvetica,sans-serif;
+     margin: 0;
+     padding: 0;
+ }
+ 
+ a {
+     text-decoration: none;
+     -webkit-tap-highlight-color: transparent;
+ }
+ 
+ 
+ .container {
+     width: 100%;
+     background-color:#fff;
+     max-width: 750px;
+     margin:0 auto;
+ }
+ [data-dpr="3"] .container {
+     max-width: 100%;
+     margin:0 auto;
+ }
+
+.section{
+    position: relative;
+    margin-top: 3.2rem;
+ }
+ .section:first-child{
+    margin-top: 0;
+ }
+ 
+ .download-btn {
+     display: block;
+     width: 5.6rem;
+     height: 1.3rem;
+     border-radius: 1.3rem;
+     background-color: #23c3ff;
+     color: #fff;
+     line-height: 1.3rem;
+     font-size: 0.56rem;
+     text-align: center;
+     box-shadow: 0 15px 40px rgba(35, 195, 255, 0.3);
+     -webkit-box-shadow: 0 15px 40px rgba(35, 195, 255, 0.3);
+     -moz-box-shadow: 0 15px 40px rgba(35, 195, 255, 0.3);
+ }
+ .download-btn:active{
+    color: #fff;
+    background-color:#00aaff;
+ }
+ 
+ .download-btn img {
+     margin-right: 0.1rem;
+     vertical-align: middle;
+     width: 0.67rem;
+ }
+
+
+ 
+ .page1 .yjx-bg {
+     width: 100%;
+ }
+ 
+ .page1 .download-btn {
+     position: absolute;
+     // bottom: 1rem;
+     left: 50%;
+     margin-left: -2.8rem;
+ }
+ 
+ .page2,
+ .page3,
+ .page4 {
+     text-align: center;
+ }
+ 
+ .page2 .yjx-bg,
+ .page3 .yjx-bg,
+ .page4 .yjx-bg {
+     display: block;
+     margin: 0 auto 0;
+     width: 6.4rem;
+ }
+ 
+ .page2 h3,
+ .page3 h3,
+ .page4 h3 {
+     margin-top: 1.6rem;
+     font-size: 0.5rem;
+     color: #212121;
+     font-weight: normal;
+ }
+ 
+ .page2 p,
+ .page3 p,
+ .page4 p {
+     font-size: 0.35rem;
+     color: #999999;
+     width: 8.4rem;
+     margin: 0.5rem auto 0;
+     text-align: left;
+     line-height: 1.6em;
+ }
+ 
+ .page4 .yjx-foot {
+     width: 100%;
+     display: block;
+ }
+ 
+ .page4 .btn-box {
+     width: 10rem;
+     position: absolute;
+     bottom: 1rem;
+     left: 50%;
+     margin-left: -5rem;
+ }
+ 
+ .page4 .btn-box p {
+     font-size: 0.43rem;
+     color: #3a3a3c;
+     text-align: center;
+     margin-bottom: 0.2rem;
+ }
+ 
+ .page4 .btn-box .download-btn {
+     margin: 0 auto;
+ }
